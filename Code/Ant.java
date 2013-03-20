@@ -16,6 +16,10 @@ public class Ant {
 	boolean hasFood; // Missed an attribute in class dia...woops!
 	int state;
 	int direction;
+	
+	public AntAttack() {
+		// Constrcutor
+	}
 
 	public void getState() {
 		// Return state
