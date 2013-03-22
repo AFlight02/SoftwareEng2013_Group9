@@ -13,6 +13,11 @@ public class Tournament {
 	 * 3	0=0,1=0,2=0,3=-1,...
 	 * ...  0=0,1=0,2=0,3=0,...=-1
 	 */
+        /* NEW THOUGHTS!! Maybe don't need to track all matches this way. Instead use playMatch() method to iterate through each AntBrain in the antBrains List and pass to a new Gameplay
+         * instance. Then, when the first match is complete, reverse the order in which you pass them to a Gameplay, so the match is played with AntBrain a being Red vs AntBrain i as Black,
+         * then AntBrain n is Black vs AntBrain i as Red. i.e: resultRed = new Gameplay(n, i); resultBlack = new Gameplay(i, n);
+         * Interpret the implementation however you want, but this seems the best way of implementing a Tournament to play through all matches imo
+         */
 	int[] scores; // Increments points per AntBrain in list, 1 = draw, 2 = win, 0 = loss
 	
 	public Tournament() {
