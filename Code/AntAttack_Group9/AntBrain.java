@@ -23,7 +23,7 @@ public class AntBrain {
 		// Valid syntax: COMMAND_TOKEN NEW_STATE etc.
 	}
 
-	public int returnInstruction() {
+	public int getInstruction(int currState) {
 		// Pass state to FSM, get the next state, update state attrib, return int representing instruction:
 		// 0 = wait, 1 = turn left, 2 = turn right, 3 = move, etc...
             return 0;

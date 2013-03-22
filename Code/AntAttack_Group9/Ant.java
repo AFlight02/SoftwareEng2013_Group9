@@ -11,49 +11,52 @@ import java.util.*;
 
 public class Ant {
 	
-	AntBrain brain;
-	boolean colour;
-	boolean hasFood; // Missed an attribute in class dia...woops!
-	int state;
-	int direction;
+	private AntBrain brain;
+	private boolean colour;
+	private boolean hasFood; // Missed an attribute in class dia...woops!
+        private int resting;
+	private int state;
+	private int direction;
 	
-	public Ant() {
-		// Constrcutor
+	public Ant(AntBrain brain, boolean colour) {
+            this.brain = brain;
+            this.colour = colour;
 	}
 
-	public void getState() {
-		// Return state
+	public int getState() {
+            return this.state;
 	}
-
-	public void changeDir(int newDirection) {
-		// Update direction with passed new directon
-	}
-	
-	public void move() {
-		// Remove Ant from the Cell it currently resides in, add to the cell one cell in front of direction
-	}
-
-	public void pickUpFood() {
-		// Change hasFood to true
-	}
-
-	public void dropFood() {
-		// Change hasFood to false
-	}
-
-	public int markCell() {
-		// Return marker number to mark the current Cell
-            return 0;
-	}
-
-	public void senseCell() {
-		// Get the attributes of cell in front, make call to change state based on what is sensed
-	}
-
-	public void updateState() {
-		// Call to brain with current state as param
-		// state = brain.getState(state);
-		// Update state with result
+        
+        public int getResting() {
+            return this.resting;
+        }
+        
+        public int getDirection() {
+            return this.direction;
 	}
 	
+        public boolean getFood() {
+            return this.hasFood;
+        }
+        
+        public boolean getColour() {
+            return this.colour;
+        }
+        
+        public void setState(int newState) {
+            this.state = newState;
+        }
+        
+        public void setResting(int resting) {
+            this.resting = resting;
+        }
+        
+        public void setDirection(int dir) {
+            this.direction = dir;
+        }
+	
+        public void setFood(boolean b) {
+            this.hasFood = b;
+        }
+        
 }
