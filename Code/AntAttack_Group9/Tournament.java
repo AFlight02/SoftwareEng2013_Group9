@@ -4,41 +4,112 @@ import java.util.*;
 public class Tournament {
 
 	List<AntBrain> antBrains;
-	Gameplay currGame;
-	int[][] matches; // 2D array where [i][j], i = antBrain index, j = antBrain to play against initialise all to 0:
-	/*
-	 * 0	0=-1,1=0,2=0,3=0,...
-	 * 1	0=0,1=-1,2=0,3=0,...
-	 * 2	0=0,1=0,2=-1,3=0,...
-	 * 3	0=0,1=0,2=0,3=-1,...
-	 * ...  0=0,1=0,2=0,3=0,...=-1
-	 */
-        /* NEW THOUGHTS!! Maybe don't need to track all matches this way. Instead use playMatch() method to iterate through each AntBrain in the antBrains List and pass to a new Gameplay
-         * instance. Then, when the first match is complete, reverse the order in which you pass them to a Gameplay, so the match is played with AntBrain a being Red vs AntBrain i as Black,
-         * then AntBrain n is Black vs AntBrain i as Red. i.e: resultRed = new Gameplay(n, i); resultBlack = new Gameplay(i, n);
-         * Interpret the implementation however you want, but this seems the best way of implementing a Tournament to play through all matches imo
-         */
-	int[] scores; // Increments points per AntBrain in list, 1 = draw, 2 = win, 0 = loss
+	List<World> worlds;
+        int[] scores; // Increments points per AntBrain in list, 1 = draw, 2 = win, 0 = loss
 	
-	public Tournament() {
-		// Constructor creates tournment
+        /*
+         * RE: new thoughts -- was looking through/writing stuff for this class earlier and came to the same conclusions.
+         * Also, in the spec it says that there will be several game worlds for everyone to play a match in,
+         * which with the matches[][] array method would mean also keeping track of which worlds had been played
+         * - Far easier to just iterate everything :-p
+         */
+        
+        //two constructors: so you can either initialize a tourney with a list of brains, or add them later (or both).
+        public Tournament(List<World> worlds) {
+            antBrains = Arrays.asList(); //inits as an empty list
+            this.worlds = worlds;
+        }
+        
+	public Tournament(List<AntBrain> antBrains, List<World> worlds) {
+            this.antBrains = antBrains;
+            this.worlds = worlds;
 	}
 
+        /**
+         * Add a single ant brain to the Tournament (before playing matches)
+         * @param brain the AntBrain to add to the tournament
+         */
 	public void addCompetitors(AntBrain brain) {
-		// Adds AntBrains, requires at least 2 for a Tournament of course
+            antBrains.add(brain);
+	}
+        
+        /**
+         * Sets up and runs the tournament - run this after all desired ant brains have been added.
+         */
+        public void runTournament() {
+            int numCompetitors = antBrains.size();
+            scores = new int[numCompetitors]; //can init scores[] now that we know how many brains there are
+            
+            if(numCompetitors > 1) {
+                List<AntBrain> winners;
+                
+                for(int i = 0; i < numCompetitors; i++) {
+                    for(int j = 0; j < numCompetitors; j++) {
+                        for(World w: worlds) {
+                            if(i != j) {
+                                playMatch(i, j, w);
+                                playMatch(j, i, w);
+                            }
+                        }
+                    }
+                }
+                winners = declareWinner(); //then give this to the user somehow (GUI?)
+            } else {
+                //return error or throw exception etc. - need at least 2 brains for competition
+                System.out.println("Must have at least 2 ant brains to start a tournament!");
+            }
+        }
+        
+        //no public access to the rest of the methods as they are only used by the Tournament class:
+
+        /**
+         * Plays one match and updates the scores
+         * @param redBrain the list/score index of opponent 1
+         * @param blackBrain the list/score index of opponent 2
+         * @param world the world the match is played on
+         */
+	private void playMatch(int redBrain, int blackBrain, World world) {
+            //code to run a game. Update this later once World class has been written
+            Gameplay game = new Gameplay();
+            game.playGame();
+            
+            int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
+            
+            switch(winner) {
+                case 0:
+                    scores[redBrain]++;
+                    scores[blackBrain]++;
+                    break;
+                case 1:
+                    scores[blackBrain] += 2;
+                    break;
+                case 2:
+                    scores[redBrain] += 2;
+            }
 	}
 
-	public void setUpMatches() {
-		// Uses indexes in antBrains list. Will be 2n^2 matches (or not, need to calculate!)
-	}
-
-	public void playMatch() {
-		// Takes match, increments the second value in the 2D array to match up if >= 0 already (avoids match against
-		// itself!) until <=2 where each game has been played twice with the teams switching colour
-	}
-
-	public void declareWinner() {
-		// Returns message of overall highest points in score[] where index of score[] is index of Brain in antBrains list
+        /*
+         * Calculates the winner(s) of the tournament
+         * @return winningBrains the brain(s) with the highest score
+         */
+	private List<AntBrain> declareWinner() {
+            List<AntBrain> winningBrains = Arrays.asList();
+            int highestScore = 0;
+            
+            //need to do this separately to just finding the index with highest score, to allow for a tourney draw (though unlikely)
+            for(int s: scores) {
+                if (s > highestScore) {
+                    highestScore = s;
+                }
+            }
+            
+            for(int i = 0; i < scores.length; i++) {
+                if(scores[i] == highestScore) {
+                    winningBrains.add(antBrains.get(i));
+                }
+            }
+            
+            return winningBrains;
 	}
 
 }
