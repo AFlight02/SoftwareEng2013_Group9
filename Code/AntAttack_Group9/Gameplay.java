@@ -11,7 +11,8 @@ public class Gameplay {
 	AntBrain redAndBrain;
 	AntBrain blackAntBrain;
 	
-	public Gameplay() {
+	public Gameplay(AntBrain red, AntBrain black) { 
+                // For Kirstie : Pass constructor the two AntBrains for play, pass them to loadAntBrains method OR remove that method and just load straight into params
 		// Constructor
 	}
 
@@ -35,7 +36,7 @@ public class Gameplay {
 		// Calls World syntax checks, AntBrain syntax checks, begins stepping through game instance
 	}
 
-	public void loadAntBrains(AntBrain red, AntBrain black) {
+	public void loadAntBrains(AntBrain red, AntBrain black) { // Kirstie: Possibly remove this method with reference to comment on constructor!
 		// Loads red and black AntBrains
 	}
 
