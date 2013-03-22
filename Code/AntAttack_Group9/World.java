@@ -1,4 +1,4 @@
-package AntAttack_Group9
+package AntAttack_Group9;
 import java.util.*;
 
 public class World {
@@ -20,6 +20,7 @@ public class World {
 
 	public int findAnt(int id) {
 		// Iterate through Cells for Ant of id, return cell index
+            return -1; //Placeholder
 	}
 
 	public void checkCellStatus(int cell) {
@@ -30,7 +31,7 @@ public class World {
 		// Modify food at cell
 	}
 
-	public void setMarkAtCell(int cell, int marker, bool colour) {
+	public void setMarkAtCell(int cell, int marker, boolean colour) {
 		// Mark cell with number marker of colour where true = black, false = red (need to standardise the bool
 		// representation as concrete for the project as true always == black and false always == red!)
 	}

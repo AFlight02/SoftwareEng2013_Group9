@@ -1,12 +1,12 @@
 /**
  * Ant.java
  * Represents an instance of an individual Ant agent within the AntAttack simulation. Each Ant shares a common AntBrain
- * that manages the behaviour of all Ants of a particualr team throughout a Tournament and individual Game
+ * that manages the behaviour of all Ants of a particular team throughout a Tournament and individual Game
  * 
  * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale, Paige Gray, Matt Chapman, Alex Flight (77525), ??James Bellamy??
  * @version 0.1
  */
-package AntAttack_Group9 // Need to combine everything into said package for portability and integration of classes together
+package AntAttack_Group9; // Need to combine everything into said package for portability and integration of classes together
 import java.util.*;
 
 public class Ant {
@@ -17,7 +17,7 @@ public class Ant {
 	int state;
 	int direction;
 	
-	public AntAttack() {
+	public Ant() {
 		// Constrcutor
 	}
 
@@ -43,6 +43,7 @@ public class Ant {
 
 	public int markCell() {
 		// Return marker number to mark the current Cell
+            return 0;
 	}
 
 	public void senseCell() {

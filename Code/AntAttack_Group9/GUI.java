@@ -1,4 +1,4 @@
-package AntAttack_Group9
+package AntAttack_Group9;
 import java.util.*;
 
 public class GUI {

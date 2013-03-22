@@ -1,4 +1,4 @@
-package AntAttack_Group9
+package AntAttack_Group9;
 import java.util.*;
 
 public class Gameplay {
@@ -41,6 +41,7 @@ public class Gameplay {
 
 	public int declareWinner() {
 		// Calculates winners and returns 0 for Draw, 1 for Black win, 2 for Red win, -1 for error
+            return -1;
 	}
 
 }

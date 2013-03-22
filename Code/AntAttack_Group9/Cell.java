@@ -1,4 +1,4 @@
-package AntAttack_Group9
+package AntAttack_Group9;
 import java.util.*;
 
 public class Cell {
@@ -24,6 +24,8 @@ public class Cell {
 		// bool getRock(){}
 		// int getFood(){}
 		// bool[] getMarkers(bool colour){}
+            int[] result = new int[1]; // Placeholder!
+            return result;
 	}
 
 	public void removeAnt() {

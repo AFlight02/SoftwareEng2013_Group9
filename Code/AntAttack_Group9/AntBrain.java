@@ -1,5 +1,6 @@
-package AntAttack_Group9
+package AntAttack_Group9;
 import java.util.*;
+import java.io.*;
 
 public class AntBrain {
 
@@ -25,6 +26,7 @@ public class AntBrain {
 	public int returnInstruction() {
 		// Pass state to FSM, get the next state, update state attrib, return int representing instruction:
 		// 0 = wait, 1 = turn left, 2 = turn right, 3 = move, etc...
+            return 0;
 	}
 
 }
