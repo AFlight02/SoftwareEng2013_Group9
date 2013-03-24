@@ -1,4 +1,5 @@
 package AntAttack_Group9;
+import java.io.File;
 import java.util.*;
 
 public class AntAttack {
@@ -8,23 +9,31 @@ public class AntAttack {
 	int newAttr; // Error in class diagram, will fix! Remove this on Friday.
 	
 	public AntAttack() {
-		// Constructor!
 	}
 
+        public static void main(String[] args) {
+            AntAttack newGame = new AntAttack();
+            newGame.newTournament();
+            newGame.newGame();
+        }
+        
 	public void initialiseGUI() {
 		// Call to GUI constructor and initialisation methods.
 	}
 
 	public void newTournament() {
-		// Generate a new Tournment object
+            List<World> w = new ArrayList();
+            tournament = new Tournament(w);
+            AntBrain b = new AntBrain("cleverbrain1.brain");
+            tournament.addCompetitors(b);
 	}
 
 	public void newGame() {
-		// Begin a new Game within the Tournament
+            tournament.runTournament();
 	}
 
 	public void newWorld() {
-		// Add new World to a Game within Tournament
+            tournament.worlds.add(null);
 	}
 
 }

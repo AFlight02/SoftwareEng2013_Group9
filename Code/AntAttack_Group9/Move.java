@@ -5,7 +5,7 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class Move implements Instruction {
+public class Move extends Instruction {
     private int state1;
     private int state2;
     

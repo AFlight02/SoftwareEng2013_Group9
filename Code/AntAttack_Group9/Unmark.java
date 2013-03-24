@@ -5,7 +5,7 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class Unmark implements Instruction {
+public class Unmark extends Instruction {
     private int state;
     private int marker;
     

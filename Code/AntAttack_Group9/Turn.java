@@ -5,22 +5,27 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class Turn implements Instruction {
-    private enum leftOrRight {
+public class Turn extends Instruction {
+    public enum direction {
         LEFT, RIGHT
     }
-    private leftOrRight lr;
+    private direction lr;
     private int state;
     
-    public Turn(leftOrRight lr, int state) {
+    public Turn(direction lr, int state) {
         this.lr = lr;
         this.state = state;
     }
     
-    public leftOrRight getTurnDir() {
+    public direction getTurnDir() {
         return this.lr;
     }
     public int getNextState() {
         return this.state;
+    }
+    
+    public static direction dirFromString(String name)
+    {
+        return getEnumFromString(direction.class, name);
     }
 }

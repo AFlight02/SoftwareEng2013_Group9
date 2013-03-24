@@ -5,7 +5,7 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class Drop implements Instruction {
+public class Drop extends Instruction {
     private int state;
     
     public Drop(int state) {

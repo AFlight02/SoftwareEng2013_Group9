@@ -59,4 +59,15 @@ public class Ant {
             this.hasFood = b;
         }
         
+        public int turn(Turn.direction dir) {
+            switch(dir) {
+                case LEFT:
+                    return (direction+5)%6;
+                case RIGHT:
+                    return (direction+1)%6;
+                default:
+                    return -1;
+            }
+        }
+        
 }

@@ -19,6 +19,10 @@ public class Gameplay {
 	public void generateWorld() {
 		// Generate a new World randomly
 	}
+        
+        public void playGame() {
+            
+        }
 
 	public void loadWorld(World uploadWorld) {
 		// Update world to an existing World that is passed

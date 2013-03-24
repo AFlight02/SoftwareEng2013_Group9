@@ -5,7 +5,7 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class Mark implements Instruction {
+public class Mark extends Instruction {
     private int state;
     private int marker;
     

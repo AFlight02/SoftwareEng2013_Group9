@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author Alex
  */
-public class Flip implements Instruction {
+public class Flip extends Instruction {
     private int random;
     private int state1;
     private int state2;

@@ -5,11 +5,11 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class Sense implements Instruction {
-    private enum senseDir {
+public class Sense extends Instruction {
+    public enum senseDir {
         HERE, AHEAD, LEFTAHEAD, RIGHTAHEAD
     }
-    private enum condition {
+    public enum condition {
         FRIEND, FOE, FRIENDWFOOD, FOEWFOOD, FOOD, ROCK, MARKER0, MARKER1, MARKER2, 
         MARKER3, MARKER4, MARKER5, FOEMARKER, HOME, FOEHOME
     }
@@ -41,4 +41,15 @@ public class Sense implements Instruction {
     public senseDir getSenseDirVal() {
         return senseDirVal;
     }
+    
+    public static senseDir dirFromString(String name)
+    {
+        return getEnumFromString(senseDir.class, name);
+    }
+    
+    public static condition condFromString(String name)
+    {
+        return getEnumFromString(condition.class, name);
+    }
+    
 }

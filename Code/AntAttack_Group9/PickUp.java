@@ -5,7 +5,7 @@ package AntAttack_Group9;
  *
  * @author Alex
  */
-public class PickUp implements Instruction {
+public class PickUp extends Instruction {
     private int state1;
     private int state2;
     

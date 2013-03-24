@@ -70,7 +70,8 @@ public class Tournament {
          */
 	private void playMatch(int redBrain, int blackBrain, World world) {
             //code to run a game. Update this later once World class has been written
-            Gameplay game = new Gameplay();
+            Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
+            game.loadWorld(world);
             game.playGame();
             
             int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
