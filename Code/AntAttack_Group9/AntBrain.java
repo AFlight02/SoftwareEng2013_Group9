@@ -111,7 +111,7 @@ public class AntBrain {
             if(!m.matches()){
                 //System.out.println("Error in java brain file "+file+" at line "+lineNumber+ ": "+currLine);
                 throw new Exception("Error in java brain file "+file+" at line "+lineNumber+ ": "+currLine);
-                return false;
+                //return false;
             }
         }
         return true;
