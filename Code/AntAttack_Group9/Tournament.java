@@ -16,7 +16,8 @@ public class Tournament {
         
         //two constructors: so you can either initialize a tourney with a list of brains, or add them later (or both).
         public Tournament(List<World> worlds) {
-            antBrains = Arrays.asList(); //inits as an empty list
+            // ALEX: altered to create a new ArrayList instead of Arrays.asList() as it was throwing errors, couldn't pinpoint why?
+            antBrains = new ArrayList<>(); //inits as an empty list
             this.worlds = worlds;
         }
         
@@ -94,7 +95,7 @@ public class Tournament {
          * @return winningBrains the brain(s) with the highest score
          */
 	private List<AntBrain> declareWinner() {
-            List<AntBrain> winningBrains = Arrays.asList();
+            List<AntBrain> winningBrains = new ArrayList<>(); // ALEX: Again wasn't compiling due to error, reinitialised as ArrayList seemed to fix
             int highestScore = 0;
             
             //need to do this separately to just finding the index with highest score, to allow for a tourney draw (though unlikely)

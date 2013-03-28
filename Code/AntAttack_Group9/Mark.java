@@ -14,7 +14,7 @@ public class Mark extends Instruction {
         this.marker = marker;
     }
     
-    public int getState() {
+    public int getNextState() {
         return this.state;
     }
     

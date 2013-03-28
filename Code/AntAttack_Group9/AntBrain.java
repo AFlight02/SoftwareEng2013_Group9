@@ -19,7 +19,7 @@ public class AntBrain {
 	
 	public AntBrain(String antBrainFile) {
             try {
-                if(checkAntBrainSyntax(antBrainFile)){
+                //if(checkAntBrainSyntax(antBrainFile)){
                     BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
                     String currLine;
                     while((currLine = br.readLine()) != null) {
@@ -53,10 +53,10 @@ public class AntBrain {
                         }
                         fsm.add(i);
                     }
-                }else{
+                //}else{
                     // exception should be thrown by checkAntBrainSyntax by this point
-                    System.out.println("Error in ant brain file");
-                }
+                //    System.out.println("Error in ant brain file");
+                //}
             }
             catch (Exception e) {
                 System.err.println("Error: " + e.getMessage()); 
@@ -71,12 +71,14 @@ public class AntBrain {
      */
 	public boolean checkAntBrainSyntax(String antBrainFile) throws Exception {
 		
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
         String currLine;
+        int lineNumber = 0;
         
         // process each line in ant brain file
         while((currLine = br.readLine()) != null) {
             
+            lineNumber++;
             // convert current line to lowercase
             currLine = currLine.toLowerCase();
             
@@ -102,6 +104,7 @@ public class AntBrain {
             // check Flip
             regex += "|((flip)*\\s([0-9]*)\\s("+st+")\\s("+st+"))";
 
+            // ALEX: Needs to check for comments and ignore them where appropriate! Failing atm
             // perform regular expression
             Pattern p1 = Pattern.compile(regex);
             Matcher m = p1.matcher(currLine);
@@ -110,17 +113,15 @@ public class AntBrain {
             // to terminal and return false (could possibly throw exception here?)
             if(!m.matches()){
                 //System.out.println("Error in java brain file "+file+" at line "+lineNumber+ ": "+currLine);
-                throw new Exception("Error in java brain file "+file+" at line "+lineNumber+ ": "+currLine);
+                throw new Exception("Error in java brain file "+antBrainFile+" at line "+lineNumber+ ": "+currLine);
                 //return false;
             }
         }
         return true;
 	}
 
-	public int getInstruction(int currState) {
-		// Pass state to FSM, get the next state, update state attrib, return int representing instruction:
-		// 0 = wait, 1 = turn left, 2 = turn right, 3 = move, etc...
-            return 0;
+	public Instruction getInstruction(int currState) {
+            return fsm.get(currState);
 	}
 
 }

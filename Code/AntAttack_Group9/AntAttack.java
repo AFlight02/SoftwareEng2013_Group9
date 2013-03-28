@@ -26,6 +26,7 @@ public class AntAttack {
             tournament = new Tournament(w);
             AntBrain b = new AntBrain("cleverbrain1.brain");
             tournament.addCompetitors(b);
+            tournament.addCompetitors(b);
 	}
 
 	public void newGame() {

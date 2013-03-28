@@ -70,4 +70,7 @@ public class Ant {
             }
         }
         
+        public Instruction getInstruction() {
+            return this.brain.getInstruction(state);
+        }
 }
