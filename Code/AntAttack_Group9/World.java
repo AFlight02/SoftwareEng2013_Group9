@@ -43,5 +43,10 @@ public class World {
 	public void clearAntFromCell(int cell) {
 		// Remove Ant from the cell
 	}
+	
+	public void visualiseWorld() {
+		// NEW: Call to print world to command line representation for visualisation.
+		// Later: Write world state to GUI for graphical visualisation.
+	}
 
 }
