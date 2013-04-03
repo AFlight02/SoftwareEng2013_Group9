@@ -19,7 +19,7 @@ public class AntBrain {
 	
 	public AntBrain(String antBrainFile) {
             try {
-                //if(checkAntBrainSyntax(antBrainFile)){
+                if(checkAntBrainSyntax(antBrainFile)){
                     BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
                     String currLine;
                     while((currLine = br.readLine()) != null) {
@@ -53,10 +53,10 @@ public class AntBrain {
                         }
                         fsm.add(i);
                     }
-                //}else{
+                }else{
                     // exception should be thrown by checkAntBrainSyntax by this point
-                //    System.out.println("Error in ant brain file");
-                //}
+                    System.out.println("Error in ant brain file");
+                }
             }
             catch (Exception e) {
                 System.err.println("Error: " + e.getMessage()); 
@@ -85,24 +85,25 @@ public class AntBrain {
             // store variables used for regular expression
             String st = "[0-9][0-9]{0,3}";
             String i = "[0-5]";
-            
+            String comment = "(\\s?;.*$)?"; // ignore everything after ;
+
             // check Sense
-            String regex = "((sense)*\\s(here|ahead|leftahead|rightahead)\\s("+st+")\\s("+st+")\\s(friend|foe|friendwithfood|foewithfood|food|rock|(marker\\s"+i+")|foemarker|home|foehome))";
+            String regex = "((sense)*\\s(here|ahead|leftahead|rightahead)\\s("+st+")\\s("+st+")\\s(friend|foe|friendwithfood|foewithfood|food|rock|(marker\\s"+i+")|foemarker|home|foehome))"+comment;
             
             // check Mark and Unmark
-            regex += "|((mark|unmark)*\\s("+i+")\\s("+st+"))";
+            regex += "|((mark|unmark)*\\s("+i+")\\s("+st+"))"+comment;
 
             // check PickUp and Move
-            regex += "|((pickup|move)*\\s("+st+")\\s("+st+"))";
+            regex += "|((pickup|move)*\\s("+st+")\\s("+st+"))"+comment;
 
             // check Drop
-            regex += "|((drop)*\\s("+st+"))";
+            regex += "|((drop)*\\s("+st+"))"+comment;
 
             // check Turn
-            regex += "|((turn)*\\s(left|right)\\s("+st+"))";
+            regex += "|((turn)*\\s(left|right)\\s("+st+"))"+comment;
 
             // check Flip
-            regex += "|((flip)*\\s([0-9]*)\\s("+st+")\\s("+st+"))";
+            regex += "|((flip)*\\s([0-9]*)\\s("+st+")\\s("+st+"))"+comment;
 
             // ALEX: Needs to check for comments and ignore them where appropriate! Failing atm
             // perform regular expression
