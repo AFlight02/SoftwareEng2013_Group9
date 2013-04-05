@@ -9,13 +9,17 @@ public class Cell {
     int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
 	int adjacentAntsBlack;
 	boolean rock;
-        String anthill; // "red"|"black"|null
-	boolean[] markersRed; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
-	boolean[] markersBlack;
+    String anthill; // "red"|"black"|null
+	boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
+	boolean[] markersBlack = new boolean[6];
 
 	public Cell(int x, int y) {
         this.pos[0] = x;
         this.pos[1] = y;
+        for(int i = 0; i < 6; i++){
+            markersRed[i] = false;
+            markersBlack[i] = false;
+        }
 	}
 	
 	public void setAnt(Ant ant) {
@@ -93,34 +97,50 @@ public class Cell {
         return sensedCellPos;
     }
 
-	public int[] returnContents() {
+	/*public int[] returnContents() {
 		// Returns attributes of this cell, may need to divide this into methods:
 		// bool getRock(){}
 		// int getFood(){}
 		// bool[] getMarkers(bool colour){}
         int[] result = new int[1]; // Placeholder!
         return result;
-	}
+	}*/
         
-        public boolean getRock() {
-            return rock;
+    public boolean[] getMarkers(boolean colour) {
+        if(colour){
+            return markersBlack;
+        }else{
+            return markersRed;
         }
-        
-        public int getFood() {
-            return food;
-        }
-        
-        public Ant getAnt() {
-            return ant;
-        }
-        
-        public String getAnthill() {
-            return anthill;
-        }
-        
-        public void setAnthill(String a) {
-            anthill = a; //error checking or not bother?
-        }
+    }
+
+    public boolean getRock() {
+        return rock;
+    }
+
+    public boolean setRock(boolean rock) {
+        this.rock = rock;
+    }
+    
+    public int getFood() {
+        return food;
+    }
+    
+    public int setFood(int food) {
+        this.food = food;
+    }
+    
+    public Ant getAnt() {
+        return ant;
+    }
+    
+    public String getAnthill() {
+        return anthill;
+    }
+    
+    public void setAnthill(String a) {
+        anthill = a; //error checking or not bother?
+    }
 
 	public void removeAnt() {
 		// Set ant to null
@@ -137,8 +157,22 @@ public class Cell {
         this.markersBlack[markerNum] = true;
 	}
 
-	public void calculateAdjacentAnts() {
+	public void calculateAdjacentAnts(World world) {
 		// Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
+        
+        adjacentAntsBlack = 0;
+        adjacentAntsRed = 0;
+
+        for(int i = 0; i < 6; i++){
+            int[] adjCell = adjacentCell(i);
+            Cell cell = world.getCell(adjCell);
+            Ant adjAnt = cell.getAnt();
+            if(adjAnt.getColour()){
+                adjacentAntsBlack++;
+            }else{
+                adjacentAntsRed++;
+            }
+        }
 	}
 
 }

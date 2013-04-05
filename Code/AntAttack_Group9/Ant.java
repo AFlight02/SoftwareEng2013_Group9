@@ -12,7 +12,7 @@ import java.util.*;
 public class Ant {
 	
 	private AntBrain brain;
-	private boolean colour;
+	private boolean colour; // true=black, false=red
 	private boolean hasFood; // Missed an attribute in class dia...woops!
         private int resting;
 	private int state;

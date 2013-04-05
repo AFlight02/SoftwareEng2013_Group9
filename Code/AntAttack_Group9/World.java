@@ -71,7 +71,7 @@ public class World {
                                 newCell.setAnthill("black");
                                 break;
                             default: //know it's 1-9
-                                newCell.setFood(rowCells[i]);
+                                newCell.setFood(Integer.parseInt(rowCells[i]));
                                 break;
                         }
                         cells[rowCnt][i] = newCell;
@@ -401,6 +401,10 @@ public class World {
         return -1;
     }
     
+    public Cell getCell(int[] cell) {
+    	return cells[cell[0]][cell[1]];
+    }
+
     public void checkCellStatus(int cell) {
         // Return status of cell 
     }
