@@ -118,7 +118,7 @@ public class Cell {
         return rock;
     }
 
-    public boolean setRock(boolean rock) {
+    public void setRock(boolean rock) {
         this.rock = rock;
     }
     
@@ -126,7 +126,7 @@ public class Cell {
         return food;
     }
     
-    public int setFood(int food) {
+    public void setFood(int food) {
         this.food = food;
     }
     
