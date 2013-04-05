@@ -1,111 +1,210 @@
 package AntAttack_Group9;
 import java.util.*;
 
+import AntAttack_Group9.Sense.senseDir;
+
 public class Gameplay {
 
-	World world;
-	int round;
-	int redFood;
-	int blackFood;
-	Ant[] ants;
-	AntBrain redAndBrain;
-	AntBrain blackAntBrain;
-	
-	public Gameplay(AntBrain red, AntBrain black) { 
-                // For Kirstie : Pass constructor the two AntBrains for play, pass them to loadAntBrains method OR remove that method and just load straight into params
-		// Constructor
-	}
+World world;
+int round;
+int redFood;
+int blackFood;
+List<Ant> ants;
+AntBrain redAntBrain;
+AntBrain blackAntBrain;
 
-	public void generateWorld() {
-		// Generate a new World randomly
-	}
+public Gameplay(AntBrain red, AntBrain black) {
+                // For Kirstie : Pass constructor the two AntBrains for play, pass them to loadAntBrains method OR remove that method and just load straight into params
+// Constructor
+	world = new World();
+	this.round = 0;
+	this.redFood = 0;
+	this.blackFood = 0;
+	this.redAntBrain = red;
+	this.blackAntBrain = black;
+	ants = new ArrayList<Ant>();
+	loadAntBrains(redAntBrain, blackAntBrain);
+	
+	
+}
+
+public void generateWorld() {
+// Generate a new World randomly
+	world.generateRandomWorld();
+}
         
         public void playGame() {
+        	new AntAttack();
             
         }
 
-	public void loadWorld(World uploadWorld) {
-		// Update world to an existing World that is passed
+public void loadWorld(World uploadWorld) {
+	world = uploadWorld;
+	
+}
+
+
+public void stepGame() {
+
+
+	for(int i=0; i<world.cells.length; i++){
+		for(int j=0; j<world.cells[i].length; j++) {
+			if(world.cells[i][j].ant != null){
+				if(world.cells[i][j].ant.getColour()){
+					if(world.cells[i][j].getAdjacentAntsRed() >= 5){
+						world.cells[i][j].ant.kill();
+						world.cells[i][j].removeAnt();	
+					}
+				} else {
+					if(world.cells[i][j].getAdjacentAntsBlack() >= 5){
+						world.cells[i][j].ant.kill();
+						world.cells[i][j].removeAnt();	
+					}
+				}
+			}
+		}
 	}
 
-	public void stepGame() {
-		// Go through all processes in a step of the game and repeat until all steps are done
-		// Loop through all Ant in ants array:
-		// Call ant.getResting(), if != 0 then do nothing
-		// else call ant.getInstruction() then switch case based on instanceOf Instruction
-		// Get the relevant fields from the Instruction as to what to do, eg. sense ahead, call
-		// relevant methods from Cell/Ant, then pass the relevant next instruction to the ant.setState()
-		// and ant.setResting() back to resting for x turns.
-		// Check following pseudo code, repeat 300,000 times:
-		/*
-		function step(id:int) =
-		  if ant_is_alive(id) then
-		    let p = find_ant(id) in
-		    let a = ant_at(p) in
-		    if resting(a) > 0 then
-		      set_resting(a, resting(a) - 1)
-		    else
-		      switch get_instruction(color(a), state(a)) of
-		        case Sense(sensedir, st1, st2, cond):
-		          let p' = sensed_cell(p, direction(a), sensedir) in
-		          let st = if cell_matches(p', cond, color(a)) then st1 else st2 in
-		          set_state(a, st)
-		        case Mark(i, st):
-		          set_marker_at(p, color(a), i);
-		          set_state(a, st)
-		        case Unmark(i, st):
-		          clear_marker_at(p, color(a), i);
-		          set_state(a, st)
-		        case PickUp(st1, st2):
-		          if has_food(a) || food_at(p) = 0 then
-		            set_state(a, st2)
-		          else begin
-		            set_food_at(p, food_at(p) - 1);
-		            set_has_food(a, true);
-		            set_state(a, st1)
-		          end
-		        case Drop(st):
-		          if has_food(a) then begin
-		            set_food_at(p, food_at(p) + 1);
-		            set_has_food(a, false)
-		          end;
-		          set_state(a, st)
-		        case Turn(lr, st):
-		          set_direction(a, turn(lr, direction(a)));
-		          set_state(a, st)
-		        case Move(st1, st2):
-		          let newp = adjacent_cell(p, direction(a)) in
-		          if rocky(newp) || some_ant_is_at(newp) then
-		            set_state(a, st2)
-		          else begin
-		            clear_ant_at(p);
-		            set_ant_at(newp, a);
-		            set_state(a, st1);
-		            set_resting(a, 14);
-		            check_for_surrounded_ants(newp)
-		          end
-		        case Flip(n, st1, st2):
-		          let st = if randomint = 0 then st1 else st2 in
-		          set_state(a, st)
-          */
-		
+	for(Ant a: ants ){
+		if(a.isAlive()){
+			if(a.getResting() == 0){
+				Instruction  nextInstruction = a.getInstruction();
+				
+				if(nextInstruction instanceof Flip) {
+					Flip f = (Flip) nextInstruction;
+					Random rand = new Random();//CHANGE LATER FOR FLIP
+					int n = rand.nextInt(f.getRandom());
+					if(n == 0) {
+						a.setState(f.getS1());
+					} else {
+						a.setState(f.getS2());
+					}
+				}
+				
+				if(nextInstruction instanceof Mark){
+					Mark m = (Mark) nextInstruction;
+					if(a.getColour()){ //BLACK
+						world.findAnt(a.getID()).addBlackMarker(m.getMarker());						
+					}
+					else {
+						world.findAnt(a.getID()).addRedMarker(m.getMarker());
+					}
+					a.setState(m.getNextState());		
+				}
+				
+				if(nextInstruction instanceof Sense){
+					Sense s = (Sense) nextInstruction;
+					if(world.checkCellStatus(world.findAnt(a.getID()).adjacentCell(a.getDirection()), s.getCondVal(), a)) {
+						a.setState(s.getS1());
+					} else {
+						a.setState(s.getS2());
+					}
+				}
+				
+				if(nextInstruction instanceof Unmark){
+					Unmark u = (Unmark) nextInstruction;
+					if(a.getColour()){ //BLACK
+						world.findAnt(a.getID()).removeBlackMarker(u.getMarker());						
+					}
+					else {
+						world.findAnt(a.getID()).removeRedMarker(u.getMarker());
+					}
+					a.setState(u.getState());		
+				}
+				
+				if(nextInstruction instanceof PickUp){
+					PickUp p = (PickUp) nextInstruction;
+					if(world.findAnt(a.getID().getFood())){
+						a.setFood(true);
+						world.findAnt(a.getID()).removeFood();
+						a.setState(p.getInitialState());
+						
+					}
+					else{
+						a.setState(p.getNextState());
+					}
+				}
+				
+				
+				if(nextInstruction instanceof Turn){
+					Turn t = (Turn) nextInstruction;
+					a.setDirection(a.turn(t.getTurnDir()));
+					a.setState(t.getNextState());
+					
+					
+				}
+				
+				if(nextInstruction instanceof Drop){
+					Drop d = (Drop) nextInstruction;
+					if(a.getFood()){
+						world.findAnt(a.getID().setFood(world.findAnt(a.getID().getFood()+ 1);
+					}
+					a.setState(d.getNextState());
+					
+				}
+				
+				if(nextInstruction instanceof Move){
+					Move m = (Move) nextInstruction;
+					int[] loc = world.findAnt(a.getID()).adjcentCell();
+					if(a.getResting() <= 0){
+						if(!world.getCell(loc).getRock()&& world.findAnt(a.getID()!world.getCell(loc).getAnt() == null)){
+							world.getCell(loc).setAnt(a);
+							world.findAnt(a.getID().removeAnt());
+							a.setResting(15);
+							a.setState(m.getInitDir());
+							
+						}
+						
+					}
+					else{
+						a.setState(m.getNextState());
+					}
+					
+					
+				}
+				
+			
+
+			}
+			a.decrementResting();
+		}
 	}
 
-	public void endGame() {
-		// On completion of all steps finish the game, total scores etc.
-	}
+}
 
-	public void setupGame() {
-		// Calls World syntax checks, AntBrain syntax checks, begins stepping through game instance
-	}
+public void endGame() {
+// On completion of all steps finish the game, total scores etc.
+}
 
-	public void loadAntBrains(AntBrain red, AntBrain black) { // Kirstie: Possibly remove this method with reference to comment on constructor!
-		// Loads red and black AntBrains
-	}
+public void setupGame() {
+	world.checkValidWorld();
 
-	public int declareWinner() {
-		// Calculates winners and returns 0 for Draw, 1 for Black win, 2 for Red win, -1 for error
-            return -1;
+// Calls World syntax checks, AntBrain syntax checks, begins stepping through game instance
+}
+
+public void loadAntBrains(AntBrain red, AntBrain black) { // Kirstie: Possibly remove this method with reference to comment on constructor!
+// Loads red and black AntBrains
+	redAntBrain = red;
+	blackAntBrain = black;
+	
+}
+
+public int declareWinner() {
+	int winner;
+	if(redFood > blackFood){
+		winner = 2;
 	}
+	else if(blackFood > redFood){
+		winner = 1;
+	}
+	else if(blackFood == redFood){
+		winner = 0;
+	}
+	else{
+		winner = -1;
+	}
+// Calculates winners and returns 0 for Draw, 1 for Black win, 2 for Red win, -1 for error
+            return winner;
+}
 
 }
