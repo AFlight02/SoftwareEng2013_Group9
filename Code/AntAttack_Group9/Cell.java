@@ -21,11 +21,6 @@ public class Cell {
             markersBlack[i] = false;
         }
 	}
-	
-	public void setAnt(Ant ant) {
-		this.ant = ant;
-        // Update Ant on this cell
-	}
         
     public int[] adjacentCell(int dir) {
         int[] adjCell = new int[2];
@@ -97,20 +92,22 @@ public class Cell {
         return sensedCellPos;
     }
 
-	/*public int[] returnContents() {
-		// Returns attributes of this cell, may need to divide this into methods:
-		// bool getRock(){}
-		// int getFood(){}
-		// bool[] getMarkers(bool colour){}
-        int[] result = new int[1]; // Placeholder!
-        return result;
-	}*/
+    public void calculateAdjacentAnts(World world) {
         
-    public boolean[] getMarkers(boolean colour) {
-        if(colour){
-            return markersBlack;
-        }else{
-            return markersRed;
+        // Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
+        
+        adjacentAntsBlack = 0;
+        adjacentAntsRed = 0;
+
+        for(int i = 0; i < 6; i++){
+            int[] adjCell = adjacentCell(i);
+            Cell cell = world.getCell(adjCell);
+            Ant adjAnt = cell.getAnt();
+            if(adjAnt.getColour()){
+                adjacentAntsBlack++;
+            }else{
+                adjacentAntsRed++;
+            }
         }
     }
 
@@ -126,18 +123,28 @@ public class Cell {
         return food;
     }
     
+    public void setFood(int food) {
+        this.food = food;
+    }
+
     public void removeFood() {
         if(food >= 0){
             food--;
         }
     }
     
-    public void setFood(int food) {
-        this.food = food;
-    }
-    
     public Ant getAnt() {
         return ant;
+    }
+    
+    public void setAnt(Ant ant) {
+        // Update Ant on this cell
+        this.ant = ant;
+    }
+
+    public void removeAnt() {
+        // Set ant to null
+        this.ant = null;
     }
     
     public String getAnthill() {
@@ -146,12 +153,15 @@ public class Cell {
     
     public void setAnthill(String a) {
         anthill = a; //error checking or not bother?
+    }    
+    
+    public boolean[] getMarkers(boolean colour) {
+        if(colour){
+            return markersBlack;
+        }else{
+            return markersRed;
+        }
     }
-
-	public void removeAnt() {
-		// Set ant to null
-        this.ant = null;
-	}
 
     public void addRedMarker(int markerNum) {
         // Change markersRed[markerNum] to true
@@ -172,23 +182,5 @@ public class Cell {
         // As red
         this.markersBlack[markerNum] = false;
     }
-
-	public void calculateAdjacentAnts(World world) {
-		// Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
-        
-        adjacentAntsBlack = 0;
-        adjacentAntsRed = 0;
-
-        for(int i = 0; i < 6; i++){
-            int[] adjCell = adjacentCell(i);
-            Cell cell = world.getCell(adjCell);
-            Ant adjAnt = cell.getAnt();
-            if(adjAnt.getColour()){
-                adjacentAntsBlack++;
-            }else{
-                adjacentAntsRed++;
-            }
-        }
-	}
 
 }

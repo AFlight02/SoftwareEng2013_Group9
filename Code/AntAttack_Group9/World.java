@@ -383,9 +383,9 @@ public class World {
     public Cell findAnt(int id) {
         for (Cell[] row : cells) {
             for (Cell c : row) {
-                //if (c.getAnt().getID() == id) {
-                //   return c;
-                //}
+                if (c.getAnt().getID() == id) {
+                   return c;
+                }
             }
         }
         return null;
