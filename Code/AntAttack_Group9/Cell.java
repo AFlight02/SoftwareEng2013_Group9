@@ -9,6 +9,7 @@ public class Cell {
     int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
 	int adjacentAntsBlack;
 	boolean rock;
+        String anthill; // "red"|"black"|null
 	boolean[] markersRed; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
 	boolean[] markersBlack;
 
@@ -100,6 +101,26 @@ public class Cell {
         int[] result = new int[1]; // Placeholder!
         return result;
 	}
+        
+        public boolean getRock() {
+            return rock;
+        }
+        
+        public int getFood() {
+            return food;
+        }
+        
+        public Ant getAnt() {
+            return ant;
+        }
+        
+        public String getAnthill() {
+            return anthill;
+        }
+        
+        public void setAnthill(String a) {
+            anthill = a; //error checking or not bother?
+        }
 
 	public void removeAnt() {
 		// Set ant to null
