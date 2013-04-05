@@ -93,7 +93,7 @@ public class Cell {
     }
 
     public void calculateAdjacentAnts(World world) {
-        
+
         // Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
         
         adjacentAntsBlack = 0;
@@ -109,6 +109,14 @@ public class Cell {
                 adjacentAntsRed++;
             }
         }
+    }
+
+    public int getAdjacentAntsBlack() {
+        return adjacentAntsBlack;
+    }
+
+    public int getAdjacentAntsRed() {
+        return adjacentAntsRed;
     }
 
     public boolean getRock() {
