@@ -17,11 +17,20 @@ public class Ant {
     private int resting;
 	private int state;
 	private int direction;
+    private boolean alive = true;
 	
 	public Ant(AntBrain brain, boolean colour) {
             this.brain = brain;
             this.colour = colour;
 	}
+
+    public void kill() {
+        alive = false;
+    }
+
+    public boolean getAlive() {
+        return alive;
+    }
 
 	public int getState() {
             return this.state;
