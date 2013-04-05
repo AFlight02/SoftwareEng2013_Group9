@@ -126,6 +126,12 @@ public class Cell {
         return food;
     }
     
+    public void removeFood() {
+        if(food >= 0){
+            food--;
+        }
+    }
+    
     public void setFood(int food) {
         this.food = food;
     }
@@ -147,15 +153,25 @@ public class Cell {
         this.ant = null;
 	}
 
-	public void addRedMarker(int markerNum) {
-		// Change markersRed[markerNum] to true
+    public void addRedMarker(int markerNum) {
+        // Change markersRed[markerNum] to true
         this.markersRed[markerNum] = true;
-	}
+    }
 
-	public void addBlackMarker(int markerNum) {
-		// As red
+    public void addBlackMarker(int markerNum) {
+        // As red
         this.markersBlack[markerNum] = true;
-	}
+    }
+
+    public void removeRedMarker(int markerNum) {
+        // Change markersRed[markerNum] to true
+        this.markersRed[markerNum] = false;
+    }
+
+    public void removeBlackMarker(int markerNum) {
+        // As red
+        this.markersBlack[markerNum] = false;
+    }
 
 	public void calculateAdjacentAnts(World world) {
 		// Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
