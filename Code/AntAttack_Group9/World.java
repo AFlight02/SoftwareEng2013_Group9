@@ -65,10 +65,10 @@ public class World {
                             case ".":
                                 break;
                             case "+":
-                                newCell.setAnthill(false); // red
+                                newCell.setAnthill("red");
                                 break;
                             case "-":
-                                newCell.setAnthill(true); //black
+                                newCell.setAnthill("black");
                                 break;
                             default: //know it's 1-9
                                 newCell.setFood(Integer.parseInt(rowCells[i]));
@@ -112,14 +112,16 @@ public class World {
             boolean foundBlack = false;
             for (Cell[] row : cells) {
                 for (Cell c : row) {
-                	if(c.getAnthill()) {
-                        foundBlack = true;
-                    }else{
-                   	    foundRed =true;
-                	}
+                    switch(c.getAnthill()) {
+                        case "red":
+                            foundRed = true;
+                            break;
+                        case "black":
+                            foundBlack =true;
+                            break;
+                    }
                 }
             }
-        
             if (!foundRed || !foundBlack) {return false;}
             
             return true;
@@ -182,8 +184,8 @@ public class World {
                         default: return false; //anything other than 0 or 5 food is auto invalid!
                     }
                     
-                    if(!cells[i][j].getAnthill()) {
-                        //case "red":
+                    switch(cells[i][j].getAnthill()) {
+                        case "red":
                             //end black if exists:
                             if(consecBlackHill > 0) {
                                 int[] info = new int[3];
@@ -200,9 +202,8 @@ public class World {
                                 curHillCoord[1] = j;
                             }
                             consecRedHill++;
-                            //break;
-                        }else{
-                        //case "black":
+                            break;
+                        case "black":
                             //end red if exists
                             if(consecRedHill > 0) {
                                 int[] info = new int[3];
@@ -220,8 +221,7 @@ public class World {
                             }
                             consecBlackHill++;
                             break;
-                            
-                        /*default:
+                        default:
                             //end either if exists
                             if(consecRedHill > 0) {
                                 int[] info = new int[3];
@@ -240,7 +240,7 @@ public class World {
                                 
                                 consecBlackHill = 0; //reset
                             }
-                            break;*/
+                            break;
                     }
                 }
             }
@@ -384,7 +384,7 @@ public class World {
         for (Cell[] row : cells) {
             for (Cell c : row) {
                 //if (c.getAnt().getID() == id) {
-                //    return c;
+                //   return c;
                 //}
             }
         }
