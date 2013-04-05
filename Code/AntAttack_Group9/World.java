@@ -381,15 +381,152 @@ public class World {
      * @return the cell containing the ant, or null if ant not found
      */
     public Cell findAnt(int id) {
-        for (Cell[] row : cells) {
-            for (Cell c : row) {
-                if (c.getAnt().getID() == id) {
-                   return c;
-                }
-            }
-        }
-        return null;
-    }
+    	for(int i=0; i<cells.length; i++) {
+			for(int j=0; j<cells[i].length; j++)
+			if(cells[i][j].ant.getID() == id) {
+				return cells[i][j];
+			}
+		}
+		// Iterate through Cells for Ant of id, return cell index
+	}
+
+	public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
+		if(cond == Sense.condition.FRIEND) {
+			if(a.getColour()) {
+				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+		if(cond == Sense.condition.FOE) {
+			if(a.getColour()) {
+				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		if(cond == Sense.condition.FRIENDWFOOD) {
+			if(a.getColour()) {
+				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return cells[cell[0]][cell[1]].getAnt().getFood();
+				}
+			} else {
+				if(!cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return cells[cell[0]][cell[1]].getAnt().getFood();
+				}
+			}
+		}
+		if(cond == Sense.condition.FOEWFOOD) {
+			if(a.getColour()) {
+				if(!cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return cells[cell[0]][cell[1]].getAnt().getFood();
+				}
+			} else {
+				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
+					return cells[cell[0]][cell[1]].getAnt().getFood();
+				}
+			}
+		}
+		if(cond == Sense.condition.FOOD) {
+			if(cells[cell[0]][cell[1]].getFood() != 0) {
+				return true;
+			}
+		}
+		if(cond == Sense.condition.ROCK) {
+			return cells[cell[0]][cell[1]].getRock();
+		}
+		if(cond == Sense.condition.MARKER0) {
+			//BLACK
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+			return temp[0];
+		}
+		if(cond == Sense.condition.MARKER1) {
+			//BLACK
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+			return temp[1];
+		}
+		if(cond == Sense.condition.MARKER2) {
+			//BLACK
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+			return temp[2];
+		}
+		if(cond == Sense.condition.MARKER3) {
+			//BLACK
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+			return temp[3];
+		}
+		if(cond == Sense.condition.MARKER4) {
+			//BLACK
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+			return temp[4];
+		}
+		if(cond == Sense.condition.MARKER5) {
+			//BLACK
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+			return temp[5];
+		}
+		if(cond == Sense.condition.FOEMARKER) {
+			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(!a.getColour());
+			int hasMarkers = 0;
+			for(int i=0; i<temp.length; i++) {
+				if(temp[i]) {
+					hasMarkers++;
+				}
+			}
+			if(hasMarkers > 0 ) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		if(cond == Sense.condition.HOME) {
+			if(a.getColour()) { //BLACK
+				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
+					return true;
+				}else {
+					return false;
+				}
+			}else { //RED
+				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+					return true;
+				}else {
+					return false;
+				}
+			}
+		}
+		if(cond == Sense.condition.FOEHOME) {
+			if(a.getColour()) { //BLACK
+				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
+					return false;
+				}else {
+					return true;
+				}
+			}else { //RED
+				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+					return false;
+				}else {
+					return true;
+				}
+			}
+		}
+	}
 
     private int listContains(List<int[]> info, int x, int y, int len) {
         for(int i = 0; i < info.size(); i++) {
