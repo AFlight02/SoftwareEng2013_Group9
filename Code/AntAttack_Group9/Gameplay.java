@@ -33,10 +33,13 @@ public void generateWorld() {
 	world.generateRandomWorld();
 }
         
-        public void playGame() {
-        	new AntAttack();
-            
-        }
+public void playGame() {
+        //new AntAttack();
+    for(int i=0; i<300000; i++) {
+        stepGame();
+    }
+
+}
 
 public void loadWorld(World uploadWorld) {
 	world = uploadWorld;
@@ -114,7 +117,7 @@ public void stepGame() {
 				
 				if(nextInstruction instanceof PickUp){
 					PickUp p = (PickUp) nextInstruction;
-					if(world.findAnt(a.getID().getFood())){
+					if(world.findAnt(a.getID()).getFood() > 0){
 						a.setFood(true);
 						world.findAnt(a.getID()).removeFood();
 						a.setState(p.getInitialState());
@@ -137,7 +140,7 @@ public void stepGame() {
 				if(nextInstruction instanceof Drop){
 					Drop d = (Drop) nextInstruction;
 					if(a.getFood()){
-						world.findAnt(a.getID().setFood(world.findAnt(a.getID().getFood()+ 1);
+                                            world.findAnt(a.getID()).setFood(world.findAnt(a.getID()).getFood()+ 1);
 					}
 					a.setState(d.getNextState());
 					
@@ -145,11 +148,11 @@ public void stepGame() {
 				
 				if(nextInstruction instanceof Move){
 					Move m = (Move) nextInstruction;
-					int[] loc = world.findAnt(a.getID()).adjcentCell();
+					int[] loc = world.findAnt(a.getID()).adjacentCell(a.getDirection());
 					if(a.getResting() <= 0){
-						if(!world.getCell(loc).getRock()&& world.findAnt(a.getID()!world.getCell(loc).getAnt() == null)){
+						if(!world.getCell(loc).getRock() && world.getCell(loc).getAnt() == null){
 							world.getCell(loc).setAnt(a);
-							world.findAnt(a.getID().removeAnt());
+							world.findAnt(a.getID()).removeAnt();
 							a.setResting(15);
 							a.setState(m.getInitDir());
 							
