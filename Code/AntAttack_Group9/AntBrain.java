@@ -23,6 +23,7 @@ public class AntBrain {
                     BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
                     String currLine;
                     while((currLine = br.readLine()) != null) {
+                        currLine = currLine.toLowerCase();
                         String[] input = currLine.split("\\s");
                         Instruction i = null;
                         switch(input[0]) {
@@ -85,7 +86,7 @@ public class AntBrain {
             // store variables used for regular expression
             String st = "[0-9][0-9]{0,3}";
             String i = "[0-5]";
-            String comment = "(\\s?;.*$)?"; // ignore everything after ;
+            String comment = "(\\s*?;.*$)?"; // ignore everything after ;
 
             // check Sense
             String regex = "((sense)*\\s(here|ahead|leftahead|rightahead)\\s("+st+")\\s("+st+")\\s(friend|foe|friendwithfood|foewithfood|food|rock|(marker\\s"+i+")|foemarker|home|foehome))"+comment;

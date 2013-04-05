@@ -9,7 +9,7 @@ public class Cell {
     int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
 	int adjacentAntsBlack;
 	boolean rock;
-    String anthill; // "red"|"black"|null
+    boolean anthill; // true=black, false=red
 	boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
 	boolean[] markersBlack = new boolean[6];
 
@@ -134,11 +134,11 @@ public class Cell {
         return ant;
     }
     
-    public String getAnthill() {
+    public boolean getAnthill() {
         return anthill;
     }
     
-    public void setAnthill(String a) {
+    public void setAnthill(boolean a) {
         anthill = a; //error checking or not bother?
     }
 
