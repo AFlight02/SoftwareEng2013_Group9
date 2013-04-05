@@ -381,13 +381,15 @@ public class World {
      * @return the cell containing the ant, or null if ant not found
      */
     public Cell findAnt(int id) {
+        Cell found = null;
     	for(int i=0; i<cells.length; i++) {
-			for(int j=0; j<cells[i].length; j++)
-			if(cells[i][j].ant.getID() == id) {
-				return cells[i][j];
-			}
-		}
-		// Iterate through Cells for Ant of id, return cell index
+                for(int j=0; j<cells[i].length; j++) {
+                    if(cells[i][j].ant.getID() == id) {
+                        found = cells[i][j];
+                    }
+                }
+            }
+        return found;
 	}
 
 	public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
@@ -526,6 +528,7 @@ public class World {
 				}
 			}
 		}
+                return false;
 	}
 
     private int listContains(List<int[]> info, int x, int y, int len) {
