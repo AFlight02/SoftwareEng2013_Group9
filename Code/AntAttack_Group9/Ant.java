@@ -11,36 +11,42 @@ import java.util.*;
 
 public class Ant {
 	
-	private AntBrain brain;
-	private boolean colour; // true=black, false=red
-	private boolean hasFood; // Missed an attribute in class dia...woops!
+    private AntBrain brain;
+    private boolean colour; // true=black, false=red
+    private boolean hasFood; // Missed an attribute in class dia...woops!
     private int resting;
-	private int state;
-	private int direction;
+    private int state;
+    private int direction;
+    private int id;
     private boolean alive = true;
 	
-	public Ant(AntBrain brain, boolean colour) {
-            this.brain = brain;
-            this.colour = colour;
-	}
+    public Ant(AntBrain brain, boolean colour, int id) {
+        this.brain = brain;
+        this.colour = colour;
+        this.id = id;
+    }
 
     public void kill() {
         alive = false;
     }
 
-    public boolean getAlive() {
+    public boolean isAlive() {
         return alive;
     }
 
-	public int getState() {
-            return this.state;
-	}
+    public int getState() {
+        return this.state;
+    }
         
     public int getResting() {
         return this.resting;
     }
     
-    public void derementResting() {
+    public int getID() {
+        return id;
+    }
+    
+    public void decrementResting() {
         resting--;
     }
 
