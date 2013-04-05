@@ -106,7 +106,6 @@ public class AntBrain {
             // check Flip
             regex += "|((flip)*\\s([0-9]*)\\s("+st+")\\s("+st+"))"+comment;
 
-            // ALEX: Needs to check for comments and ignore them where appropriate! Failing atm
             // perform regular expression
             Pattern p1 = Pattern.compile(regex);
             Matcher m = p1.matcher(currLine);
