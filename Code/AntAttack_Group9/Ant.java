@@ -14,7 +14,7 @@ public class Ant {
 	private AntBrain brain;
 	private boolean colour; // true=black, false=red
 	private boolean hasFood; // Missed an attribute in class dia...woops!
-        private int resting;
+    private int resting;
 	private int state;
 	private int direction;
 	
@@ -27,50 +27,54 @@ public class Ant {
             return this.state;
 	}
         
-        public int getResting() {
-            return this.resting;
-        }
-        
-        public int getDirection() {
-            return this.direction;
+    public int getResting() {
+        return this.resting;
+    }
+    
+    public void derementResting() {
+        resting--;
+    }
+
+    public int getDirection() {
+        return this.direction;
 	}
 	
-        public boolean getFood() {
-            return this.hasFood;
+    public boolean getFood() {
+        return this.hasFood;
+    }
+    
+    public boolean getColour() {
+        return this.colour;
+    }
+    
+    public void setState(int newState) {
+        this.state = newState;
+    }
+    
+    public void setResting(int resting) {
+        this.resting = resting;
+    }
+    
+    public void setDirection(int dir) {
+        this.direction = dir;
+    }
+
+    public void setFood(boolean b) {
+        this.hasFood = b;
+    }
+    
+    public int turn(Turn.direction dir) {
+        switch(dir) {
+            case LEFT:
+                return (direction+5)%6;
+            case RIGHT:
+                return (direction+1)%6;
+            default:
+                return -1;
         }
+    }
         
-        public boolean getColour() {
-            return this.colour;
-        }
-        
-        public void setState(int newState) {
-            this.state = newState;
-        }
-        
-        public void setResting(int resting) {
-            this.resting = resting;
-        }
-        
-        public void setDirection(int dir) {
-            this.direction = dir;
-        }
-	
-        public void setFood(boolean b) {
-            this.hasFood = b;
-        }
-        
-        public int turn(Turn.direction dir) {
-            switch(dir) {
-                case LEFT:
-                    return (direction+5)%6;
-                case RIGHT:
-                    return (direction+1)%6;
-                default:
-                    return -1;
-            }
-        }
-        
-        public Instruction getInstruction() {
-            return this.brain.getInstruction(state);
-        }
+    public Instruction getInstruction() {
+        return this.brain.getInstruction(state);
+    }
 }
