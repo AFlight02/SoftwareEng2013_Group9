@@ -92,7 +92,8 @@ public class World {
     }
 
     /**
-     * Call this after reading in a world - checks conditions for a regular game map
+     * Call this after reading in a world - checks conditions for a regular game
+     * map
      *
      * @return
      */
@@ -101,31 +102,37 @@ public class World {
             //surrounded by rocks
             for (int i = 0; i < width; i++) { //check top and bottom
                 if (!cells[0][i].getRock() || !cells[height - 1][i].getRock()) {
-                    return false;}}
+                    return false;
+                }
+            }
 
             for (int i = 1; i < height - 1; i++) { //check sides
                 if (!cells[i][0].getRock() || !cells[i][width - 1].getRock()) {
-                    return false;}}
+                    return false;
+                }
+            }
 
             //contains at least one anthill cell of each colour
             boolean foundRed = false;
             boolean foundBlack = false;
             for (Cell[] row : cells) {
                 for (Cell c : row) {
-                    switch(c.getAnthill()) {
+                    switch (c.getAnthill()) {
                         case "red":
                             foundRed = true;
                             break;
                         case "black":
-                            foundBlack =true;
+                            foundBlack = true;
                             break;
                     }
                 }
             }
-            if (!foundRed || !foundBlack) {return false;}
-            
+            if (!foundRed || !foundBlack) {
+                return false;
+            }
+
             return true;
-            
+
         } catch (Exception e) {
             return false; //no world read in, so just return false (or throw exception?)
         }
@@ -142,30 +149,34 @@ public class World {
             //check extra tournament conditions
 
             //map dimensions
-            if (width != 150 || height != 150) {return false;}
-            
+            if (width != 150 || height != 150) {
+                return false;
+            }
+
             //contains 14 rocks
             int rockCount = 0;
-            
+
             //make a list of all the coords with food in
             List<int[]> foodInfo = Arrays.asList(); //[i, j, length], same as anthills
             int consecFood = 0;
             int[] curFoodCoord = new int[2];
-            
+
             //anthills
             List<int[]> redHillInfo = Arrays.asList(); //[i, j, length] for each consecutive row
             List<int[]> blackHillInfo = Arrays.asList();
             int consecRedHill = 0;
             int consecBlackHill = 0;
             int[] curHillCoord = new int[2];
-            
-            for(int i = 1; i < width-1; i++) { //don't check boundaries
-                for(int j = 1; j < height-1; j++) {
-                    if(cells[i][j].getRock()) rockCount++;
-                    
-                    switch(cells[i][j].getFood()) { //contains food
+
+            for (int i = 1; i < width - 1; i++) { //don't check boundaries
+                for (int j = 1; j < height - 1; j++) {
+                    if (cells[i][j].getRock()) {
+                        rockCount++;
+                    }
+
+                    switch (cells[i][j].getFood()) { //contains food
                         case 0:
-                            if(consecFood > 0) { //end of a food row
+                            if (consecFood > 0) { //end of a food row
                                 int[] info = new int[3];
                                 info[0] = curFoodCoord[0];
                                 info[1] = curFoodCoord[1];
@@ -175,29 +186,30 @@ public class World {
                             }
                             break;
                         case 5:
-                            if(consecFood ==0) { //start of a row
+                            if (consecFood == 0) { //start of a row
                                 curFoodCoord[0] = i;
                                 curFoodCoord[1] = j;
                             }
                             consecFood++;
                             break;
-                        default: return false; //anything other than 0 or 5 food is auto invalid!
+                        default:
+                            return false; //anything other than 0 or 5 food is auto invalid!
                     }
-                    
-                    switch(cells[i][j].getAnthill()) {
+
+                    switch (cells[i][j].getAnthill()) {
                         case "red":
                             //end black if exists:
-                            if(consecBlackHill > 0) {
+                            if (consecBlackHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-                                
+
                                 consecBlackHill = 0; //reset
                             }
-                            
-                            if(consecRedHill == 0) { //start of red row
+
+                            if (consecRedHill == 0) { //start of red row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
                             }
@@ -205,17 +217,17 @@ public class World {
                             break;
                         case "black":
                             //end red if exists
-                            if(consecRedHill > 0) {
+                            if (consecRedHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-                                
+
                                 consecRedHill = 0; //reset
                             }
-                            
-                            if(consecBlackHill == 0) { //start of black row
+
+                            if (consecBlackHill == 0) { //start of black row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
                             }
@@ -223,39 +235,42 @@ public class World {
                             break;
                         default:
                             //end either if exists
-                            if(consecRedHill > 0) {
+                            if (consecRedHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-                                
+
                                 consecRedHill = 0; //reset
-                            } else if(consecBlackHill > 0) {
+                            } else if (consecBlackHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-                                
+
                                 consecBlackHill = 0; //reset
                             }
                             break;
                     }
                 }
             }
-            
-            if(rockCount != 14) return false;
-            
+
+            if (rockCount != 14) {
+                return false;
+            }
+
             //now we know the start positions, check the anthill shapes:
             List<int[]> curInfoList; //holds the info list for the colour anthill we are checking
-            
-            for(int i = 0; i < 2; i++) { //once for each colour
-                if(i==0) {
+
+            for (int i = 0; i < 2; i++) { //once for each colour
+                if (i == 0) {
                     curInfoList = redHillInfo;
                 } else {
-                    curInfoList = blackHillInfo;}
-                
+                    curInfoList = blackHillInfo;
+                }
+
                 int h = 0; //height (row count) --also used to determine the y coord the current row SHOULD be on
                 int parityAdjuster;
                 int SP; //start pos - the x offset the line SHOULD start on
@@ -263,19 +278,19 @@ public class World {
                 int[] firstCoord = new int[2]; //the ACTUAL start coord of the whole shape
                 firstCoord[0] = curInfoList.get(0)[0];
                 firstCoord[1] = curInfoList.get(0)[1];
-                
-                for(int[] consec: curInfoList) {
+
+                for (int[] consec : curInfoList) {
                     //parityAdjuster = 1 if we started on an odd row AND the height is odd
-                    if(((firstCoord[1] % 2) == 1) && ((h % 2) == 1)) {
+                    if (((firstCoord[1] % 2) == 1) && ((h % 2) == 1)) {
                         parityAdjuster = 1;
                     } else {
                         parityAdjuster = 0;
                     }
-                    SP = (Math.abs(6-h))/2 -3 + parityAdjuster;
-                    len = 13 - Math.abs(6-h);
+                    SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
+                    len = 13 - Math.abs(6 - h);
                     //I'll try to explain these a little better outside of the code
-                    
-                    if(h > 12) { //hexagon too high!
+
+                    if (h > 12) { //hexagon too high!
                         return false;
                     } else if (!((consec[0] == firstCoord[0] + SP) //x coord correct
                             && (consec[1] == firstCoord[1] + h) //y coord correct
@@ -285,72 +300,72 @@ public class World {
                     h++;
                 }
             }
-            
+
             //food blobs
             int blobCount = 0; //the number of food blobs
-            
-            for(int[] consec: foodInfo) {
+
+            for (int[] consec : foodInfo) {
                 int parityAdjuster, SP, len, indexOfNextRow;
                 int shape; //1 = left-slant, 2 = right-slant, 3 = diamond
                 //3 possible shapes
-                switch(consec[2]) {
+                switch (consec[2]) {
                     case 1:
                         shape = 3; //must be diamond one
-                        
-                        for(int h = 1; h <= 9; h++) { //9 rows
-                            if(((consec[1] % 2) == 1) && ((h % 2) == 1)) {
+
+                        for (int h = 1; h <= 9; h++) { //9 rows
+                            if (((consec[1] % 2) == 1) && ((h % 2) == 1)) {
                                 parityAdjuster = 1;
                             } else {
                                 parityAdjuster = 0;
                             }
-                            
-                            SP = (Math.abs(4-h))/2 -2 + parityAdjuster;
-                            len = 5 - Math.abs(4-h);
-                            
+
+                            SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
+                            len = 5 - Math.abs(4 - h);
+
                             indexOfNextRow = listContains(foodInfo, SP, consec[1] + h, len);
-                            if(indexOfNextRow != -1) {
+                            if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
                                 return false;
                             }
-                            
+
                         }
                         break;
                     case 5:
                         //determine shape 1 or 2
                         parityAdjuster = consec[1] % 2; //dont need to check height because it is constant 1 for this part
-                        
+
                         indexOfNextRow = listContains(foodInfo, consec[0] - 1 + parityAdjuster, consec[1] + 1, 5);
-                        if(indexOfNextRow != -1) {
+                        if (indexOfNextRow != -1) {
                             //right-slanting! remove from list
                             shape = 2;
                             foodInfo.remove(indexOfNextRow);
                         } else {
                             //not right-slanting, so try left-slanting
                             indexOfNextRow = listContains(foodInfo, consec[0] + 1 + parityAdjuster, consec[1] + 1, 5);
-                            if(indexOfNextRow != -1) {
+                            if (indexOfNextRow != -1) {
                                 shape = 1;
                                 foodInfo.remove(indexOfNextRow);
                             } else {
                                 return false; //invalid shape!
                             }
                         }
-                        
-                        for(int h = 2; h <= 5; h++) { //already found the first 2 rows
-                            if(((consec[1] % 2) == 1) && ((h % 2) == 1)) {
+
+                        for (int h = 2; h <= 5; h++) { //already found the first 2 rows
+                            if (((consec[1] % 2) == 1) && ((h % 2) == 1)) {
                                 parityAdjuster = 1;
                             } else {
                                 parityAdjuster = 0;
                             }
-                            
-                            if(shape == 2) {
+
+                            if (shape == 2) {
                                 SP = consec[0] - h + parityAdjuster;
                             } else {
                                 SP = consec[0] + h + parityAdjuster;
                             }
                             indexOfNextRow = listContains(foodInfo, SP, consec[1] + h, 5);
-                            if(indexOfNextRow != -1) {
+                            if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -363,13 +378,13 @@ public class World {
                 }
                 blobCount++;
             }
-            
-            if(blobCount != 11) {
+
+            if (blobCount != 11) {
                 return false;
             }
-            
+
             return true;
-            
+
         } else {
             return false;
         }
@@ -382,167 +397,166 @@ public class World {
      */
     public Cell findAnt(int id) {
         Cell found = null;
-    	for(int i=0; i<cells.length; i++) {
-                for(int j=0; j<cells[i].length; j++) {
-                    if(cells[i][j].ant.getID() == id) {
-                        found = cells[i][j];
-                    }
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                if (cells[i][j].ant.getID() == id) {
+                    found = cells[i][j];
                 }
             }
+        }
         return found;
-	}
+    }
 
-	public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
-		if(cond == Sense.condition.FRIEND) {
-			if(a.getColour()) {
-				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return false;
-				} else {
-					return true;
-				}
-			}
-		}
-		if(cond == Sense.condition.FOE) {
-			if(a.getColour()) {
-				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return false;
-				} else {
-					return true;
-				}
-			} else {
-				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		}
-		if(cond == Sense.condition.FRIENDWFOOD) {
-			if(a.getColour()) {
-				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return cells[cell[0]][cell[1]].getAnt().getFood();
-				}
-			} else {
-				if(!cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return cells[cell[0]][cell[1]].getAnt().getFood();
-				}
-			}
-		}
-		if(cond == Sense.condition.FOEWFOOD) {
-			if(a.getColour()) {
-				if(!cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return cells[cell[0]][cell[1]].getAnt().getFood();
-				}
-			} else {
-				if(cells[cell[0]][cell[1]].getAnt().getColour()) {
-					return cells[cell[0]][cell[1]].getAnt().getFood();
-				}
-			}
-		}
-		if(cond == Sense.condition.FOOD) {
-			if(cells[cell[0]][cell[1]].getFood() != 0) {
-				return true;
-			}
-		}
-		if(cond == Sense.condition.ROCK) {
-			return cells[cell[0]][cell[1]].getRock();
-		}
-		if(cond == Sense.condition.MARKER0) {
-			//BLACK
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-			return temp[0];
-		}
-		if(cond == Sense.condition.MARKER1) {
-			//BLACK
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-			return temp[1];
-		}
-		if(cond == Sense.condition.MARKER2) {
-			//BLACK
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-			return temp[2];
-		}
-		if(cond == Sense.condition.MARKER3) {
-			//BLACK
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-			return temp[3];
-		}
-		if(cond == Sense.condition.MARKER4) {
-			//BLACK
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-			return temp[4];
-		}
-		if(cond == Sense.condition.MARKER5) {
-			//BLACK
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-			return temp[5];
-		}
-		if(cond == Sense.condition.FOEMARKER) {
-			boolean[] temp = cells[cell[0]][cell[1]].getMarkers(!a.getColour());
-			int hasMarkers = 0;
-			for(int i=0; i<temp.length; i++) {
-				if(temp[i]) {
-					hasMarkers++;
-				}
-			}
-			if(hasMarkers > 0 ) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		if(cond == Sense.condition.HOME) {
-			if(a.getColour()) { //BLACK
-				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
-					return true;
-				}else {
-					return false;
-				}
-			}else { //RED
-				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
-					return true;
-				}else {
-					return false;
-				}
-			}
-		}
-		if(cond == Sense.condition.FOEHOME) {
-			if(a.getColour()) { //BLACK
-				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
-					return false;
-				}else {
-					return true;
-				}
-			}else { //RED
-				if(cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
-					return false;
-				}else {
-					return true;
-				}
-			}
-		}
+    public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
+        if (cond == Sense.condition.FRIEND) {
+            if (a.getColour()) {
+                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        if (cond == Sense.condition.FOE) {
+            if (a.getColour()) {
+                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (cond == Sense.condition.FRIENDWFOOD) {
+            if (a.getColour()) {
+                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return cells[cell[0]][cell[1]].getAnt().getFood();
+                }
+            } else {
+                if (!cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return cells[cell[0]][cell[1]].getAnt().getFood();
+                }
+            }
+        }
+        if (cond == Sense.condition.FOEWFOOD) {
+            if (a.getColour()) {
+                if (!cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return cells[cell[0]][cell[1]].getAnt().getFood();
+                }
+            } else {
+                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                    return cells[cell[0]][cell[1]].getAnt().getFood();
+                }
+            }
+        }
+        if (cond == Sense.condition.FOOD) {
+            if (cells[cell[0]][cell[1]].getFood() != 0) {
+                return true;
+            }
+        }
+        if (cond == Sense.condition.ROCK) {
+            return cells[cell[0]][cell[1]].getRock();
+        }
+        if (cond == Sense.condition.MARKER0) {
+            //BLACK
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+            return temp[0];
+        }
+        if (cond == Sense.condition.MARKER1) {
+            //BLACK
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+            return temp[1];
+        }
+        if (cond == Sense.condition.MARKER2) {
+            //BLACK
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+            return temp[2];
+        }
+        if (cond == Sense.condition.MARKER3) {
+            //BLACK
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+            return temp[3];
+        }
+        if (cond == Sense.condition.MARKER4) {
+            //BLACK
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+            return temp[4];
+        }
+        if (cond == Sense.condition.MARKER5) {
+            //BLACK
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+            return temp[5];
+        }
+        if (cond == Sense.condition.FOEMARKER) {
+            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(!a.getColour());
+            int hasMarkers = 0;
+            for (int i = 0; i < temp.length; i++) {
+                if (temp[i]) {
+                    hasMarkers++;
+                }
+            }
+            if (hasMarkers > 0) {
+                return true;
+            } else {
                 return false;
-	}
+            }
+        }
+        if (cond == Sense.condition.HOME) {
+            if (a.getColour()) { //BLACK
+                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else { //RED
+                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (cond == Sense.condition.FOEHOME) {
+            if (a.getColour()) { //BLACK
+                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else { //RED
+                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     private int listContains(List<int[]> info, int x, int y, int len) {
-        for(int i = 0; i < info.size(); i++) {
+        for (int i = 0; i < info.size(); i++) {
             int[] row = info.get(i);
-            if(row[0] == x && row[1] == y && row[2] == len) {
+            if (row[0] == x && row[1] == y && row[2] == len) {
                 return i;
             }
         }
         return -1;
     }
-    
+
     public Cell getCell(int[] cell) {
-    	return cells[cell[0]][cell[1]];
+        return cells[cell[0]][cell[1]];
     }
 
     public void checkCellStatus(int cell) {

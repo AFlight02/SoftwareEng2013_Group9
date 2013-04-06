@@ -1,36 +1,37 @@
 package AntAttack_Group9;
+
 import java.util.*;
 
 public class Cell {
 
-	Ant ant = null; // Ensure blank when no Ants exist
+    Ant ant = null; // Ensure blank when no Ants exist
     int[] pos = new int[2];
     int food;
     int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
-	int adjacentAntsBlack;
-	boolean rock;
+    int adjacentAntsBlack;
+    boolean rock;
     String anthill; // "red"|"black"|null
-	boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
-	boolean[] markersBlack = new boolean[6];
+    boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
+    boolean[] markersBlack = new boolean[6];
 
-	public Cell(int x, int y) {
+    public Cell(int x, int y) {
         this.pos[0] = x;
         this.pos[1] = y;
-        for(int i = 0; i < 6; i++){
+        for (int i = 0; i < 6; i++) {
             markersRed[i] = false;
             markersBlack[i] = false;
         }
-	}
-        
+    }
+
     public int[] adjacentCell(int dir) {
         int[] adjCell = new int[2];
-        switch(dir) {
-            case 0: 
+        switch (dir) {
+            case 0:
                 adjCell[0] = pos[0]++;
                 adjCell[1] = pos[1];
                 break;
             case 1:
-                if(pos[1]%2 == 0) {
+                if (pos[1] % 2 == 0) {
                     adjCell[0] = pos[0];
                     adjCell[1] = pos[1]++;
                 } else {
@@ -39,7 +40,7 @@ public class Cell {
                 }
                 break;
             case 2:
-                if(pos[1]%2 == 0) {
+                if (pos[1] % 2 == 0) {
                     adjCell[0] = pos[0]--;
                     adjCell[1] = pos[1]++;
                 } else {
@@ -52,7 +53,7 @@ public class Cell {
                 adjCell[1] = pos[1];
                 break;
             case 4:
-                if(pos[1]%2 == 0) {
+                if (pos[1] % 2 == 0) {
                     adjCell[0] = pos[0]--;
                     adjCell[1] = pos[1]--;
                 } else {
@@ -61,7 +62,7 @@ public class Cell {
                 }
                 break;
             case 5:
-                if(pos[1]%2 == 0) {
+                if (pos[1] % 2 == 0) {
                     adjCell[0] = pos[0];
                     adjCell[1] = pos[1]--;
                 } else {
@@ -72,10 +73,10 @@ public class Cell {
         }
         return adjCell;
     }
-    
+
     public int[] sensedCell(int[] pos, int dir, Sense.senseDir sD) {
         int[] sensedCellPos = new int[2];
-        switch(sD) {
+        switch (sD) {
             case HERE:
                 sensedCellPos = pos;
                 break;
@@ -95,17 +96,17 @@ public class Cell {
     public void calculateAdjacentAnts(World world) {
 
         // Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
-        
+
         adjacentAntsBlack = 0;
         adjacentAntsRed = 0;
 
-        for(int i = 0; i < 6; i++){
+        for (int i = 0; i < 6; i++) {
             int[] adjCell = adjacentCell(i);
             Cell cell = world.getCell(adjCell);
             Ant adjAnt = cell.getAnt();
-            if(adjAnt.getColour()){
+            if (adjAnt.getColour()) {
                 adjacentAntsBlack++;
-            }else{
+            } else {
                 adjacentAntsRed++;
             }
         }
@@ -126,25 +127,25 @@ public class Cell {
     public void setRock(boolean rock) {
         this.rock = rock;
     }
-    
+
     public int getFood() {
         return food;
     }
-    
+
     public void setFood(int food) {
         this.food = food;
     }
 
     public void removeFood() {
-        if(food >= 0){
+        if (food >= 0) {
             food--;
         }
     }
-    
+
     public Ant getAnt() {
         return ant;
     }
-    
+
     public void setAnt(Ant ant) {
         // Update Ant on this cell
         this.ant = ant;
@@ -154,19 +155,19 @@ public class Cell {
         // Set ant to null
         this.ant = null;
     }
-    
+
     public String getAnthill() {
         return anthill;
     }
-    
+
     public void setAnthill(String a) {
         anthill = a; //error checking or not bother?
-    }    
-    
+    }
+
     public boolean[] getMarkers(boolean colour) {
-        if(colour){
+        if (colour) {
             return markersBlack;
-        }else{
+        } else {
             return markersRed;
         }
     }
@@ -190,5 +191,4 @@ public class Cell {
         // As red
         this.markersBlack[markerNum] = false;
     }
-
 }
