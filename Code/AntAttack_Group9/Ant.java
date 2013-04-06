@@ -5,8 +5,8 @@
  * individual Game
  *
  * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
- * Paige Gray, Matt Chapman, Alex Flight (77525), ??James Bellamy??
- * @version 0.1
+ * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
+ * @version 1
  */
 package AntAttack_Group9; // Need to combine everything into said package for portability and integration of classes together
 import java.util.*;
@@ -22,64 +22,125 @@ public class Ant {
     private int id;
     private boolean alive = true;
 
+    /**
+     * 
+     * @param brain
+     * @param colour
+     * @param id
+     */
     public Ant(AntBrain brain, boolean colour, int id) {
         this.brain = brain;
         this.colour = colour;
         this.id = id;
     }
 
+    /**
+     * 
+     */
     public void kill() {
         alive = false;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getState() {
         return this.state;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getResting() {
         return this.resting;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * 
+     */
     public void decrementResting() {
         resting--;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getDirection() {
         return this.direction;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean getFood() {
         return this.hasFood;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean getColour() {
         return this.colour;
     }
 
+    /**
+     * 
+     * @param newState
+     */
     public void setState(int newState) {
         this.state = newState;
     }
 
+    /**
+     * 
+     * @param resting
+     */
     public void setResting(int resting) {
         this.resting = resting;
     }
 
+    /**
+     * 
+     * @param dir
+     */
     public void setDirection(int dir) {
         this.direction = dir;
     }
 
+    /**
+     * 
+     * @param b
+     */
     public void setFood(boolean b) {
         this.hasFood = b;
     }
 
+    /**
+     * 
+     * @param dir
+     * @return
+     */
     public int turn(Turn.direction dir) {
         switch (dir) {
             case LEFT:
@@ -91,6 +152,10 @@ public class Ant {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public Instruction getInstruction() {
         return this.brain.getInstruction(state);
     }

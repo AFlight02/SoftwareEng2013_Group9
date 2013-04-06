@@ -1,3 +1,10 @@
+/**
+ * Cell.java Represents an individual 'Tile' in a Tournament World
+ *
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
+ * @version 1
+ */
 package AntAttack_Group9;
 
 import java.util.*;
@@ -14,6 +21,11 @@ public class Cell {
     boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
     boolean[] markersBlack = new boolean[6];
 
+    /**
+     * 
+     * @param x
+     * @param y
+     */
     public Cell(int x, int y) {
         this.pos[0] = x;
         this.pos[1] = y;
@@ -23,6 +35,11 @@ public class Cell {
         }
     }
 
+    /**
+     * 
+     * @param dir
+     * @return
+     */
     public int[] adjacentCell(int dir) {
         int[] adjCell = new int[2];
         switch (dir) {
@@ -74,6 +91,13 @@ public class Cell {
         return adjCell;
     }
 
+    /**
+     * 
+     * @param pos
+     * @param dir
+     * @param sD
+     * @return
+     */
     public int[] sensedCell(int[] pos, int dir, Sense.senseDir sD) {
         int[] sensedCellPos = new int[2];
         switch (sD) {
@@ -93,6 +117,10 @@ public class Cell {
         return sensedCellPos;
     }
 
+    /**
+     * 
+     * @param world
+     */
     public void calculateAdjacentAnts(World world) {
 
         // Iterate through World cells in radius 1 around this cell and update adjacent ants count as necessary
@@ -112,58 +140,109 @@ public class Cell {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getAdjacentAntsBlack() {
         return adjacentAntsBlack;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getAdjacentAntsRed() {
         return adjacentAntsRed;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean getRock() {
         return rock;
     }
 
+    /**
+     * 
+     * @param rock
+     */
     public void setRock(boolean rock) {
         this.rock = rock;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getFood() {
         return food;
     }
 
+    /**
+     * 
+     * @param food
+     */
     public void setFood(int food) {
         this.food = food;
     }
 
+    /**
+     * 
+     */
     public void removeFood() {
         if (food >= 0) {
             food--;
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public Ant getAnt() {
         return ant;
     }
 
+    /**
+     * 
+     * @param ant
+     */
     public void setAnt(Ant ant) {
         // Update Ant on this cell
         this.ant = ant;
     }
 
+    /**
+     * 
+     */
     public void removeAnt() {
         // Set ant to null
         this.ant = null;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getAnthill() {
         return anthill;
     }
 
+    /**
+     * 
+     * @param a
+     */
     public void setAnthill(String a) {
         anthill = a; //error checking or not bother?
     }
 
+    /**
+     * 
+     * @param colour
+     * @return
+     */
     public boolean[] getMarkers(boolean colour) {
         if (colour) {
             return markersBlack;
@@ -172,21 +251,37 @@ public class Cell {
         }
     }
 
+    /**
+     * 
+     * @param markerNum
+     */
     public void addRedMarker(int markerNum) {
         // Change markersRed[markerNum] to true
         this.markersRed[markerNum] = true;
     }
 
+    /**
+     * 
+     * @param markerNum
+     */
     public void addBlackMarker(int markerNum) {
         // As red
         this.markersBlack[markerNum] = true;
     }
 
+    /**
+     * 
+     * @param markerNum
+     */
     public void removeRedMarker(int markerNum) {
         // Change markersRed[markerNum] to true
         this.markersRed[markerNum] = false;
     }
 
+    /**
+     * 
+     * @param markerNum
+     */
     public void removeBlackMarker(int markerNum) {
         // As red
         this.markersBlack[markerNum] = false;

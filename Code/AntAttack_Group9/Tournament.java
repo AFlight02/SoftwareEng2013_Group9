@@ -1,3 +1,11 @@
+/**
+ * Tournament.java Initiates and manages a Tournament between multiple Ant Brain
+ * competitors and calculates an overall winner after all matches have been played.
+ *
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
+ * @version 1
+ */
 package AntAttack_Group9;
 
 import java.util.*;
@@ -16,12 +24,21 @@ public class Tournament {
      * worlds had been played - Far easier to just iterate everything :-p
      */
     //two constructors: so you can either initialize a tourney with a list of brains, or add them later (or both).
+    /**
+     * 
+     * @param worlds
+     */
     public Tournament(List<World> worlds) {
         // ALEX: altered to create a new ArrayList instead of Arrays.asList() as it was throwing errors, couldn't pinpoint why?
         antBrains = new ArrayList<>(); //inits as an empty list
         this.worlds = worlds;
     }
 
+    /**
+     * 
+     * @param antBrains
+     * @param worlds
+     */
     public Tournament(List<AntBrain> antBrains, List<World> worlds) {
         this.antBrains = antBrains;
         this.worlds = worlds;

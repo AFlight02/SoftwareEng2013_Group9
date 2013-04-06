@@ -1,3 +1,11 @@
+/**
+ * World.java Represents a World within which a Game is played between two Ant Brains.
+ *
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
+ * @version 1
+ */
+
 package AntAttack_Group9;
 
 import java.io.BufferedReader;
@@ -6,12 +14,19 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 
+ * @author Alex
+ */
 public class World {
 
     Cell[][] cells;
     int width, height;
     int totalFood;
 
+    /**
+     * 
+     */
     public World() {
         // Constructor
     }
@@ -20,6 +35,7 @@ public class World {
      * reads in a world file, makes sure basic syntax is right
      *
      * @param worldFile
+     * @throws Exception  
      */
     public void readInWorld(String worldFile) throws Exception {
         try {
@@ -87,6 +103,9 @@ public class World {
         }
     }
 
+    /**
+     * 
+     */
     public void generateRandomWorld() {
         // If call to this function, create a new well formed world of Cells[]
     }
@@ -407,6 +426,13 @@ public class World {
         return found;
     }
 
+    /**
+     * 
+     * @param cell
+     * @param cond
+     * @param a
+     * @return
+     */
     public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
         if (cond == Sense.condition.FRIEND) {
             if (a.getColour()) {
@@ -555,34 +581,67 @@ public class World {
         return -1;
     }
 
+    /**
+     * 
+     * @param cell
+     * @return
+     */
     public Cell getCell(int[] cell) {
         return cells[cell[0]][cell[1]];
     }
 
+    /**
+     * 
+     * @param cell
+     */
     public void checkCellStatus(int cell) {
         // Return status of cell 
     }
 
+    /**
+     * 
+     */
     public void countFood() {
     }
 
+    /**
+     * 
+     * @param cell
+     */
     public void setFoodAtCell(int cell) {
         // Modify food at cell
     }
 
+    /**
+     * 
+     * @param cell
+     * @param marker
+     * @param colour
+     */
     public void setMarkAtCell(int cell, int marker, boolean colour) {
         // Mark cell with number marker of colour where true = black, false = red (need to standardise the bool
         // representation as concrete for the project as true always == black and false always == red!)
     }
 
+    /**
+     * 
+     * @param antId
+     */
     public void killAnt(int antId) {
         // Use findAnt(antId) and make call to clearAntFromCell(cellId). Call Gameplay to remove Ant from list of Ants
     }
 
+    /**
+     * 
+     * @param cell
+     */
     public void clearAntFromCell(int cell) {
         // Remove Ant from the cell
     }
 
+    /**
+     * 
+     */
     public void visualiseWorld() {
         // NEW: Call to print world to command line representation for visualisation.
         // Later: Write world state to GUI for graphical visualisation.

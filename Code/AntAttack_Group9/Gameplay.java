@@ -1,3 +1,11 @@
+/**
+ * Gameplay.java Manages an individual instance of a match between two AntBrain
+ * competitors on a World.
+ *
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
+ * @version 1
+ */
 package AntAttack_Group9;
 
 import java.util.*;
@@ -14,6 +22,11 @@ public class Gameplay {
     AntBrain redAntBrain;
     AntBrain blackAntBrain;
 
+    /**
+     * 
+     * @param red
+     * @param black
+     */
     public Gameplay(AntBrain red, AntBrain black) {
         // For Kirstie : Pass constructor the two AntBrains for play, pass them to loadAntBrains method OR remove that method and just load straight into params
 // Constructor
@@ -29,11 +42,17 @@ public class Gameplay {
 
     }
 
+    /**
+     * 
+     */
     public void generateWorld() {
 // Generate a new World randomly
         world.generateRandomWorld();
     }
 
+    /**
+     * 
+     */
     public void playGame() {
         //new AntAttack();
         for (int i = 0; i < 300000; i++) {
@@ -42,11 +61,18 @@ public class Gameplay {
 
     }
 
+    /**
+     * 
+     * @param uploadWorld
+     */
     public void loadWorld(World uploadWorld) {
         world = uploadWorld;
 
     }
 
+    /**
+     * 
+     */
     public void stepGame() {
 
 
@@ -171,16 +197,27 @@ public class Gameplay {
 
     }
 
+    /**
+     * 
+     */
     public void endGame() {
 // On completion of all steps finish the game, total scores etc.
     }
 
+    /**
+     * 
+     */
     public void setupGame() {
         world.checkValidWorld();
 
 // Calls World syntax checks, AntBrain syntax checks, begins stepping through game instance
     }
 
+    /**
+     * 
+     * @param red
+     * @param black
+     */
     public void loadAntBrains(AntBrain red, AntBrain black) { // Kirstie: Possibly remove this method with reference to comment on constructor!
 // Loads red and black AntBrains
         redAntBrain = red;
@@ -188,6 +225,10 @@ public class Gameplay {
 
     }
 
+    /**
+     * 
+     * @return
+     */
     public int declareWinner() {
         int winner;
         if (redFood > blackFood) {

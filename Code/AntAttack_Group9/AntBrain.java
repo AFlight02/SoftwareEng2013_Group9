@@ -1,3 +1,12 @@
+/**
+ * AntBrain.java Represents the FSM of an individual AntBrain competitor, reads in 
+ * a raw text representation of an Ant Brain and converts it into a list of
+ * discrete instructions.
+ *
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
+ * @version 1
+ */
 package AntAttack_Group9;
 
 import AntAttack_Group9.Sense.condition;
@@ -6,6 +15,10 @@ import java.util.*;
 import java.io.*;
 import java.util.regex.*;
 
+/**
+ * 
+ * @author Alex
+ */
 public class AntBrain {
 
     //FSM brain; // need to find suitable FSM library/class
@@ -20,6 +33,10 @@ public class AntBrain {
     int gamesWon;
     int state;
 
+    /**
+     * 
+     * @param antBrainFile
+     */
     public AntBrain(String antBrainFile) {
         try {
             if (checkAntBrainSyntax(antBrainFile)) {
@@ -72,6 +89,7 @@ public class AntBrain {
      *
      * @param antBrainFile the ant brain file (.brain) to check
      * @return boolean true if ant brain is syntactically correct false if not
+     * @throws Exception  
      */
     public boolean checkAntBrainSyntax(String antBrainFile) throws Exception {
 
@@ -124,6 +142,11 @@ public class AntBrain {
         return true;
     }
 
+    /**
+     * 
+     * @param currState
+     * @return
+     */
     public Instruction getInstruction(int currState) {
         return fsm.get(currState);
     }
