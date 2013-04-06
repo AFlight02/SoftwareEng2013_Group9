@@ -9,7 +9,6 @@
  * @version 1
  */
 package AntAttack_Group9; // Need to combine everything into said package for portability and integration of classes together
-import java.util.*;
 
 public class Ant {
 

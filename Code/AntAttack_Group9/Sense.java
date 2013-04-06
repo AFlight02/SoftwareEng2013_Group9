@@ -13,22 +13,9 @@ public class Sense extends Instruction {
      * 
      */
     public enum senseDir {
-
-        /**
-         * 
-         */
         HERE,
-        /**
-         *
-         */
         AHEAD,
-        /**
-         *
-         */
         LEFTAHEAD,
-        /**
-         *
-         */
         RIGHTAHEAD
     }
 
@@ -36,66 +23,20 @@ public class Sense extends Instruction {
      * 
      */
     public enum condition {
-
-        /**
-         * 
-         */
         FRIEND,
-        /**
-         *
-         */
         FOE,
-        /**
-         *
-         */
         FRIENDWFOOD,
-        /**
-         *
-         */
         FOEWFOOD,
-        /**
-         *
-         */
         FOOD,
-        /**
-         *
-         */
         ROCK,
-        /**
-         *
-         */
         MARKER0,
-        /**
-         *
-         */
         MARKER1,
-        /**
-         *
-         */
         MARKER2,
-        /**
-         * 
-         */
         MARKER3,
-        /**
-         *
-         */
         MARKER4,
-        /**
-         *
-         */
         MARKER5,
-        /**
-         *
-         */
         FOEMARKER,
-        /**
-         *
-         */
         HOME,
-        /**
-         *
-         */
         FOEHOME
     }
     private senseDir senseDirVal;

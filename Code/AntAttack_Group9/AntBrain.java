@@ -9,11 +9,11 @@
  */
 package AntAttack_Group9;
 
-import AntAttack_Group9.Sense.condition;
-import AntAttack_Group9.Sense.senseDir;
-import java.util.*;
-import java.io.*;
-import java.util.regex.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 

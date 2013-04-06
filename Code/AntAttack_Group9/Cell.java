@@ -7,8 +7,6 @@
  */
 package AntAttack_Group9;
 
-import java.util.*;
-
 public class Cell {
 
     Ant ant = null; // Ensure blank when no Ants exist
