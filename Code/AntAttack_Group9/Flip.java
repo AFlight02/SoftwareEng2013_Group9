@@ -21,10 +21,10 @@ public class Flip extends Instruction {
     public int getRandom() {
         return this.random;
     }
-    public int getInitDir() {
+    public int getS1() {
         return this.state1;
     }
-    public int getNextState() {
+    public int getS2() {
         return this.state2;
     }
     /* TODO - Specification is unclear, what's i? Why do it this way, seems like it's just there to

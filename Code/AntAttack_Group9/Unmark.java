@@ -14,7 +14,7 @@ public class Unmark extends Instruction {
         this.marker = marker;
     }
     
-    public int getState() {
+    public int getS1() {
         return this.state;
     }
     

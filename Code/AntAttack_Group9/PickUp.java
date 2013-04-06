@@ -14,11 +14,11 @@ public class PickUp extends Instruction {
         this.state2 = state2;
     }
     
-    public int getInitialState() {
+    public int getS1() {
         return this.state1;
     }
     
-    public int getNextState() {
+    public int getS2() {
         return this.state2;
     }
 }

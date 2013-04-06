@@ -12,7 +12,7 @@ public class Drop extends Instruction {
         this.state = state;
     }
     
-    public int getNextState() {
+    public int getS1() {
         return this.state;
     }
 }

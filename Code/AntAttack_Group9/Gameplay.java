@@ -92,7 +92,7 @@ public void stepGame() {
 					else {
 						world.findAnt(a.getID()).addRedMarker(m.getMarker());
 					}
-					a.setState(m.getNextState());		
+					a.setState(m.getS1());		
 				}
 				
 				if(nextInstruction instanceof Sense){
@@ -112,7 +112,7 @@ public void stepGame() {
 					else {
 						world.findAnt(a.getID()).removeRedMarker(u.getMarker());
 					}
-					a.setState(u.getState());		
+					a.setState(u.getS1());		
 				}
 				
 				if(nextInstruction instanceof PickUp){
@@ -120,11 +120,11 @@ public void stepGame() {
 					if(world.findAnt(a.getID()).getFood() > 0){
 						a.setFood(true);
 						world.findAnt(a.getID()).removeFood();
-						a.setState(p.getInitialState());
+						a.setState(p.getS1());
 						
 					}
 					else{
-						a.setState(p.getNextState());
+						a.setState(p.getS2());
 					}
 				}
 				
@@ -132,7 +132,7 @@ public void stepGame() {
 				if(nextInstruction instanceof Turn){
 					Turn t = (Turn) nextInstruction;
 					a.setDirection(a.turn(t.getTurnDir()));
-					a.setState(t.getNextState());
+					a.setState(t.getS1());
 					
 					
 				}
@@ -142,7 +142,7 @@ public void stepGame() {
 					if(a.getFood()){
                                             world.findAnt(a.getID()).setFood(world.findAnt(a.getID()).getFood()+ 1);
 					}
-					a.setState(d.getNextState());
+					a.setState(d.getS1());
 					
 				}
 				
@@ -154,13 +154,13 @@ public void stepGame() {
 							world.getCell(loc).setAnt(a);
 							world.findAnt(a.getID()).removeAnt();
 							a.setResting(15);
-							a.setState(m.getInitDir());
+							a.setState(m.getS1());
 							
 						}
 						
 					}
 					else{
-						a.setState(m.getNextState());
+						a.setState(m.getS2());
 					}
 					
 					

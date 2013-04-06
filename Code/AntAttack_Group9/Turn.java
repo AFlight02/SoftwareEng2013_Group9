@@ -20,7 +20,7 @@ public class Turn extends Instruction {
     public direction getTurnDir() {
         return this.lr;
     }
-    public int getNextState() {
+    public int getS1() {
         return this.state;
     }
     

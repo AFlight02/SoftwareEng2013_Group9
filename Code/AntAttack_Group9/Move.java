@@ -14,10 +14,10 @@ public class Move extends Instruction {
         this.state2 = nextState;
     }
     
-    public int getInitDir() {
+    public int getS1() {
         return this.state1;
     }
-    public int getNextState() {
+    public int getS2() {
         return this.state2;
     }
 }
