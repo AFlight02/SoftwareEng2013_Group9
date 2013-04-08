@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -412,7 +413,6 @@ public class World {
      */
     public void generateRandomContestWorld() {
         cells = new Cell[150][150];
-        boolean[][] used = new boolean[150][150]; //keeps track of what cells are already filled
         
         //set all edges to rocky
         for (int i = 0; i < 150; i++) { //top and bottom
@@ -423,6 +423,45 @@ public class World {
         }
         
         //place anthills
+        Random r = new Random();
+        int x, y;
+        
+        x = r.nextInt(133) + 2; //pick a random x,y between 2 and 135 (because max length 13 and we need to leave a border of 1)
+        y = r.nextInt(133) + 2;
+        
+        //just place first anthill, no need to check if there's stuff in the way
+        placeAnthill("red", x, y);
+        
+        boolean isRoom = false;
+        while(!isRoom) {
+            //regen x and y for the second anthill
+            x = r.nextInt(133) + 2;
+            y = r.nextInt(133) + 2;
+            //check there is space first
+            int SP, len, parityAdjuster;
+            
+            for(int h = -1; h < 14; h++) { //allow for border
+                if (((y % 2) == 1) && ((h % 2) == 1)) {
+                    parityAdjuster = 1;
+                } else {
+                    parityAdjuster = 0;
+                }
+                //adjusted slightly to allow for a border of 1 around the hexagon
+                SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster - 1;
+                len = 15 - Math.abs(6 - h);
+                
+                isRoom = true;
+                for (int i = 0; i < len; i++) {
+                    if (!cells[y+h][x+SP+i].isEmpty()) {
+                        isRoom = false;
+                    }
+                }
+            }
+            if (isRoom) {
+                placeAnthill("black", x, y);
+            }
+        }
+        
         //place food blobs
         //place rocks
     }
@@ -663,5 +702,30 @@ public class World {
     public void visualiseWorld() {
         // NEW: Call to print world to command line representation for visualisation.
         // Later: Write world state to GUI for graphical visualisation.
+    }
+    
+    /**
+     * Used when generating random worlds
+     * @param colour
+     * @param x
+     * @param y 
+     */
+    private void placeAnthill(String colour, int x, int y) {
+        int SP, len, parityAdjuster;
+        
+        for(int h = 0; h < 13; h++) {
+            if (((y % 2) == 1) && ((h % 2) == 1)) {
+                parityAdjuster = 1;
+            } else {
+                parityAdjuster = 0;
+            }
+            
+            SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
+            len = 13 - Math.abs(6 - h);
+            
+            for(int i = 0; i < len; i++) {
+                cells[y+h][x+SP+i].anthill = colour;
+            }
+        }
     }
 }
