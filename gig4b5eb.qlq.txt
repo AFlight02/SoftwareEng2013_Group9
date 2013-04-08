@@ -1,0 +1,29 @@
+﻿Fixing dodgy commit that cropped up
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# Not currently on any branch.
+# You are currently rebasing.
+#   (all conflicts fixed: run "git rebase --continue")
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   Code/AntAttack_Group9/AntAttack.java
+#	modified:   Code/AntAttack_Group9/Cell.java
+#	modified:   Code/AntAttack_Group9/GUI.java
+#	modified:   Code/AntAttack_Group9/Gameplay.java
+#	modified:   Code/AntAttack_Group9/World.java
+	new file:   Code/AntAttack_Group9/anthillBlack.png
+	new file:   Code/AntAttack_Group9/anthillRed.png
+	new file:   Code/AntAttack_Group9/blackAnt.png
+	new file:   Code/AntAttack_Group9/blank.png
+	new file:   Code/AntAttack_Group9/cellSprites.psd
+	new file:   Code/AntAttack_Group9/food1.png
+	new file:   Code/AntAttack_Group9/food2.png
+	new file:   Code/AntAttack_Group9/food3.png
+	new file:   Code/AntAttack_Group9/food4.png
+	new file:   Code/AntAttack_Group9/food5.png
+	new file:   Code/AntAttack_Group9/redAnt.png
+	new file:   Code/AntAttack_Group9/rock.png
+#
+

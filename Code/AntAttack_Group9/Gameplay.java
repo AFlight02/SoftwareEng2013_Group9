@@ -47,7 +47,7 @@ public class Gameplay {
      */
     public void generateWorld() {
 // Generate a new World randomly
-        world.generateRandomWorld();
+
     }
 
     /**

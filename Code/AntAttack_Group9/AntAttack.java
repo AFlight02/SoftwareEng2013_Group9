@@ -8,14 +8,17 @@
  */
 package AntAttack_Group9;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class AntAttack {
 
-    GUI gui;
-    Tournament tournament;
-    int newAttr; // Error in class diagram, will fix! Remove this on Friday.
+    private static GUI gui;
+    private static Tournament tournament;
 
     /**
      * 
@@ -28,9 +31,29 @@ public class AntAttack {
      * @param args
      */
     public static void main(String[] args) {
+        AntBrain placeholder = new AntBrain("cleverbrain1.brain");
+        World testWorld = new World();
+        testWorld.cells = new Cell[2][3];
+        testWorld.height = 2;
+        testWorld.width = 3;
+        testWorld.cells[0][0] = new Cell(0,0);
+        testWorld.cells[0][0].rock = true;
+        testWorld.cells[0][1] = new Cell(0,1);
+        testWorld.cells[0][2] = new Cell(0,2);
+        testWorld.cells[0][2].ant = new Ant(placeholder, true, 0);
+        testWorld.cells[1][0] = new Cell(1,0);
+        testWorld.cells[1][0].ant = new Ant(placeholder, false, 0);
+        testWorld.cells[1][1] = new Cell(1,1);
+        testWorld.cells[1][1].food = 3;
+        testWorld.cells[1][2] = new Cell(1,2);
+        testWorld.cells[1][2].food = 1;
+        
         AntAttack newGame = new AntAttack();
         newGame.newTournament();
         newGame.newGame();
+
+        gui = new GUI(testWorld);
+        gui.update(testWorld);
     }
 
     /**

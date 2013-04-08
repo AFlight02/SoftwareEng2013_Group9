@@ -25,8 +25,14 @@ public class Cell {
      * @param y
      */
     public Cell(int x, int y) {
+        // Passing default values to prevent null pointer exceptions during testing
         this.pos[0] = x;
         this.pos[1] = y;
+        this.rock = false;
+        this.adjacentAntsBlack = 0;
+        this.adjacentAntsRed = 0;
+        this.anthill = null;
+        this.food = 0;
         for (int i = 0; i < 6; i++) {
             markersRed[i] = false;
             markersBlack[i] = false;
@@ -283,5 +289,13 @@ public class Cell {
     public void removeBlackMarker(int markerNum) {
         // As red
         this.markersBlack[markerNum] = false;
+    }
+    
+    public boolean isEmpty() {
+        if(!this.rock && this.ant == null && this.anthill == null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
