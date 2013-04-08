@@ -10,6 +10,7 @@ package AntAttack_Group9;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,7 +18,6 @@ import java.util.regex.Pattern;
 
 /**
  * 
- * @author Alex
  */
 public class World {
 
@@ -45,10 +45,10 @@ public class World {
             height = Integer.parseInt(br.readLine());
             cells = new Cell[width][height];
 
-            String cellStr = "#|\\.|+|-|[1-9]";
+            String cellStr = "[#\\.\\+\\-[1-9]]";
             Pattern cellPat = Pattern.compile(cellStr);
 
-            String rowStr = cellStr + "{" + width + "}";
+            String rowStr = "(" + cellStr + "\\s){" + (width - 1) + "}" + cellStr;
             Pattern oddRowPat = Pattern.compile("\\s" + rowStr); //because row count starts at 0
             Pattern evenRowPat = Pattern.compile(rowStr);
 
@@ -58,7 +58,7 @@ public class World {
             while ((curLine = br.readLine()) != null) {
 
                 //check that odd or even lines behave correctly
-                if (((rowCnt + 1) % 2) == 0) { //even line
+                if (((rowCnt) % 2) == 0) { //even line
                     if (!evenRowPat.matcher(curLine).matches()) {
                         throw new Exception("Malformed world!");
                     }
@@ -69,6 +69,7 @@ public class World {
                 }
 
                 //the line is valid, so we can go ahead and look at the individual characters now:
+                curLine = curLine.trim();
                 rowCells = curLine.split("\\s");
 
                 for (int i = 0; i < width; i++) {
@@ -102,13 +103,6 @@ public class World {
             //catches things like array boundaries if the file has specified the wrong size map
             throw new Exception("Malformed world!");
         }
-    }
-
-    /**
-     * 
-     */
-    public void generateRandomWorld() {
-        // If call to this function, create a new well formed world of Cells[]
     }
 
     /**
@@ -164,7 +158,7 @@ public class World {
      *
      * @return
      */
-    public boolean checkValidForTournament() {
+        public boolean checkValidForTournament() {
         if (checkValidWorld()) {
             //check extra tournament conditions
 
@@ -172,28 +166,28 @@ public class World {
             if (width != 150 || height != 150) {
                 return false;
             }
-
+            
             //contains 14 rocks
             int rockCount = 0;
-
+            
             //make a list of all the coords with food in
-            List<int[]> foodInfo = Arrays.asList(); //[i, j, length], same as anthills
+            List<int[]> foodInfo = new ArrayList<>(); //[i, j, length], same as anthills
             int consecFood = 0;
             int[] curFoodCoord = new int[2];
-
+            
             //anthills
-            List<int[]> redHillInfo = Arrays.asList(); //[i, j, length] for each consecutive row
-            List<int[]> blackHillInfo = Arrays.asList();
+            List<int[]> redHillInfo = new ArrayList<>(); //[i, j, length] for each consecutive row
+            List<int[]> blackHillInfo = new ArrayList<>();
             int consecRedHill = 0;
             int consecBlackHill = 0;
             int[] curHillCoord = new int[2];
-
+            
             for (int i = 1; i < width - 1; i++) { //don't check boundaries
                 for (int j = 1; j < height - 1; j++) {
                     if (cells[i][j].getRock()) {
                         rockCount++;
                     }
-
+                    
                     switch (cells[i][j].getFood()) { //contains food
                         case 0:
                             if (consecFood > 0) { //end of a food row
@@ -215,7 +209,7 @@ public class World {
                         default:
                             return false; //anything other than 0 or 5 food is auto invalid!
                     }
-
+                    
                     switch (cells[i][j].getAnthill()) {
                         case "red":
                             //end black if exists:
@@ -225,10 +219,10 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-
+                                
                                 consecBlackHill = 0; //reset
                             }
-
+                            
                             if (consecRedHill == 0) { //start of red row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
@@ -243,10 +237,10 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-
+                                
                                 consecRedHill = 0; //reset
                             }
-
+                            
                             if (consecBlackHill == 0) { //start of black row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
@@ -261,7 +255,7 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-
+                                
                                 consecRedHill = 0; //reset
                             } else if (consecBlackHill > 0) {
                                 int[] info = new int[3];
@@ -269,28 +263,28 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-
+                                
                                 consecBlackHill = 0; //reset
                             }
                             break;
                     }
                 }
             }
-
+            
             if (rockCount != 14) {
                 return false;
             }
-
+            
             //now we know the start positions, check the anthill shapes:
             List<int[]> curInfoList; //holds the info list for the colour anthill we are checking
-
+            
             for (int i = 0; i < 2; i++) { //once for each colour
                 if (i == 0) {
                     curInfoList = redHillInfo;
                 } else {
                     curInfoList = blackHillInfo;
                 }
-
+                
                 int h = 0; //height (row count) --also used to determine the y coord the current row SHOULD be on
                 int parityAdjuster;
                 int SP; //start pos - the x offset the line SHOULD start on
@@ -298,10 +292,10 @@ public class World {
                 int[] firstCoord = new int[2]; //the ACTUAL start coord of the whole shape
                 firstCoord[0] = curInfoList.get(0)[0];
                 firstCoord[1] = curInfoList.get(0)[1];
-
+                
                 for (int[] consec : curInfoList) {
                     //parityAdjuster = 1 if we started on an odd row AND the height is odd
-                    if (((firstCoord[1] % 2) == 1) && ((h % 2) == 1)) {
+                    if (((firstCoord[0] % 2) == 1) && ((h % 2) == 1)) {
                         parityAdjuster = 1;
                     } else {
                         parityAdjuster = 0;
@@ -309,82 +303,85 @@ public class World {
                     SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
                     len = 13 - Math.abs(6 - h);
                     //I'll try to explain these a little better outside of the code
-
+                    
                     if (h > 12) { //hexagon too high!
                         return false;
-                    } else if (!((consec[0] == firstCoord[0] + SP) //x coord correct
-                            && (consec[1] == firstCoord[1] + h) //y coord correct
+                    } else if (!((consec[1] == firstCoord[1] + SP) //x coord correct
+                            && (consec[0] == firstCoord[0] + h) //y coord correct
                             && (consec[2] == len))) { //length of row correct
                         return false;
                     }
                     h++;
                 }
             }
-
+            
             //food blobs
             int blobCount = 0; //the number of food blobs
-
-            for (int[] consec : foodInfo) {
+            
+            while(!foodInfo.isEmpty()) {
+                int[] consec = foodInfo.get(0);
+                foodInfo.remove(0);
+                
                 int parityAdjuster, SP, len, indexOfNextRow;
-                int shape; //1 = left-slant, 2 = right-slant, 3 = diamond
+                boolean leftSlant; //for differentiating between the two 5x5 squares
                 //3 possible shapes
-                switch (consec[2]) {
+                switch(consec[2]) {
                     case 1:
-                        shape = 3; //must be diamond one
-
-                        for (int h = 1; h <= 9; h++) { //9 rows
-                            if (((consec[1] % 2) == 1) && ((h % 2) == 1)) {
+                        //must be diamond one
+                        
+                        for (int h = 1; h < 9; h++) { //9 rows
+                            if (((consec[0] % 2) == 1) && ((h % 2) == 1)) {
                                 parityAdjuster = 1;
                             } else {
                                 parityAdjuster = 0;
                             }
-
+                            
                             SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
                             len = 5 - Math.abs(4 - h);
-
-                            indexOfNextRow = listContains(foodInfo, SP, consec[1] + h, len);
+                            
+                            indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, len);
                             if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
                                 return false;
                             }
-
                         }
                         break;
                     case 5:
                         //determine shape 1 or 2
-                        parityAdjuster = consec[1] % 2; //dont need to check height because it is constant 1 for this part
-
-                        indexOfNextRow = listContains(foodInfo, consec[0] - 1 + parityAdjuster, consec[1] + 1, 5);
+                        parityAdjuster = consec[0] % 2; //dont need to check height because it is the constant 1 for this part
+                        
+                        //don't need to calculate SP based on height at this stage because it's constant
+                        indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] - 1 + parityAdjuster, 5);
                         if (indexOfNextRow != -1) {
                             //right-slanting! remove from list
-                            shape = 2;
+                            leftSlant = false;
                             foodInfo.remove(indexOfNextRow);
                         } else {
                             //not right-slanting, so try left-slanting
-                            indexOfNextRow = listContains(foodInfo, consec[0] + 1 + parityAdjuster, consec[1] + 1, 5);
-                            if (indexOfNextRow != -1) {
-                                shape = 1;
+                            indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] + parityAdjuster, 5);
+                            if(indexOfNextRow != -1) {
+                                leftSlant = true;
                                 foodInfo.remove(indexOfNextRow);
                             } else {
                                 return false; //invalid shape!
                             }
                         }
-
-                        for (int h = 2; h <= 5; h++) { //already found the first 2 rows
-                            if (((consec[1] % 2) == 1) && ((h % 2) == 1)) {
+                        
+                        for (int h = 2; h < 5; h++) { //already found the first 2 rows
+                            if (((consec[0] % 2) == 1) && ((h % 2) == 1)) {
                                 parityAdjuster = 1;
                             } else {
                                 parityAdjuster = 0;
                             }
-
-                            if (shape == 2) {
-                                SP = consec[0] - h + parityAdjuster;
+                            
+                            if (leftSlant) {
+                                SP = consec[1] + h / 2 + parityAdjuster;
                             } else {
-                                SP = consec[0] + h + parityAdjuster;
+                                SP = consec[1] - (h + 1) / 2 + parityAdjuster;
                             }
-                            indexOfNextRow = listContains(foodInfo, SP, consec[1] + h, 5);
+                            indexOfNextRow = listContains(foodInfo, consec[0] + h, SP, 5);
                             if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
@@ -398,18 +395,38 @@ public class World {
                 }
                 blobCount++;
             }
-
+            
             if (blobCount != 11) {
                 return false;
             }
-
-            return true;
-
+            
+            return true; //everything is okay!
+            
         } else {
             return false;
         }
     }
 
+    /**
+     * Generates a random world, adhering to the contest world constraints
+     */
+    public void generateRandomContestWorld() {
+        cells = new Cell[150][150];
+        boolean[][] used = new boolean[150][150]; //keeps track of what cells are already filled
+        
+        //set all edges to rocky
+        for (int i = 0; i < 150; i++) { //top and bottom
+            cells[0][i].setRock(true);
+            cells[149][i].setRock(true);
+            cells[i][0].setRock(true); //square so we can shortcut it into only one loop!
+            cells[i][149].setRock(true);
+        }
+        
+        //place anthills
+        //place food blobs
+        //place rocks
+    }
+    
     /**
      *
      * @param id the ant ID being searched for
