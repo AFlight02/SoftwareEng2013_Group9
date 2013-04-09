@@ -411,6 +411,8 @@ public class World {
      * Generates a random world, adhering to the contest world constraints
      */
     public void generateRandomContestWorld() {
+        width = 150;
+        height = 150;
         cells = new Cell[150][150];
         
         for(int i = 0; i < 150; i++) {
