@@ -33,6 +33,7 @@ public class AntAttack {
     public static void main(String[] args) {
         AntBrain placeholder = new AntBrain("cleverbrain1.brain");
         World testWorld = new World();
+        /*
         testWorld.cells = new Cell[2][3];
         testWorld.height = 2;
         testWorld.width = 3;
@@ -47,6 +48,9 @@ public class AntAttack {
         testWorld.cells[1][1].food = 3;
         testWorld.cells[1][2] = new Cell(1,2);
         testWorld.cells[1][2].food = 1;
+        */
+        testWorld.generateRandomContestWorld();
+        testWorld.printWorld();
         
         AntAttack newGame = new AntAttack();
         newGame.newTournament();
