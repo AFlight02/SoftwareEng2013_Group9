@@ -292,7 +292,7 @@ public class Cell {
     }
     
     public boolean isEmpty() {
-        if(!this.rock && this.ant == null && this.anthill == null) {
+        if(!this.rock && this.ant == null && this.anthill == null && this.food <= 0) {
             return true;
         } else {
             return false;

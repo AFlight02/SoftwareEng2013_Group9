@@ -53,7 +53,7 @@ public class AntAttack {
         newGame.newGame();
 
         gui = new GUI(testWorld);
-        gui.update(testWorld);
+        gui.initHex();
     }
 
     /**

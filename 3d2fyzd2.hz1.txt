@@ -1,0 +1,32 @@
+﻿GUI IMPLEMENTed, bedtime
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch development
+# You are currently rebasing.
+#   (all conflicts fixed: run "git rebase --continue")
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   Code/AntAttack_Group9/AntAttack.java
+#	modified:   Code/AntAttack_Group9/Cell.java
+#	modified:   Code/AntAttack_Group9/GUI.java
+#	deleted:    Code/AntAttack_Group9/anthillBlack.png
+#	deleted:    Code/AntAttack_Group9/anthillRed.png
+#	deleted:    Code/AntAttack_Group9/blackAnt.png
+#	deleted:    Code/AntAttack_Group9/blank.png
+#	deleted:    Code/AntAttack_Group9/cellSprites.psd
+#	deleted:    Code/AntAttack_Group9/food1.png
+#	deleted:    Code/AntAttack_Group9/food2.png
+#	deleted:    Code/AntAttack_Group9/food3.png
+#	deleted:    Code/AntAttack_Group9/food4.png
+#	deleted:    Code/AntAttack_Group9/food5.png
+#	deleted:    Code/AntAttack_Group9/redAnt.png
+#	deleted:    Code/AntAttack_Group9/rock.png
+#	deleted:    Code/AntAttack_Group9/testFile.txt
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	Code/AntAttack_Group9/HexGrid.java
+
