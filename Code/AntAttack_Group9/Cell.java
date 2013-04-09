@@ -15,7 +15,7 @@ public class Cell {
     int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
     int adjacentAntsBlack;
     boolean rock;
-    String anthill; // "red"|"black"|null
+    String anthill; // "red"|"black"|"none" //null value causes errors when using switch statements
     boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
     boolean[] markersBlack = new boolean[6];
 
@@ -31,7 +31,7 @@ public class Cell {
         this.rock = false;
         this.adjacentAntsBlack = 0;
         this.adjacentAntsRed = 0;
-        this.anthill = null;
+        this.anthill = "none";
         this.food = 0;
         for (int i = 0; i < 6; i++) {
             markersRed[i] = false;
@@ -292,7 +292,7 @@ public class Cell {
     }
     
     public boolean isEmpty() {
-        if(!this.rock && this.ant == null && this.anthill == null && this.food <= 0) {
+        if(!this.rock && this.ant == null && this.anthill.equals("none") && this.food <= 0) {
             return true;
         } else {
             return false;
