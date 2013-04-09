@@ -20,8 +20,8 @@ public class HexGrid {
     final static Color COLOURTWO = new Color(0, 0, 0, 200);
     final static Color COLOURTWOTXT = new Color(255, 100, 255);
     final static int EMPTY = 0;
-    final static int BSIZE = 12; //board size.
-    final static int HEXSIZE = 60;	//hex size in pixels
+    final static int BSIZE = 150; //board size.
+    final static int HEXSIZE = 10;	//hex size in pixels
     final static int BORDERS = 15;
     final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3; //screen size (vertical dimension).
     public final static boolean orFLAT = true;
@@ -217,9 +217,9 @@ public class HexGrid {
         //int y = j * h + (i % 2) * h / 2;
         int x;
         if(i % 2 != 0){
-            x = j * h;
-        } else {
             x = j * h + r;
+        } else {
+            x = j * h;
         }
         int y = i * (h - (t / 2));
         Polygon poly = hex(x, y);
@@ -247,9 +247,9 @@ public class HexGrid {
         //int y = j * h + (i % 2) * h / 2;
         int x;
         if(i % 2 != 0){
-            x = j * h;
-        } else {
             x = j * h + r;
+        } else {
+            x = j * h;
         }
         int y = i * (h - (t / 2));
         
