@@ -413,6 +413,12 @@ public class World {
     public void generateRandomContestWorld() {
         cells = new Cell[150][150];
         
+        for(int i = 0; i < 150; i++) {
+            for(int j = 0; j < 150; j++) {
+                cells[i][j] = new Cell(j, i);
+            }
+        }
+        
         //set all edges to rocky
         for (int i = 0; i < 150; i++) { //top and bottom
             cells[0][i].setRock(true);
