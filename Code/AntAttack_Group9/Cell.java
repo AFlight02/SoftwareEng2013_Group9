@@ -298,4 +298,24 @@ public class Cell {
             return false;
         }
     }
+    
+    /**
+         * Used for printing out a world to a file
+         * @return 
+         */
+        public String getCellSymbol() {
+            if (rock) {
+                return "#";
+            } else if (ant != null) {
+                return "a";
+            } else if (food != 0) {
+                return food + "";
+            } else {
+                switch(anthill) {
+                    case "red" : return "+";
+                    case "black" : return "-";
+                    default: return ".";
+                }
+            }
+        }
 }

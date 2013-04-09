@@ -11,7 +11,6 @@ package AntAttack_Group9;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -378,11 +377,11 @@ public class World {
                             }
                             
                             if (leftSlant) {
-                                SP = consec[1] + h / 2 + parityAdjuster;
+                                SP = h / 2 + parityAdjuster;
                             } else {
-                                SP = consec[1] - (h + 1) / 2 + parityAdjuster;
+                                SP = parityAdjuster - (h + 1) / 2;
                             }
-                            indexOfNextRow = listContains(foodInfo, consec[0] + h, SP, 5);
+                            indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, 5);
                             if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
@@ -435,19 +434,19 @@ public class World {
         boolean isRoom = false;
         while(!isRoom) {
             //regen x and y for the second anthill
-            x = r.nextInt(133) + 2;
-            y = r.nextInt(133) + 2;
+            x = r.nextInt(134) + 2;
+            y = r.nextInt(134) + 2;
             //check there is space first
             int SP, len, parityAdjuster;
             
-            for(int h = -1; h < 14; h++) { //allow for border
+            for (int h = -1; h < 14; h++) { //-1 to 14 to allow for border
                 if (((y % 2) == 1) && ((h % 2) == 1)) {
                     parityAdjuster = 1;
                 } else {
                     parityAdjuster = 0;
                 }
                 //adjusted slightly to allow for a border of 1 around the hexagon
-                SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster - 1;
+                SP = (Math.abs(6 - h)) / 2 - 4 + parityAdjuster;
                 len = 15 - Math.abs(6 - h);
                 
                 isRoom = true;
@@ -463,7 +462,89 @@ public class World {
         }
         
         //place food blobs
+        //pick a random shape 1-3 then decide boundaries from there
+        for(int foodNo = 0; foodNo < 11; foodNo++) {
+            int shape = r.nextInt(3) + 1;
+            
+            if(shape == 1) { //diamond
+                isRoom = false;
+                while(!isRoom) {
+                    x = r.nextInt(142) + 2; //width of diamond is 5
+                    y = r.nextInt(138) + 2; //height of diamond is 9
+                    
+                    int SP, len, parityAdjuster;
+                    
+                    for(int h = -1; h < 10; h++) { //remember border of 1
+                        if (((y % 2) == 1) && ((h % 2) == 1)) {
+                            parityAdjuster = 1;
+                        } else {
+                            parityAdjuster = 0;
+                        }
+                        
+                        //these also adjusted, like with anthills
+                        SP = (Math.abs(4 - h)) / 2 - 3 + parityAdjuster;
+                        len = 7 - Math.abs(4 - h);
+                        
+                        isRoom = true;
+                        for(int i = 0; i < len; i++) {
+                            if(!cells[y+h][x+SP+i].isEmpty()) {
+                                isRoom = false;
+                            }
+                        }
+                    }
+                    if(isRoom) {
+                        placeFoodBlob(shape, x, y);
+                    }
+                    
+                }
+            } else { //parallelograms
+                isRoom = false;
+                while(!isRoom) {
+                    x = r.nextInt(138) + 2; //width of 9
+                    y = r.nextInt(142) + 2; //height of 5
+                    
+                    int SP, parityAdjuster;
+                    
+                    for(int h = -1; h < 6; h++) {
+                        if (((y % 2) == 1) && ((h % 2) == 1)) {
+                            parityAdjuster = 1;
+                        } else {
+                            parityAdjuster = 0;
+                        }
+                        
+                        if (shape == 2) { //left slanting
+                            SP = h / 2 + parityAdjuster - 1;
+                        } else {
+                            SP = parityAdjuster - (h + 1) / 2 - 1;
+                        }
+                        
+                        isRoom = true;
+                        for(int i = 0; i < 7; i++) { //length 7 because of borders
+                            if(!cells[y+h][x+SP+i].isEmpty()) {
+                                isRoom = false;
+                            }
+                        }
+                    }
+                    if(isRoom) {
+                        placeFoodBlob(shape, x, y);
+                    }
+                }
+            }
+        }
+        
         //place rocks
+        for(int i = 0; i < 14; i++) {
+            isRoom = false;
+            while(!isRoom) {
+                x = r.nextInt(146) + 2;
+                y = r.nextInt(146) + 2;
+                
+                if(cells[y][x].isEmpty()) {
+                    isRoom = true;
+                    cells[y][x].setRock(true);
+                }
+            }
+        }
     }
     
     /**
@@ -705,6 +786,24 @@ public class World {
     }
     
     /**
+     * Prints the world to the console as it would appear in a world file
+     */
+    public void printWorld() {
+        System.out.println(width);
+        System.out.println(height);
+        
+        for(int i = 0; i < height; i++) {
+            if(i % 2 == 1) { //odd row
+                System.out.print(" ");
+            }
+            for(int j = 0; j < width; j++) {
+                System.out.print(cells[i][j].getCellSymbol() + " ");
+            }
+            System.out.println();
+        }
+    }
+    
+    /**
      * Used when generating random worlds
      * @param colour
      * @param x
@@ -725,6 +824,45 @@ public class World {
             
             for(int i = 0; i < len; i++) {
                 cells[y+h][x+SP+i].anthill = colour;
+            }
+        }
+    }
+    
+    private void placeFoodBlob(int type, int x, int y) {
+        int SP, len, parityAdjuster;
+        
+        if (type == 1) { //diamond shape
+            for(int h = 0; h < 9; h++) {
+                if (((y % 2) == 1) && ((h % 2) == 1)) {
+                    parityAdjuster = 1;
+                } else {
+                    parityAdjuster = 0;
+                }
+                
+                SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
+                len = 5 - Math.abs(4 - h);
+                
+                for(int i = 0; i < len; i++) {
+                    cells[y+h][x+SP+i].setFood(5);
+                }
+            }
+        } else { //parallelograms
+            for(int h = 0; h < 5; h++) {
+                if (((y % 2) == 1) && ((h % 2) == 1)) {
+                    parityAdjuster = 1;
+                } else {
+                    parityAdjuster = 0;
+                }
+                
+                if (type == 2) { //left slanting
+                    SP = h / 2 + parityAdjuster;
+                } else {
+                    SP = parityAdjuster - (h + 1) / 2;
+                }
+                
+                for(int i = 0; i < 5; i++) {
+                    cells[y+h][x+SP+i].setFood(5);
+                }
             }
         }
     }
