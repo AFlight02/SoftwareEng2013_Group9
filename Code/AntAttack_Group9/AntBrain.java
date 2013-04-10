@@ -19,25 +19,17 @@ import java.util.regex.Pattern;
  * 
  * @author Alex
  */
-public class AntBrain {
-
-    //FSM brain; // need to find suitable FSM library/class
-	/*
-     * Alex: Perhaps we use a structure like this: BufferedReader reader; //
-     * Reads in AntBrain text file like those in examples for project
-     * FSMClassOfSomeKind fsm; // The Data structure of the fsm as read from the
-     * file
-     */
-    ArrayList<Instruction> fsm = new ArrayList();
-    int gamesPlayed;
-    int gamesWon;
-    int state;
+public final class AntBrain {
+    
+    private ArrayList<Instruction> fsm = new ArrayList();
+    private String name;
 
     /**
      * 
      * @param antBrainFile
      */
     public AntBrain(String antBrainFile) {
+        name = antBrainFile;
         try {
             if (checkAntBrainSyntax(antBrainFile)) {
                 BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
@@ -48,7 +40,12 @@ public class AntBrain {
                     Instruction i = null;
                     switch (input[0]) {
                         case "sense":
-                            i = new Sense(Sense.dirFromString(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Sense.condFromString(input[4]));
+                            String markerNum = "";
+                            if(input.length >= 6) {
+                                markerNum = input[5];
+                            }
+                            String cond = input[4] + markerNum;
+                            i = new Sense(Sense.dirFromString(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Sense.condFromString(cond));
                             break;
                         case "mark":
                             i = new Mark(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
@@ -149,5 +146,9 @@ public class AntBrain {
      */
     public Instruction getInstruction(int currState) {
         return fsm.get(currState);
+    }
+    
+    public String getName() {
+        return name;
     }
 }

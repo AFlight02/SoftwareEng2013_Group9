@@ -31,6 +31,7 @@ public class Ant {
         this.brain = brain;
         this.colour = colour;
         this.id = id;
+        this.state = 0;
     }
 
     /**

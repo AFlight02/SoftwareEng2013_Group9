@@ -309,7 +309,7 @@ public class Cell {
             } else if (ant != null) {
                 return "a";
             } else if (food != 0) {
-                return food + "";
+                return food + "";   
             } else {
                 switch(anthill) {
                     case "red" : return "+";

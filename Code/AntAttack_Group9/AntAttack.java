@@ -8,18 +8,14 @@
  */
 package AntAttack_Group9;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class AntAttack {
 
     private static GUI gui;
     private static Tournament tournament;
-
+    private static World testWorld;
     /**
      * 
      */
@@ -32,30 +28,21 @@ public class AntAttack {
      */
     public static void main(String[] args) {
         AntBrain placeholder = new AntBrain("cleverbrain1.brain");
-        World testWorld = new World();
-        /*
-        testWorld.cells = new Cell[2][3];
-        testWorld.height = 2;
-        testWorld.width = 3;
-        testWorld.cells[0][0] = new Cell(0,0);
-        testWorld.cells[0][0].rock = true;
-        testWorld.cells[0][1] = new Cell(0,1);
-        testWorld.cells[0][2] = new Cell(0,2);
-        testWorld.cells[0][2].ant = new Ant(placeholder, true, 0);
-        testWorld.cells[1][0] = new Cell(1,0);
-        testWorld.cells[1][0].ant = new Ant(placeholder, false, 0);
-        testWorld.cells[1][1] = new Cell(1,1);
-        testWorld.cells[1][1].food = 3;
-        testWorld.cells[1][2] = new Cell(1,2);
-        testWorld.cells[1][2].food = 1;
-        */
+        testWorld = new World();
         testWorld.generateRandomContestWorld();
-        testWorld.printWorld();
+        //testWorld.printWorld();
         
         AntAttack newGame = new AntAttack();
-        newGame.newTournament();
-        newGame.newGame();
 
+        initialiseGUI();
+        newTournament();
+        
+    }
+
+    /**
+     * 
+     */
+    public static void initialiseGUI() {
         gui = new GUI(testWorld);
         gui.initHex();
     }
@@ -63,33 +50,45 @@ public class AntAttack {
     /**
      * 
      */
-    public void initialiseGUI() {
-        // Call to GUI constructor and initialisation methods.
-    }
-
-    /**
-     * 
-     */
-    public void newTournament() {
+    public static void newTournament() {
         List<World> w = new ArrayList();
         tournament = new Tournament(w);
-        AntBrain b = new AntBrain("cleverbrain1.brain");
-        tournament.addCompetitors(b);
-        tournament.addCompetitors(b);
-        tournament.runTournament();
+        AntBrain a = new AntBrain("cleverbrain1.brain");
+        AntBrain b = new AntBrain("sample.ant");
+        AntBrain c = new AntBrain("cleverbrain2.brain");
+        AntBrain d = new AntBrain("cleverbrain3.brain");
+        AntBrain e = new AntBrain("cleverbrain4.brain");
+        AntBrain f = new AntBrain("horseshoe.brain");
+        AntBrain g = new AntBrain("sampleant.brain");
+        AntBrain h = new AntBrain("snakebrain.brain");
+        AntBrain i = new AntBrain("solution-1.brain");
+        
+        //My test should walk around a lot
+        AntBrain walk = new AntBrain("walker.brain");
+        
+        tournament.addCompetitors(walk);
+        tournament.addCompetitors(a);
+//        tournament.addCompetitors(c);
+//        tournament.addCompetitors(d);
+//        tournament.addCompetitors(e);
+//        tournament.addCompetitors(f);
+//        tournament.addCompetitors(g);
+//        tournament.addCompetitors(h);
+//        tournament.addCompetitors(i);
+        
+        
+        
+        tournament.worlds.add(testWorld);
+        List<AntBrain> winners = tournament.runTournament(gui);
+        for(AntBrain br : winners) {
+            System.out.println("Winner: " + br.getName());
+        }
     }
 
     /**
      * 
      */
-    public void newGame() {
-        tournament.runTournament();
-    }
-
-    /**
-     * 
-     */
-    public void newWorld() {
+    public static void newWorld() {
         tournament.worlds.add(null);
     }
 }

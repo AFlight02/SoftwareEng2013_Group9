@@ -3,7 +3,7 @@
  *
  * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
  * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
- * @version 0.1 TODO
+ * @version 0.1
  */
 package AntAttack_Group9;
 
@@ -72,7 +72,7 @@ public class GUI {
     /**
      *
      */
-    public void updateUI() {
-        // On game step(), update graphical display of the game world
+    public void updateUI(World w) {
+        hexgrid.updateGrid(w);
     }
 }

@@ -58,10 +58,12 @@ public class Tournament {
      * Sets up and runs the tournament - run this after all desired ant brains
      * have been added.
      */
-    public void runTournament() {
+    public List<AntBrain> runTournament(GUI gui) {
         int numCompetitors = antBrains.size();
         scores = new int[numCompetitors]; //can init scores[] now that we know how many brains there are
 
+        int gameCounter = 0;
+        
         if (numCompetitors > 1) {
             List<AntBrain> winners;
 
@@ -69,16 +71,18 @@ public class Tournament {
                 for (int j = 0; j < numCompetitors; j++) {
                     for (World w : worlds) {
                         if (i != j) {
-                            playMatch(i, j, w);
-                            playMatch(j, i, w);
+                            System.out.println("Playing game " + gameCounter++);
+                            playMatch(i, j, w, gui);
+                            playMatch(j, i, w, gui);
                         }
                     }
                 }
             }
-            winners = declareWinner(); //then give this to the user somehow (GUI?)
+            return winners = declareWinner(); //then give this to the user somehow (GUI?)
         } else {
             //return error or throw exception etc. - need at least 2 brains for competition
             System.out.println("Must have at least 2 ant brains to start a tournament!");
+            return null;
         }
     }
 
@@ -90,11 +94,12 @@ public class Tournament {
      * @param blackBrain the list/score index of opponent 2
      * @param world the world the match is played on
      */
-    private void playMatch(int redBrain, int blackBrain, World world) {
+    private void playMatch(int redBrain, int blackBrain, World world, GUI gui) {
         //code to run a game. Update this later once World class has been written
         Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
         game.loadWorld(world);
-        game.playGame();
+        game.setupGame();
+        game.playGame(gui);
 
         int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
 

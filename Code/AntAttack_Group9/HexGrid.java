@@ -16,14 +16,14 @@ public class HexGrid {
     final static Color COLOURCELL = Color.ORANGE;
     final static Color COLOURGRID = Color.BLACK;
     final static Color COLOURONE = new Color(255, 255, 255, 200);
-    final static Color COLOURONETXT = Color.BLUE;
+    final static Color COLOURBLUE = Color.BLUE;
     final static Color COLOURTWO = new Color(0, 0, 0, 200);
     final static Color COLOURTWOTXT = new Color(255, 100, 255);
     final static int EMPTY = 0;
     final static int BSIZE = 150; //board size.
-    final static int HEXSIZE = 10;	//hex size in pixels
+    final static int HEXSIZE = 6;	//hex size in pixels
     final static int BORDERS = 15;
-    final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3; //screen size (vertical dimension).
+    final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3 + 200; //screen size (vertical dimension).
     public final static boolean orFLAT = true;
     public final static boolean orPOINT = false;
     public static boolean ORIENT = orFLAT; //this is not used. We're never going to do pointy orientation
@@ -34,37 +34,31 @@ public class HexGrid {
     private static int r = 0;	// radius of inscribed circle (centre to middle of each side). r= h/2
     private static int h = 0;	// height. Distance between centres of two adjacent hexes. Distance between two opposite sides in a hex.
     int[][] board = new int[BSIZE][BSIZE];
+    
+    private DrawingPanel panel;
+    private JFrame frame;
+    private Container content;
 
     private World world;
     
+    public HexGrid() {
+        
+    }
+    
     void initGame(World w) {
-
         world = w;
         setXYasVertex(false); //RECOMMENDED: leave this as FALSE.
-
         setHeight(HEXSIZE); //Either setHeight or setSize must be run to initialize the hex
-
-        for (int i = 0; i < BSIZE; i++) {
-            for (int j = 0; j < BSIZE; j++) {
-                board[i][j] = EMPTY;
-            }
-        }
-        
-        //set up board here
-        board[0][1] = (int) 'A';
-        board[3][3] = (int) 'A';
-        board[4][3] = (int) 'Q';
-        board[4][4] = -(int) 'B';
     }
 
     public void createAndShowGUI() {
-        DrawingPanel panel = new DrawingPanel();
+        panel = new DrawingPanel();
 
 
         //JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame("Hex Testing 4");
+        frame = new JFrame("Game Map");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Container content = frame.getContentPane();
+        content = frame.getContentPane();
         content.add(panel);
         //this.add(panel); -- cannot be done in a static context
         //for hexes in the FLAT orientation, the height of a 10x10 grid is 1.1764 * the width. (from h / (s+t))
@@ -72,6 +66,13 @@ public class HexGrid {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+    
+    public void updateGrid(World w) {
+        world = w;
+        panel.updatePanel();
+        content = frame.getContentPane();
+        content.add(panel);
     }
 
     class DrawingPanel extends JPanel {
@@ -81,12 +82,17 @@ public class HexGrid {
         public DrawingPanel() {
             setBackground(Color.WHITE);
         }
+        
+        public void updatePanel() {
+            repaint();
+        }
 
         @Override
         public void paintComponent(Graphics g) {
+            super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
             super.paintComponent(g2);
 //            //draw grid
 //            for (int i = 0; i < BSIZE; i++) {
@@ -107,26 +113,29 @@ public class HexGrid {
                 for (int j = 0; j < world.width; j++) {
                     drawHex(i, j, g2);
                     Cell c = world.cells[i][j];
-                    if(c.isEmpty()) {
-                        fillHex(i, j, 0, g2);
-                    } else if (c.rock) {
-                        fillHex(i, j, 99, g2);
-                    } else if (c.anthill != null) {
-                        if(c.anthill.equalsIgnoreCase("black")) {
-                            fillHex(i, j, 30, g2);
-                        } else if(c.anthill.equalsIgnoreCase("red")) {
-                            fillHex(i, j, 31, g2);
-                        }
-                    } else if (c.ant != null) {
+                    if (c.ant != null) {
                         if(c.ant.getColour()) {
                             fillHex(i, j, 6, g2);
                         } else {
                             fillHex(i, j, 7, g2);
                         }
-                    } else if (c.food > 0) {
-                        fillHex(i, j, c.food, g2);
                     }
-                    
+                    else if (c.food > 0) {
+                        fillHex(i, j, c.food, g2);
+                    } 
+                    else if (c.rock) {
+                        fillHex(i, j, 99, g2);
+                    } 
+                    else if (c.anthill != null) {
+                        if(c.anthill.equalsIgnoreCase("black")) {
+                            fillHex(i, j, 30, g2);
+                        } else if(c.anthill.equalsIgnoreCase("red")) {
+                            fillHex(i, j, 31, g2);
+                        }
+                    } 
+                    else if(c.isEmpty()) {
+                        fillHex(i, j, 0, g2);
+                    } 
                 }
             }
 
@@ -256,128 +265,100 @@ public class HexGrid {
         switch(n) {
             // BLANK
             case 0:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x, y));
                 break;
             // FOOD
             case 1:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
-                g2.drawString("" + n, x + t + BORDERS, y + r + BORDERS + 4);
+                g2.setColor(COLOURBLUE);
+                g2.drawString("" + 1, x + t + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 2:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
-                g2.drawString("" + n, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.setColor(COLOURBLUE);
+                g2.drawString("" + 2, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 3:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
-                g2.drawString("" + n, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.setColor(COLOURBLUE);
+                g2.drawString("" + 3, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 4:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
-                g2.drawString("" + n, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.setColor(COLOURBLUE);
+                g2.drawString("" + 4, x + r + BORDERS - 3, y + r + BORDERS + 1);
                 break;
             case 5:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
-                g2.drawString("" + n, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.setColor(COLOURBLUE);
+                g2.drawString("" + 5, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             // END FOOD
             // BLACK ANT
             case 6:
                 g2.setColor(COLOURBLACK);
                 g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
                 break;
             // RED ANT
             case 7:
                 g2.setColor(COLOURRED);
                 g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURONETXT);
                 break;
             // BLACK MARKERS
             case 10:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("" + 1, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 1, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 11:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("" + 2, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 2, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 12:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("" + 3, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 3, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 13:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("" + 4, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 4, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 14:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("" + 5, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 5, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 15:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("" + 6, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 6, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             // END BLACK MARKERS
             // RED MARKERS
             case 20:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("" + 1, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 1, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 21:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("" + 2, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 2, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 22:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("" + 3, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 3, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 23:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("" + 4, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 4, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 24:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("" + 5, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 5, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             case 25:
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("" + 6, x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("" + 6, x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             // END RED MARKERS
             // BLACK ANTHILL
             case 30: 
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURBLACK);
-                g2.drawString("H", x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("H", x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             // RED ANTHILL
             case 31: 
-                g2.fillPolygon(hex(x, y));
                 g2.setColor(COLOURRED);
-                g2.drawString("H", x + r + BORDERS, y + r + BORDERS + 4);
+                g2.drawString("H", x + r + BORDERS - 3, y + r + BORDERS + 4);
                 break;
             // ROCK
             case 99:
@@ -385,21 +366,5 @@ public class HexGrid {
                 g2.fillPolygon(hex(x, y));
                 break;
         }
-//        if (n < 0) {
-//            g2.setColor(COLOURONE);
-//            g2.fillPolygon(hex(x, y));
-//            g2.setColor(COLOURONETXT);
-//            c = (char) (-n);
-//            g2.drawString("" + c, x + r + BORDERS, y + r + BORDERS + 4); //FIXME: handle XYVertex
-//            //g2.drawString(x+","+y, x+r+BORDERS, y+r+BORDERS+4);
-//        }
-//        if (n > 0) {
-//            g2.setColor(COLOURTWO);
-//            g2.fillPolygon(hex(x, y));
-//            g2.setColor(COLOURTWOTXT);
-//            c = (char) n;
-//            g2.drawString("" + c, x + r + BORDERS, y + r + BORDERS + 4); //FIXME handle XYVertex
-//            //g2.drawString(i+","+j, x+r+BORDERS, y+r+BORDERS+4);
-//        }
     }
 }

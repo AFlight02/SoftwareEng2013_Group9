@@ -21,15 +21,17 @@ public class Gameplay {
     List<Ant> ants;
     AntBrain redAntBrain;
     AntBrain blackAntBrain;
+    double interpolation = 0;
+    final int TICKS_PER_SECOND = 25;
+    final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
+    final int MAX_FRAMESKIP = 5;
 
     /**
-     * 
+     *
      * @param red
      * @param black
      */
     public Gameplay(AntBrain red, AntBrain black) {
-        // For Kirstie : Pass constructor the two AntBrains for play, pass them to loadAntBrains method OR remove that method and just load straight into params
-// Constructor
         world = new World();
         this.round = 0;
         this.redFood = 0;
@@ -38,44 +40,43 @@ public class Gameplay {
         this.blackAntBrain = black;
         ants = new ArrayList<Ant>();
         loadAntBrains(redAntBrain, blackAntBrain);
-
-
     }
 
     /**
-     * 
+     *
      */
     public void generateWorld() {
 // Generate a new World randomly
-
     }
 
     /**
-     * 
+     *
      */
-    public void playGame() {
-        //new AntAttack();
+    public void playGame(GUI gui) {
+        // TEST WITH 3000 - CHANGE BACK!!!!
+        //world.printWorld();
         for (int i = 0; i < 300000; i++) {
-            stepGame();
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {}
+            stepGame(gui);
+            //System.out.println("Step " + i);
         }
-
+        //world.printWorld();
     }
 
     /**
-     * 
+     *
      * @param uploadWorld
      */
     public void loadWorld(World uploadWorld) {
         world = uploadWorld;
-
     }
 
     /**
-     * 
+     *
      */
-    public void stepGame() {
-
-
+    public void stepGame(GUI gui) {
         for (int i = 0; i < world.cells.length; i++) {
             for (int j = 0; j < world.cells[i].length; j++) {
                 if (world.cells[i][j].ant != null) {
@@ -145,19 +146,15 @@ public class Gameplay {
                             a.setFood(true);
                             world.findAnt(a.getID()).removeFood();
                             a.setState(p.getS1());
-
                         } else {
                             a.setState(p.getS2());
                         }
                     }
 
-
                     if (nextInstruction instanceof Turn) {
                         Turn t = (Turn) nextInstruction;
                         a.setDirection(a.turn(t.getTurnDir()));
                         a.setState(t.getS1());
-
-
                     }
 
                     if (nextInstruction instanceof Drop) {
@@ -166,7 +163,6 @@ public class Gameplay {
                             world.findAnt(a.getID()).setFood(world.findAnt(a.getID()).getFood() + 1);
                         }
                         a.setState(d.getS1());
-
                     }
 
                     if (nextInstruction instanceof Move) {
@@ -174,59 +170,63 @@ public class Gameplay {
                         int[] loc = world.findAnt(a.getID()).adjacentCell(a.getDirection());
                         if (a.getResting() <= 0) {
                             if (!world.getCell(loc).getRock() && world.getCell(loc).getAnt() == null) {
-                                world.getCell(loc).setAnt(a);
                                 world.findAnt(a.getID()).removeAnt();
+                                world.getCell(loc).setAnt(a);
                                 a.setResting(15);
                                 a.setState(m.getS1());
-
                             }
 
                         } else {
                             a.setState(m.getS2());
                         }
-
-
                     }
-
-
-
                 }
                 a.decrementResting();
             }
         }
-
+        gui.updateUI(world);
     }
 
     /**
-     * 
+     *
      */
     public void endGame() {
 // On completion of all steps finish the game, total scores etc.
     }
 
     /**
-     * 
+     *
      */
     public void setupGame() {
         world.checkValidWorld();
-
-// Calls World syntax checks, AntBrain syntax checks, begins stepping through game instance
+        int id = 0;
+        for(int i=0; i<world.cells.length; i++) {
+            for(int j=0; j<world.cells[i].length; j++) {
+                if(world.cells[i][j].anthill.equalsIgnoreCase("black")) {
+                    Ant bA = new Ant(blackAntBrain, true, id++);
+                    world.cells[i][j].setAnt(bA);
+                    ants.add(bA);
+                } else if(world.cells[i][j].anthill.equalsIgnoreCase("red")) {
+                     Ant rA = new Ant(redAntBrain, false, id++);
+                    world.cells[i][j].setAnt(rA);
+                    ants.add(rA);
+                }
+            }
+        }
     }
 
     /**
-     * 
+     *
      * @param red
      * @param black
      */
-    public void loadAntBrains(AntBrain red, AntBrain black) { // Kirstie: Possibly remove this method with reference to comment on constructor!
-// Loads red and black AntBrains
+    public void loadAntBrains(AntBrain red, AntBrain black) {
         redAntBrain = red;
         blackAntBrain = black;
-
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int declareWinner() {

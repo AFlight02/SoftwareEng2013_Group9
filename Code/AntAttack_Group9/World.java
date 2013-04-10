@@ -564,8 +564,10 @@ public class World {
         Cell found = null;
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                if (cells[i][j].ant.getID() == id) {
-                    found = cells[i][j];
+                if(cells[i][j].ant != null) {
+                    if (cells[i][j].ant.getID() == id) {
+                        found = cells[i][j];
+                    }
                 }
             }
         }
@@ -783,14 +785,6 @@ public class World {
      */
     public void clearAntFromCell(int cell) {
         // Remove Ant from the cell
-    }
-
-    /**
-     * 
-     */
-    public void visualiseWorld() {
-        // NEW: Call to print world to command line representation for visualisation.
-        // Later: Write world state to GUI for graphical visualisation.
     }
     
     /**
