@@ -100,7 +100,7 @@ public class Tournament {
         game.loadWorld(world);
         game.setupGame();
         game.playGame(gui);
-
+        game.endGame();
         int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
 
         switch (winner) {
@@ -130,13 +130,11 @@ public class Tournament {
                 highestScore = s;
             }
         }
-
         for (int i = 0; i < scores.length; i++) {
             if (scores[i] == highestScore) {
                 winningBrains.add(antBrains.get(i));
             }
         }
-
         return winningBrains;
     }
 }

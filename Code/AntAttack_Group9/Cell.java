@@ -135,11 +135,13 @@ public class Cell {
         for (int i = 0; i < 6; i++) {
             int[] adjCell = adjacentCell(i);
             Cell cell = world.getCell(adjCell);
-            Ant adjAnt = cell.getAnt();
-            if (adjAnt.getColour()) {
-                adjacentAntsBlack++;
-            } else {
-                adjacentAntsRed++;
+            if(cell != null && cell.getAnt() != null) {
+                Ant adjAnt = cell.getAnt();
+                if (adjAnt.getColour()) {
+                    adjacentAntsBlack++;
+                } else {
+                    adjacentAntsRed++;
+                }
             }
         }
     }
@@ -223,6 +225,9 @@ public class Cell {
      */
     public void removeAnt() {
         // Set ant to null
+        if(!this.ant.isAlive() && this.ant.getFood()) {
+            this.setFood(food++);
+        }
         this.ant = null;
     }
 
@@ -300,22 +305,22 @@ public class Cell {
     }
     
     /**
-         * Used for printing out a world to a file
-         * @return 
-         */
-        public String getCellSymbol() {
-            if (rock) {
-                return "#";
-            } else if (ant != null) {
-                return "a";
-            } else if (food != 0) {
-                return food + "";   
-            } else {
-                switch(anthill) {
-                    case "red" : return "+";
-                    case "black" : return "-";
-                    default: return ".";
-                }
+    * Used for printing out a world to a file
+    * @return 
+    */
+    public String getCellSymbol() {
+        if (rock) {
+            return "#";
+        } else if (ant != null) {
+            return "a";
+        } else if (food != 0) {
+            return food + "";   
+        } else {
+            switch(anthill) {
+                case "red" : return "+";
+                case "black" : return "-";
+                default: return ".";
             }
         }
+    }
 }

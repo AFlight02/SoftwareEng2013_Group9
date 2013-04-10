@@ -12,19 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Gameplay {
+public final class Gameplay {
 
-    World world;
-    int round;
-    int redFood;
-    int blackFood;
-    List<Ant> ants;
-    AntBrain redAntBrain;
-    AntBrain blackAntBrain;
-    double interpolation = 0;
-    final int TICKS_PER_SECOND = 25;
-    final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
-    final int MAX_FRAMESKIP = 5;
+    private World world;
+    private List<Ant> ants;
+    private AntBrain redAntBrain;
+    private AntBrain blackAntBrain;
+    
+    private int turn;
+    private int redFood;
+    private int blackFood;
 
     /**
      *
@@ -33,12 +30,12 @@ public class Gameplay {
      */
     public Gameplay(AntBrain red, AntBrain black) {
         world = new World();
-        this.round = 0;
+        this.turn = 0;
         this.redFood = 0;
         this.blackFood = 0;
         this.redAntBrain = red;
         this.blackAntBrain = black;
-        ants = new ArrayList<Ant>();
+        ants = new ArrayList<>();
         loadAntBrains(redAntBrain, blackAntBrain);
     }
 
@@ -46,7 +43,8 @@ public class Gameplay {
      *
      */
     public void generateWorld() {
-// Generate a new World randomly
+        world = new World();
+        world.generateRandomContestWorld();
     }
 
     /**
@@ -54,15 +52,16 @@ public class Gameplay {
      */
     public void playGame(GUI gui) {
         // TEST WITH 3000 - CHANGE BACK!!!!
-        //world.printWorld();
-        for (int i = 0; i < 3000; i++) {
+        world.printWorld();
+        for (int i = 0; i < 300000; i++) {
+            turn = i;
             stepGame(gui);
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException e) {}
+//            try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e) {}
             //System.out.println("Step " + i);
         }
-        //world.printWorld();
+        world.printWorld();
     }
 
     /**
@@ -77,18 +76,22 @@ public class Gameplay {
      *
      */
     public void stepGame(GUI gui) {
-        for (int i = 0; i < world.cells.length; i++) {
-            for (int j = 0; j < world.cells[i].length; j++) {
-                if (world.cells[i][j].ant != null) {
-                    if (world.cells[i][j].ant.getColour()) {
-                        if (world.cells[i][j].getAdjacentAntsRed() >= 5) {
-                            world.cells[i][j].ant.kill();
-                            world.cells[i][j].removeAnt();
+        for (int i = 0; i < world.height; i++) {
+            for (int j = 0; j < world.width; j++) {
+                int[] currCell = new int[2];
+                currCell[0] = i;
+                currCell[1] = j;
+                world.getCell(currCell).calculateAdjacentAnts(world);
+                if (world.getCell(currCell).ant != null) {
+                    if (world.getCell(currCell).ant.getColour()) {
+                        if (world.getCell(currCell).getAdjacentAntsRed() >= 5) {
+                            world.getCell(currCell).ant.kill();
+                            world.getCell(currCell).removeAnt();
                         }
                     } else {
-                        if (world.cells[i][j].getAdjacentAntsBlack() >= 5) {
-                            world.cells[i][j].ant.kill();
-                            world.cells[i][j].removeAnt();
+                        if (world.getCell(currCell).getAdjacentAntsBlack() >= 5) {
+                            world.getCell(currCell).ant.kill();
+                            world.getCell(currCell).removeAnt();
                         }
                     }
                 }
@@ -176,7 +179,11 @@ public class Gameplay {
                                     a.setResting(15);
                                     a.setPostition(newCell);
                                     a.setState(m.getS1());
+                                } else {
+                                    a.setState(m.getS2());
                                 }
+                            } else {
+                                a.setState(m.getS2());
                             }
 
                         } else {
@@ -194,7 +201,17 @@ public class Gameplay {
      *
      */
     public void endGame() {
-// On completion of all steps finish the game, total scores etc.
+        for(int i=1; i<world.height - 1; i++) {
+            for(int j=1; j<world.width - 1; j++) {
+                if(!world.cells[i][j].anthill.equalsIgnoreCase("none")) {
+                    if(world.cells[i][j].anthill.equalsIgnoreCase("black")) {
+                        this.blackFood += world.cells[i][j].getFood();
+                    } else if (world.cells[i][j].anthill.equalsIgnoreCase("red")) {
+                        this.redFood += world.cells[i][j].getFood();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -246,7 +263,7 @@ public class Gameplay {
         } else {
             winner = -1;
         }
-// Calculates winners and returns 0 for Draw, 1 for Black win, 2 for Red win, -1 for error
+        // Calculates winners and returns 0 for Draw, 1 for Black win, 2 for Red win, -1 for error
         return winner;
     }
 }
