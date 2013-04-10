@@ -21,7 +21,7 @@ public class HexGrid {
     final static Color COLOURTWOTXT = new Color(255, 100, 255);
     final static int EMPTY = 0;
     final static int BSIZE = 150; //board size.
-    final static int HEXSIZE = 6;	//hex size in pixels
+    final static int HEXSIZE = 20;	//hex size in pixels
     final static int BORDERS = 15;
     final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3 + 200; //screen size (vertical dimension).
     public final static boolean orFLAT = true;

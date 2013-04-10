@@ -48,47 +48,47 @@ public class Cell {
         int[] adjCell = new int[2];
         switch (dir) {
             case 0:
-                adjCell[0] = pos[0]++;
-                adjCell[1] = pos[1];
+                adjCell[0] = pos[0];
+                adjCell[1] = pos[1] + 1;
                 break;
             case 1:
-                if (pos[1] % 2 == 0) {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1]++;
+                if (pos[0] % 2 == 0) {
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1];
                 } else {
-                    adjCell[0] = pos[0]++;
-                    adjCell[1] = pos[1]++;
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1] + 1;
                 }
                 break;
             case 2:
-                if (pos[1] % 2 == 0) {
-                    adjCell[0] = pos[0]--;
-                    adjCell[1] = pos[1]++;
+                if (pos[0] % 2 == 0) {
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1] - 1;
                 } else {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1]++;
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1];
                 }
                 break;
             case 3:
-                adjCell[0] = pos[0]--;
-                adjCell[1] = pos[1];
+                adjCell[0] = pos[0];
+                adjCell[1] = pos[1] - 1;
                 break;
             case 4:
-                if (pos[1] % 2 == 0) {
-                    adjCell[0] = pos[0]--;
-                    adjCell[1] = pos[1]--;
+                if (pos[0] % 2 == 0) {
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1] - 1;
                 } else {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1]--;
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1];
                 }
                 break;
             case 5:
-                if (pos[1] % 2 == 0) {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1]--;
+                if (pos[0] % 2 == 0) {
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1];
                 } else {
-                    adjCell[0] = pos[0]++;
-                    adjCell[1] = pos[1]--;
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1] + 1;
                 }
                 break;
         }

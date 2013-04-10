@@ -53,7 +53,7 @@ public final class AntBrain {
                         case "unmark":
                             i = new Unmark(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
                             break;
-                        case "pickUp":
+                        case "pickup":
                             i = new PickUp(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
                             break;
                         case "drop":

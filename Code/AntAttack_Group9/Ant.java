@@ -19,8 +19,21 @@ public class Ant {
     private int state;
     private int direction;
     private int id;
-    private boolean alive = true;
+    private int[] position = new int[2];
+    private boolean alive;
 
+    public Ant(boolean colour) {
+        this.colour = colour;
+        this.brain = null;
+        this.hasFood = false;
+        this.resting = 0;
+        this.state = 0;
+        this.direction = 0;
+        this.id = -1;
+        this.alive = true;
+        this.position[0] = -1;
+        this.position[1] = -1;
+    }
     /**
      * 
      * @param brain
@@ -31,7 +44,13 @@ public class Ant {
         this.brain = brain;
         this.colour = colour;
         this.id = id;
+        this.hasFood = false;
+        this.resting = 0;
         this.state = 0;
+        this.direction = 0;
+        this.alive = true;
+        this.position[0] = -1;
+        this.position[1] = -1;
     }
 
     /**
@@ -55,6 +74,10 @@ public class Ant {
      */
     public int getState() {
         return this.state;
+    }
+    
+    public int[] getPosition() {
+        return this.position;
     }
 
     /**
@@ -104,6 +127,26 @@ public class Ant {
         return this.colour;
     }
 
+     /**
+     * 
+     * @param newId
+     */
+    public void setId(int newId) {
+        this.id = newId;
+    }
+    
+    public void setPostition(int[] newPos) {
+        this.position = newPos;
+    }
+    
+    /**
+     * 
+     * @param newBrain
+     */
+    public void setBrain(AntBrain newBrain) {
+        this.brain = newBrain;
+    }
+    
     /**
      * 
      * @param newState

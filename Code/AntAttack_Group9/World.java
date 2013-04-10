@@ -75,7 +75,7 @@ public class World {
                 for (int i = 0; i < width; i++) {
                     Matcher m = cellPat.matcher(rowCells[i]);
                     if (m.matches()) {
-                        Cell newCell = new Cell(i, rowCnt);
+                        Cell newCell = new Cell(rowCnt, i);
                         switch (rowCells[i]) {
                             case "#":
                                 newCell.setRock(true);
@@ -417,7 +417,7 @@ public class World {
         
         for(int i = 0; i < 150; i++) {
             for(int j = 0; j < 150; j++) {
-                cells[i][j] = new Cell(j, i);
+                cells[i][j] = new Cell(i, j);
             }
         }
         
@@ -554,25 +554,6 @@ public class World {
             }
         }
     }
-    
-    /**
-     *
-     * @param id the ant ID being searched for
-     * @return the cell containing the ant, or null if ant not found
-     */
-    public Cell findAnt(int id) {
-        Cell found = null;
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                if(cells[i][j].ant != null) {
-                    if (cells[i][j].ant.getID() == id) {
-                        found = cells[i][j];
-                    }
-                }
-            }
-        }
-        return found;
-    }
 
     /**
      * 
@@ -582,139 +563,151 @@ public class World {
      * @return
      */
     public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
-        if (cond == Sense.condition.FRIEND) {
-            if (a.getColour()) {
-                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+        if((cell[0] < height && cell[1] < width) && (cell[0] >= 0 && cell[1] >= 0)) {
+            if (cond == Sense.condition.FRIEND) {
+                if (cells[cell[0]][cell[1]].getAnt() != null) {
+                    if (a.getColour()) {
+                        if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+            if (cond == Sense.condition.FOE) {
+                if (cells[cell[0]][cell[1]].getAnt() != null) {
+                    if (a.getColour()) {
+                        if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+            if (cond == Sense.condition.FRIENDWITHFOOD) {
+                if (cells[cell[0]][cell[1]].getAnt() != null) {
+                    if (a.getColour()) {
+                        if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return cells[cell[0]][cell[1]].getAnt().getFood();
+                        }
+                    } else {
+                        if (!cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return cells[cell[0]][cell[1]].getAnt().getFood();
+                        }
+                    }
+                }
+            }
+            if (cond == Sense.condition.FOEWITHFOOD) {
+                if (cells[cell[0]][cell[1]].getAnt() != null) {
+                    if (a.getColour()) {
+                        if (!cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return cells[cell[0]][cell[1]].getAnt().getFood();
+                        }
+                    } else {
+                        if (cells[cell[0]][cell[1]].getAnt().getColour()) {
+                            return cells[cell[0]][cell[1]].getAnt().getFood();
+                        }
+                    }
+                }
+            }
+            if (cond == Sense.condition.FOOD) {
+                if (cells[cell[0]][cell[1]].getFood() != 0) {
                     return true;
-                } else {
-                    return false;
-                }
-            } else {
-                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return false;
-                } else {
-                    return true;
                 }
             }
-        }
-        if (cond == Sense.condition.FOE) {
-            if (a.getColour()) {
-                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return true;
-                } else {
-                    return false;
-                }
+            if (cond == Sense.condition.ROCK) {
+                return cells[cell[0]][cell[1]].getRock();
             }
-        }
-        if (cond == Sense.condition.FRIENDWFOOD) {
-            if (a.getColour()) {
-                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return cells[cell[0]][cell[1]].getAnt().getFood();
-                }
-            } else {
-                if (!cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return cells[cell[0]][cell[1]].getAnt().getFood();
-                }
+            if (cond == Sense.condition.MARKER0) {
+                //BLACK
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+                return temp[0];
             }
-        }
-        if (cond == Sense.condition.FOEWFOOD) {
-            if (a.getColour()) {
-                if (!cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return cells[cell[0]][cell[1]].getAnt().getFood();
-                }
-            } else {
-                if (cells[cell[0]][cell[1]].getAnt().getColour()) {
-                    return cells[cell[0]][cell[1]].getAnt().getFood();
-                }
+            if (cond == Sense.condition.MARKER1) {
+                //BLACK
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+                return temp[1];
             }
-        }
-        if (cond == Sense.condition.FOOD) {
-            if (cells[cell[0]][cell[1]].getFood() != 0) {
-                return true;
+            if (cond == Sense.condition.MARKER2) {
+                //BLACK
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+                return temp[2];
             }
-        }
-        if (cond == Sense.condition.ROCK) {
-            return cells[cell[0]][cell[1]].getRock();
-        }
-        if (cond == Sense.condition.MARKER0) {
-            //BLACK
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-            return temp[0];
-        }
-        if (cond == Sense.condition.MARKER1) {
-            //BLACK
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-            return temp[1];
-        }
-        if (cond == Sense.condition.MARKER2) {
-            //BLACK
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-            return temp[2];
-        }
-        if (cond == Sense.condition.MARKER3) {
-            //BLACK
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-            return temp[3];
-        }
-        if (cond == Sense.condition.MARKER4) {
-            //BLACK
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-            return temp[4];
-        }
-        if (cond == Sense.condition.MARKER5) {
-            //BLACK
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
-            return temp[5];
-        }
-        if (cond == Sense.condition.FOEMARKER) {
-            boolean[] temp = cells[cell[0]][cell[1]].getMarkers(!a.getColour());
-            int hasMarkers = 0;
-            for (int i = 0; i < temp.length; i++) {
-                if (temp[i]) {
-                    hasMarkers++;
+            if (cond == Sense.condition.MARKER3) {
+                //BLACK
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+                return temp[3];
+            }
+            if (cond == Sense.condition.MARKER4) {
+                //BLACK
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+                return temp[4];
+            }
+            if (cond == Sense.condition.MARKER5) {
+                //BLACK
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(a.getColour());
+                return temp[5];
+            }
+            if (cond == Sense.condition.FOEMARKER) {
+                boolean[] temp = cells[cell[0]][cell[1]].getMarkers(!a.getColour());
+                int hasMarkers = 0;
+                for (int i = 0; i < temp.length; i++) {
+                    if (temp[i]) {
+                        hasMarkers++;
+                    }
                 }
-            }
-            if (hasMarkers > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        if (cond == Sense.condition.HOME) {
-            if (a.getColour()) { //BLACK
-                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else { //RED
-                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+                if (hasMarkers > 0) {
                     return true;
                 } else {
                     return false;
                 }
             }
-        }
-        if (cond == Sense.condition.FOEHOME) {
-            if (a.getColour()) { //BLACK
-                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else { //RED
-                if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
-                    return false;
-                } else {
-                    return true;
+            if (cond == Sense.condition.HOME) {
+                if (a.getColour()) { //BLACK
+                    if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else { //RED
+                    if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
+            if (cond == Sense.condition.FOEHOME) {
+                if (a.getColour()) { //BLACK
+                    if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("black")) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else { //RED
+                    if (cells[cell[0]][cell[1]].getAnthill().equalsIgnoreCase("red")) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            System.err.println("Invalid Input CHECK ME");
         }
         return false;
     }
@@ -735,58 +728,13 @@ public class World {
      * @return
      */
     public Cell getCell(int[] cell) {
-        return cells[cell[0]][cell[1]];
+        if((cell[0] < height && cell[1] < width) && (cell[0] >= 0 && cell[1] >= 0)) {
+            return cells[cell[0]][cell[1]];
+        } else {
+            return null;
+        }
     }
 
-    /**
-     * 
-     * @param cell
-     */
-    public void checkCellStatus(int cell) {
-        // Return status of cell 
-    }
-
-    /**
-     * 
-     */
-    public void countFood() {
-    }
-
-    /**
-     * 
-     * @param cell
-     */
-    public void setFoodAtCell(int cell) {
-        // Modify food at cell
-    }
-
-    /**
-     * 
-     * @param cell
-     * @param marker
-     * @param colour
-     */
-    public void setMarkAtCell(int cell, int marker, boolean colour) {
-        // Mark cell with number marker of colour where true = black, false = red (need to standardise the bool
-        // representation as concrete for the project as true always == black and false always == red!)
-    }
-
-    /**
-     * 
-     * @param antId
-     */
-    public void killAnt(int antId) {
-        // Use findAnt(antId) and make call to clearAntFromCell(cellId). Call Gameplay to remove Ant from list of Ants
-    }
-
-    /**
-     * 
-     * @param cell
-     */
-    public void clearAntFromCell(int cell) {
-        // Remove Ant from the cell
-    }
-    
     /**
      * Prints the world to the console as it would appear in a world file
      */
@@ -864,6 +812,23 @@ public class World {
                 
                 for(int i = 0; i < 5; i++) {
                     cells[y+h][x+SP+i].setFood(5);
+                }
+            }
+        }
+    }
+    
+    public void placeAnts() {
+        for (int i = 1; i < height - 1; i++) {
+            for (int j = 1; j < width - 1; j++) {
+                int[] currPos = new int[2];
+                currPos[0] = i;
+                currPos[1] = j;
+                if(cells[i][j].anthill.equalsIgnoreCase("black")) {
+                    cells[i][j].ant = new Ant(true);
+                    cells[i][j].ant.setPostition(currPos);
+                } else if(cells[i][j].anthill.equalsIgnoreCase("red")) {
+                    cells[i][j].ant = new Ant(false);
+                    cells[i][j].ant.setPostition(currPos);
                 }
             }
         }

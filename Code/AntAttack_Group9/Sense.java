@@ -25,8 +25,8 @@ public class Sense extends Instruction {
     public enum condition {
         FRIEND,
         FOE,
-        FRIENDWFOOD,
-        FOEWFOOD,
+        FRIENDWITHFOOD,
+        FOEWITHFOOD,
         FOOD,
         ROCK,
         MARKER0,
