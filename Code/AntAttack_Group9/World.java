@@ -48,8 +48,8 @@ public class World {
             String cellStr = "[#\\.\\+\\-[1-9]]";
             Pattern cellPat = Pattern.compile(cellStr);
 
-            String rowStr = "(" + cellStr + "\\s){" + (width - 1) + "}" + cellStr;
-            Pattern oddRowPat = Pattern.compile("\\s" + rowStr); //because row count starts at 0
+            String rowStr = "(" + cellStr + "\\s){" + (width - 1) + "}" + cellStr + "\\s?";
+            Pattern oddRowPat = Pattern.compile("\\s?" + rowStr); //because row count starts at 0
             Pattern evenRowPat = Pattern.compile(rowStr);
 
             String curLine;
