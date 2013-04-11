@@ -45,7 +45,7 @@ public class HexGrid {
         
     }
     
-    void initGame(World w) {
+    public void initGame(World w) {
         world = w;
         setXYasVertex(false); //RECOMMENDED: leave this as FALSE.
         setHeight(HEXSIZE); //Either setHeight or setSize must be run to initialize the hex
@@ -53,15 +53,10 @@ public class HexGrid {
 
     public void createAndShowGUI() {
         panel = new DrawingPanel();
-
-
-        //JFrame.setDefaultLookAndFeelDecorated(true);
-        frame = new JFrame("Game Map");
+        frame = new JFrame("World Map");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         content = frame.getContentPane();
         content.add(panel);
-        //this.add(panel); -- cannot be done in a static context
-        //for hexes in the FLAT orientation, the height of a 10x10 grid is 1.1764 * the width. (from h / (s+t))
         frame.setSize((int)(SCRSIZE / 1.05), (int)(SCRSIZE / 1.2));
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
@@ -71,8 +66,8 @@ public class HexGrid {
     public void updateGrid(World w) {
         world = w;
         panel.updatePanel();
-        content = frame.getContentPane();
-        content.add(panel);
+        //content = frame.getContentPane();
+        //content.add(panel);
     }
 
     class DrawingPanel extends JPanel {

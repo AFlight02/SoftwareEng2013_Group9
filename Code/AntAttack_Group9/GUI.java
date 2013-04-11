@@ -18,9 +18,12 @@ public final class GUI {
      *
      */
     public GUI(World w) {
-        world = w;
         hexgrid = new HexGrid();
         hexgrid.createAndShowGUI();
+    }
+    
+    public void initaliseWorldMap(World w) {
+        world = w;
         hexgrid.initGame(w);
     }
 

@@ -27,17 +27,12 @@ public class AntAttack {
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        AntBrain placeholder = new AntBrain("cleverbrain1.brain");
         testWorld = new World();
         testWorld.generateRandomContestWorld();
         //testWorld.readInWorld("1.world");
         //testWorld.printWorld();
-        
-        AntAttack newGame = new AntAttack();
-
         initialiseGUI();
-        newTournament();
-        
+        newTournament(); 
     }
 
     /**
@@ -45,6 +40,11 @@ public class AntAttack {
      */
     public static void initialiseGUI() {
         gui = new GUI(testWorld);
+        gui.initaliseWorldMap(testWorld);
+    }
+    
+    public static void newGameMap(World w) {
+        gui.initaliseWorldMap(w);
     }
 
     /**
@@ -75,7 +75,6 @@ public class AntAttack {
 //        tournament.addCompetitors(g);
 //        tournament.addCompetitors(h);
 //        tournament.addCompetitors(i);
-        testWorld.generateRandomContestWorld();
         tournament.worlds.add(testWorld);
         
         List<AntBrain> winners = tournament.runTournament(gui);

@@ -56,7 +56,7 @@ public class Tournament {
         int gameCounter = 0;
         
         if (numCompetitors > 1) {
-            List<AntBrain> winners;
+            List<AntBrain> winners = new ArrayList<>();
 
             for (int i = 0; i < numCompetitors; i++) {
                 for (int j = 0; j < numCompetitors; j++) {
