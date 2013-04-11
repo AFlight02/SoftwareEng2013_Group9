@@ -148,7 +148,8 @@ public final class Gameplay {
                     if (nextInstruction instanceof Drop) {
                         Drop d = (Drop) nextInstruction;
                         if (a.getFood()) {
-                            world.getCell(a.getPosition()).setFood(world.getCell(a.getPosition()).getFood() + 1);
+                            int currFood = world.getCell(a.getPosition()).getFood();
+                            world.getCell(a.getPosition()).setFood(currFood+1);
                         }
                         a.setState(d.getS1());
                     }
