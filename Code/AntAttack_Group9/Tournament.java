@@ -89,7 +89,8 @@ public class Tournament {
     private void playMatch(int redBrain, int blackBrain, World world, GUI gui) {
         //code to run a game. Update this later once World class has been written
         Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
-        game.loadWorld(world);
+        World tempWorld = world;
+        game.loadWorld(tempWorld);
         //game.generateWorld();
         game.setupGame();
         game.playGame(gui);

@@ -42,10 +42,6 @@ public class AntAttack {
         gui = new GUI(testWorld);
         gui.initaliseWorldMap(testWorld);
     }
-    
-    public static void newGameMap(World w) {
-        gui.initaliseWorldMap(w);
-    }
 
     /**
      * 

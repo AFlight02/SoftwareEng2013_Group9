@@ -25,6 +25,7 @@ public final class GUI {
     public void initaliseWorldMap(World w) {
         world = w;
         hexgrid.initGame(w);
+        hexgrid.updateGrid(w);
     }
 
     /**

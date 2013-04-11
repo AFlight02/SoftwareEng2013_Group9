@@ -48,7 +48,7 @@ public final class Gameplay {
      */
     public void playGame(GUI gui) {
         // TEST WITH 3000 - CHANGE BACK!!!!
-        gui.beginNewGame();
+        gui.initaliseWorldMap(world);
         for (int i = 0; i < 300000; i++) {
             stepGame(gui);
             gui.updateUI(world);
@@ -97,6 +97,7 @@ public final class Gameplay {
                             a.setState(f.getS2());
                         }
                     }
+
                     else if (nextInstruction instanceof Mark) {
                         Mark m = (Mark) nextInstruction;
                         if (a.getColour()) { //BLACK
@@ -106,6 +107,7 @@ public final class Gameplay {
                         }
                         a.setState(m.getS1());
                     }
+
                     else if (nextInstruction instanceof Sense) {
                         Sense s = (Sense) nextInstruction;
                         if (world.checkCellStatus(world.getCell(a.getPosition()).adjacentCell(a.getDirection()), s.getCondVal(), a)) {
@@ -114,6 +116,7 @@ public final class Gameplay {
                             a.setState(s.getS2());
                         }
                     }
+
                     else if (nextInstruction instanceof Unmark) {
                         Unmark u = (Unmark) nextInstruction;
                         if (a.getColour()) { //BLACK
@@ -123,6 +126,7 @@ public final class Gameplay {
                         }
                         a.setState(u.getS1());
                     }
+
                     else if (nextInstruction instanceof PickUp) {
                         PickUp p = (PickUp) nextInstruction;
                         if (world.getCell(a.getPosition()).getFood() > 0) {
@@ -133,11 +137,13 @@ public final class Gameplay {
                             a.setState(p.getS2());
                         }
                     }
+
                     else if (nextInstruction instanceof Turn) {
                         Turn t = (Turn) nextInstruction;
                         a.setDirection(a.turn(t.getTurnDir()));
                         a.setState(t.getS1());
                     }
+
                     else if (nextInstruction instanceof Drop) {
                         Drop d = (Drop) nextInstruction;
                         if (a.getFood()) {
@@ -145,6 +151,7 @@ public final class Gameplay {
                         }
                         a.setState(d.getS1());
                     }
+
                     else if (nextInstruction instanceof Move) {
                         Move m = (Move) nextInstruction;
                         int[] newCell = world.getCell(a.getPosition()).adjacentCell(a.getDirection());
