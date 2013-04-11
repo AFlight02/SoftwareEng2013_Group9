@@ -530,7 +530,7 @@ public class World {
                         }
 
                         isRoom = true;
-                        for (int i = 0; i < 7; i++) { //length 7 because of borders
+                        for (int i = -1; i < 7; i++) { //length 7 because of borders
                             if (!cells[y + h][x + SP + i].isEmpty()) {
                                 isRoom = false;
                             }
