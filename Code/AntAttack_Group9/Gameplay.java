@@ -53,9 +53,9 @@ public final class Gameplay {
         for (int i = 0; i < 3000; i++) {
             stepGame(gui);
             gui.updateUI(world);
-//            try {
-//                Thread.sleep(1);
-//            } catch (InterruptedException e) {}
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {}
         }
         endGame();
     }
@@ -72,30 +72,6 @@ public final class Gameplay {
      *
      */
     public void stepGame(GUI gui) {
-//        for (int i = 0; i < world.height; i++) {
-//            for (int j = 0; j < world.width; j++) {
-//                int[] currCell = new int[2];
-//                currCell[0] = i;
-//                currCell[1] = j;
-//                world.getCell(currCell).calculateAdjacentAnts(world);
-//                if (world.getCell(currCell).ant != null) {
-//                    if (world.getCell(currCell).ant.getColour()) {
-//                        if (world.getCell(currCell).getAdjacentAntsRed() >= 5) {
-//                            world.getCell(currCell).ant.kill();
-//                            ants.remove(world.getCell(currCell).ant);
-//                            world.getCell(currCell).removeAnt();
-//                        }
-//                    } else {
-//                        if (world.getCell(currCell).getAdjacentAntsBlack() >= 5) {
-//                            world.getCell(currCell).ant.kill();
-//                            ants.remove(world.getCell(currCell).ant);
-//                            world.getCell(currCell).removeAnt();
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
         for (Ant a : ants) {
             if (a.isAlive()) {
                 if (a.getColour()) {
