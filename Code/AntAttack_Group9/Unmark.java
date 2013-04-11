@@ -17,7 +17,7 @@ public class Unmark extends Instruction {
      * @param state
      * @param marker
      */
-    public Unmark(int state, int marker) {
+    public Unmark(int marker, int state) {
         this.state = state;
         this.marker = marker;
     }

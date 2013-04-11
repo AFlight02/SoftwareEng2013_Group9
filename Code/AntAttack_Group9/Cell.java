@@ -226,7 +226,7 @@ public class Cell {
     public void removeAnt() {
         // Set ant to null
         if(!this.ant.isAlive() && this.ant.getFood()) {
-            this.setFood(food++);
+            this.setFood(food + 1);
         }
         this.ant = null;
     }

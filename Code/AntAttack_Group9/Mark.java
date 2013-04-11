@@ -17,7 +17,7 @@ public class Mark extends Instruction {
      * @param state
      * @param marker
      */
-    public Mark(int state, int marker) {
+    public Mark(int marker, int state) {
         this.state = state;
         this.marker = marker;
     }

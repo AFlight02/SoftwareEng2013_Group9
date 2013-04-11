@@ -29,8 +29,8 @@ public class AntAttack {
     public static void main(String[] args) throws Exception {
         AntBrain placeholder = new AntBrain("cleverbrain1.brain");
         testWorld = new World();
-        //testWorld.generateRandomContestWorld();
-        testWorld.readInWorld("tiny.world");
+        testWorld.generateRandomContestWorld();
+        //testWorld.readInWorld("1.world");
         //testWorld.printWorld();
         
         AntAttack newGame = new AntAttack();
@@ -45,7 +45,6 @@ public class AntAttack {
      */
     public static void initialiseGUI() {
         gui = new GUI(testWorld);
-        gui.initHex();
     }
 
     /**
@@ -67,8 +66,8 @@ public class AntAttack {
         //My test should walk around a lot
         AntBrain walk = new AntBrain("walker.brain");
         
-        tournament.addCompetitors(b);
-        tournament.addCompetitors(b);
+        tournament.addCompetitors(a);
+        tournament.addCompetitors(c);
 //        tournament.addCompetitors(c);
 //        tournament.addCompetitors(d);
 //        tournament.addCompetitors(e);
@@ -76,7 +75,7 @@ public class AntAttack {
 //        tournament.addCompetitors(g);
 //        tournament.addCompetitors(h);
 //        tournament.addCompetitors(i);
-        
+        testWorld.generateRandomContestWorld();
         tournament.worlds.add(testWorld);
         
         List<AntBrain> winners = tournament.runTournament(gui);

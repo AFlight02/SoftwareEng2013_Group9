@@ -21,10 +21,10 @@ import java.util.regex.Pattern;
  */
 public class World {
 
-    Cell[][] cells;
-    int width, height;
-    int totalFood;
-
+    protected Cell[][] cells;
+    protected int width, height;
+    private List<int[]> anthillCells = new ArrayList<>();
+    
     /**
      * 
      */
@@ -227,6 +227,7 @@ public class World {
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
                             }
+                            anthillCells.add(curHillCoord);
                             consecRedHill++;
                             break;
                         case "black":
@@ -245,6 +246,7 @@ public class World {
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
                             }
+                            anthillCells.add(curHillCoord);
                             consecBlackHill++;
                             break;
                         default:
@@ -405,6 +407,7 @@ public class World {
         } else {
             return false;
         }
+        
     }
 
     /**
@@ -774,6 +777,10 @@ public class World {
             
             for(int i = 0; i < len; i++) {
                 cells[y+h][x+SP+i].anthill = colour;
+                int[] xy = new int[2];
+                xy[0] = y+h;
+                xy[1] = x+SP+i;
+                anthillCells.add(xy);
             }
         }
     }
@@ -818,19 +825,30 @@ public class World {
     }
     
     public void placeAnts() {
-        for (int i = 1; i < height - 1; i++) {
-            for (int j = 1; j < width - 1; j++) {
-                int[] currPos = new int[2];
-                currPos[0] = i;
-                currPos[1] = j;
-                if(cells[i][j].anthill.equalsIgnoreCase("black")) {
-                    cells[i][j].ant = new Ant(true);
-                    cells[i][j].ant.setPostition(currPos);
-                } else if(cells[i][j].anthill.equalsIgnoreCase("red")) {
-                    cells[i][j].ant = new Ant(false);
-                    cells[i][j].ant.setPostition(currPos);
-                }
+        for(int[] cell : anthillCells) {
+            int[] pos = new int[2];
+            pos[0] = cell[0];
+            pos[1] = cell[1];
+            if(getCell(pos).anthill.equalsIgnoreCase("black")) {
+                getCell(pos).ant = new Ant(true);
+            } else {
+                getCell(pos).ant = new Ant(false);
             }
+            getCell(pos).ant.setPostition(pos);
         }
+//        for (int i = 1; i < height - 1; i++) {
+//            for (int j = 1; j < width - 1; j++) {
+//                int[] currPos = new int[2];
+//                currPos[0] = i;
+//                currPos[1] = j;
+//                if(cells[i][j].anthill.equalsIgnoreCase("black")) {
+//                    cells[i][j].ant = new Ant(true);
+//                    cells[i][j].ant.setPostition(currPos);
+//                } else if(cells[i][j].anthill.equalsIgnoreCase("red")) {
+//                    cells[i][j].ant = new Ant(false);
+//                    cells[i][j].ant.setPostition(currPos);
+//                }
+//            }
+//        }
     }
 }

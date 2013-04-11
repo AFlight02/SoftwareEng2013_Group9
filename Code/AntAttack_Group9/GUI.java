@@ -7,7 +7,7 @@
  */
 package AntAttack_Group9;
 
-public class GUI {
+public final class GUI {
 
     private World world;
     private HexGrid hexgrid;
@@ -20,11 +20,8 @@ public class GUI {
     public GUI(World w) {
         world = w;
         hexgrid = new HexGrid();
-    }
-
-    public void initHex() {
-        hexgrid.initGame(world);
         hexgrid.createAndShowGUI();
+        hexgrid.initGame(w);
     }
 
     /**

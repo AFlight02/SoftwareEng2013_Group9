@@ -52,16 +52,14 @@ public final class Gameplay {
      */
     public void playGame(GUI gui) {
         // TEST WITH 3000 - CHANGE BACK!!!!
-        world.printWorld();
-        for (int i = 0; i < 300000; i++) {
+        for (int i = 0; i < 3000; i++) {
             turn = i;
             stepGame(gui);
 //            try {
 //                Thread.sleep(1);
 //            } catch (InterruptedException e) {}
-            //System.out.println("Step " + i);
         }
-        world.printWorld();
+        endGame();
     }
 
     /**
@@ -76,33 +74,46 @@ public final class Gameplay {
      *
      */
     public void stepGame(GUI gui) {
-        for (int i = 0; i < world.height; i++) {
-            for (int j = 0; j < world.width; j++) {
-                int[] currCell = new int[2];
-                currCell[0] = i;
-                currCell[1] = j;
-                world.getCell(currCell).calculateAdjacentAnts(world);
-                if (world.getCell(currCell).ant != null) {
-                    if (world.getCell(currCell).ant.getColour()) {
-                        if (world.getCell(currCell).getAdjacentAntsRed() >= 5) {
-                            world.getCell(currCell).ant.kill();
-                            world.getCell(currCell).removeAnt();
-                        }
-                    } else {
-                        if (world.getCell(currCell).getAdjacentAntsBlack() >= 5) {
-                            world.getCell(currCell).ant.kill();
-                            world.getCell(currCell).removeAnt();
-                        }
-                    }
-                }
-            }
-        }
+//        for (int i = 0; i < world.height; i++) {
+//            for (int j = 0; j < world.width; j++) {
+//                int[] currCell = new int[2];
+//                currCell[0] = i;
+//                currCell[1] = j;
+//                world.getCell(currCell).calculateAdjacentAnts(world);
+//                if (world.getCell(currCell).ant != null) {
+//                    if (world.getCell(currCell).ant.getColour()) {
+//                        if (world.getCell(currCell).getAdjacentAntsRed() >= 5) {
+//                            world.getCell(currCell).ant.kill();
+//                            ants.remove(world.getCell(currCell).ant);
+//                            world.getCell(currCell).removeAnt();
+//                        }
+//                    } else {
+//                        if (world.getCell(currCell).getAdjacentAntsBlack() >= 5) {
+//                            world.getCell(currCell).ant.kill();
+//                            ants.remove(world.getCell(currCell).ant);
+//                            world.getCell(currCell).removeAnt();
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         for (Ant a : ants) {
+            if(a.getColour()) {
+                if(world.getCell(a.getPosition()).getAdjacentAntsRed() >=5) {
+                    a.kill();
+                    world.getCell(a.getPosition()).removeAnt();
+                }
+            } else {
+                if(world.getCell(a.getPosition()).getAdjacentAntsBlack() >=5) {
+                    a.kill();
+                    world.getCell(a.getPosition()).removeAnt();
+                }
+            }
             if (a.isAlive()) {
                 if (a.getResting() <= 0) {
                     Instruction nextInstruction = a.getInstruction();
-
+                    
                     if (nextInstruction instanceof Flip) {
                         Flip f = (Flip) nextInstruction;
                         Random rand = new Random();//CHANGE LATER FOR FLIP
@@ -192,6 +203,8 @@ public final class Gameplay {
                     }
                 }
                 a.decrementResting();
+            } else {
+                ants.remove(a);
             }
         }
         gui.updateUI(world);
@@ -205,13 +218,15 @@ public final class Gameplay {
             for(int j=1; j<world.width - 1; j++) {
                 if(!world.cells[i][j].anthill.equalsIgnoreCase("none")) {
                     if(world.cells[i][j].anthill.equalsIgnoreCase("black")) {
-                        this.blackFood += world.cells[i][j].getFood();
+                        blackFood += world.cells[i][j].getFood();
                     } else if (world.cells[i][j].anthill.equalsIgnoreCase("red")) {
-                        this.redFood += world.cells[i][j].getFood();
+                        redFood += world.cells[i][j].getFood();
                     }
                 }
             }
         }
+        System.out.println("Black Food: " + blackFood);
+        System.out.println("Red Food: " + redFood);
     }
 
     /**

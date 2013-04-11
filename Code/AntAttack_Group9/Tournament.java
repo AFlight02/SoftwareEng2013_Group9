@@ -16,21 +16,12 @@ public class Tournament {
     List<AntBrain> antBrains;
     List<World> worlds;
     int[] scores; // Increments points per AntBrain in list, 1 = draw, 2 = win, 0 = loss
-
-    /*
-     * RE: new thoughts -- was looking through/writing stuff for this class
-     * earlier and came to the same conclusions. Also, in the spec it says that
-     * there will be several game worlds for everyone to play a match in, which
-     * with the matches[][] array method would mean also keeping track of which
-     * worlds had been played - Far easier to just iterate everything :-p
-     */
-    //two constructors: so you can either initialize a tourney with a list of brains, or add them later (or both).
+    
     /**
      * 
      * @param worlds
      */
     public Tournament(List<World> worlds) {
-        // ALEX: altered to create a new ArrayList instead of Arrays.asList() as it was throwing errors, couldn't pinpoint why?
         antBrains = new ArrayList<>(); //inits as an empty list
         this.worlds = worlds;
     }
@@ -97,10 +88,10 @@ public class Tournament {
     private void playMatch(int redBrain, int blackBrain, World world, GUI gui) {
         //code to run a game. Update this later once World class has been written
         Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
-        game.loadWorld(world);
+        //game.loadWorld(world);
+        game.generateWorld();
         game.setupGame();
         game.playGame(gui);
-        game.endGame();
         int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
 
         switch (winner) {
