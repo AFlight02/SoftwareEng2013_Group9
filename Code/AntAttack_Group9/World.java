@@ -436,8 +436,8 @@ public class World {
         Random r = new Random();
         int x, y;
 
-        x = r.nextInt(133) + 2; //pick a random x,y between 2 and 135 (because max length 13 and we need to leave a border of 1)
-        y = r.nextInt(133) + 2;
+        x = r.nextInt(134) + 5; //far left of hexagon is -3 from x and far right is +9 from x
+        y = r.nextInt(134) + 2; //y can be between 2 and 135
 
         //just place first anthill, no need to check if there's stuff in the way
         placeAnthill("red", x, y);
@@ -445,7 +445,7 @@ public class World {
         boolean isRoom = false;
         while (!isRoom) {
             //regen x and y for the second anthill
-            x = r.nextInt(134) + 2;
+            x = r.nextInt(134) + 5;
             y = r.nextInt(134) + 2;
             //check there is space first
             int SP, len, parityAdjuster;
@@ -480,7 +480,7 @@ public class World {
             if (shape == 1) { //diamond
                 isRoom = false;
                 while (!isRoom) {
-                    x = r.nextInt(142) + 2; //width of diamond is 5
+                    x = r.nextInt(142) + 4; //x of diamond ranges from x-2 to x+2
                     y = r.nextInt(138) + 2; //height of diamond is 9
 
                     int SP, len, parityAdjuster;
@@ -511,7 +511,11 @@ public class World {
             } else { //parallelograms
                 isRoom = false;
                 while (!isRoom) {
-                    x = r.nextInt(138) + 2; //width of 9
+                    if (shape == 2) { //left slanting
+                        x = r.nextInt(140) + 2; //x varies from x to x+6
+                    } else {
+                        x = r.nextInt(140) + 4; //x varies from x-2 to x+4
+                    }
                     y = r.nextInt(142) + 2; //height of 5
 
                     int SP, parityAdjuster;
