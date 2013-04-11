@@ -530,7 +530,7 @@ public class World {
                         }
 
                         isRoom = true;
-                        for (int i = -1; i < 7; i++) { //length 7 because of borders
+                        for (int i = 0; i < 7; i++) { //length 7 because of borders
                             if (!cells[y + h][x + SP + i].isEmpty()) {
                                 isRoom = false;
                             }
@@ -904,19 +904,5 @@ public class World {
             }
             getCell(pos).ant.setPostition(pos);
         }
-//        for (int i = 1; i < height - 1; i++) {
-//            for (int j = 1; j < width - 1; j++) {
-//                int[] currPos = new int[2];
-//                currPos[0] = i;
-//                currPos[1] = j;
-//                if(cells[i][j].anthill.equalsIgnoreCase("black")) {
-//                    cells[i][j].ant = new Ant(true);
-//                    cells[i][j].ant.setPostition(currPos);
-//                } else if(cells[i][j].anthill.equalsIgnoreCase("red")) {
-//                    cells[i][j].ant = new Ant(false);
-//                    cells[i][j].ant.setPostition(currPos);
-//                }
-//            }
-//        }
     }
 }
