@@ -16,7 +16,7 @@ public class Cell {
     int adjacentAntsBlack;
     boolean rock;
     String anthill; // "red"|"black"|"none" //null value causes errors when using switch statements
-    boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i+1, structure is false, false, true, false etc..
+    boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i, structure is false, false, true, false etc..
     boolean[] markersBlack = new boolean[6];
 
     /**

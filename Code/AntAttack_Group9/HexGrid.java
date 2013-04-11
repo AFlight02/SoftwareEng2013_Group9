@@ -21,7 +21,7 @@ public class HexGrid {
     final static Color COLOURTWOTXT = new Color(255, 100, 255);
     final static int EMPTY = 0;
     final static int BSIZE = 150; //board size.
-    final static int HEXSIZE = 8;	//hex size in pixels
+    final static int HEXSIZE = 6;	//hex size in pixels
     final static int BORDERS = 15;
     final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3 + 200; //screen size (vertical dimension).
     public final static boolean orFLAT = true;
@@ -96,26 +96,26 @@ public class HexGrid {
                     Cell c = world.cells[i][j];
                     if (c.ant != null) {
                         if(c.ant.getColour() && c.ant.isAlive()) {
-                            fillHex(i, j, 1, g2, 0);
+                            fillHex(i, j, 1, g2);
                         } else if(c.ant.isAlive()){
-                            fillHex(i, j, 2, g2, 0);
+                            fillHex(i, j, 2, g2);
                         }
                     }
                     else if (!c.anthill.equalsIgnoreCase("none")) {
                         if(c.anthill.equalsIgnoreCase("black")) {
-                            fillHex(i, j, 4, g2, 0);
+                            fillHex(i, j, 4, g2);
                         } else if(c.anthill.equalsIgnoreCase("red")) {
-                            fillHex(i, j, 5, g2, 0);
+                            fillHex(i, j, 5, g2);
                         }
                     } 
                     else if (c.food > 0) {
-                        fillHex(i, j, 3, g2, c.food);
+                        fillHex(i, j, 3, g2);
                     } 
                     else if (c.rock) {
-                        fillHex(i, j, 6, g2, 0);
+                        fillHex(i, j, 6, g2);
                     } 
                     else if(c.isEmpty()) {
-                        fillHex(i, j, 0, g2, 0);
+                        fillHex(i, j, 0, g2);
                     } 
                 }
             }
@@ -228,7 +228,7 @@ public class HexGrid {
      * hexagon.
      * ***************************************************************************
      */
-    public static void fillHex(int i, int j, int n, Graphics2D g2, int foodMarkerNum) {
+    public static void fillHex(int i, int j, int n, Graphics2D g2) {
         int x;
         if(i % 2 != 0){
             x = j * h + r;
@@ -242,74 +242,36 @@ public class HexGrid {
             case 0:
                 g2.setColor(COLOURCELL);
                 g2.fillPolygon(hex(x,y));
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
                 break;
             // BLACK ANT
             case 1:
                 g2.setColor(COLOURBLACK);
                 g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
                 break;
             // RED ANT
             case 2:
                 g2.setColor(COLOURRED);
                 g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
                 break;
             // FOOD
             case 3:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x,y));
                 g2.setColor(COLOURBLUE);
-                g2.drawString("" + foodMarkerNum, x + t + BORDERS - 3, y + r + BORDERS + 4);
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
+                g2.fillPolygon(hex(x, y));
                 break;
             // BLACK ANTHILL
             case 4: 
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x,y));
                 g2.setColor(COLOURBLACK);
                 g2.drawString("H", x + r + BORDERS - 3, y + r + BORDERS + 4);
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
                 break;
             // RED ANTHILL
             case 5: 
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x,y));
                 g2.setColor(COLOURRED);
                 g2.drawString("H", x + r + BORDERS - 3, y + r + BORDERS + 4);
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
                 break;
             // ROCK
             case 6:
                 g2.setColor(COLOURGREY);
                 g2.fillPolygon(hex(x, y));
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
-                break;
-            // BLACK MARKERS
-            case 7:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x,y));
-                g2.setColor(COLOURBLACK);
-                g2.drawString("" + foodMarkerNum, x + r + BORDERS - 3, y + r + BORDERS + 4);
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
-                break;
-            // RED MARKERS
-            case 8:
-                g2.setColor(COLOURCELL);
-                g2.fillPolygon(hex(x,y));
-                g2.setColor(COLOURRED);
-                g2.drawString("" + foodMarkerNum, x + r + BORDERS - 3, y + r + BORDERS + 4);
-                g2.setColor(COLOURGRID);
-                g2.drawPolygon(hex(x,y));
                 break;
         }
     }

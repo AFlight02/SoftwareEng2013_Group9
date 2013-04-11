@@ -50,12 +50,12 @@ public final class Gameplay {
     public void playGame(GUI gui) {
         // TEST WITH 3000 - CHANGE BACK!!!!
         gui.beginNewGame();
-        for (int i = 0; i < 3000; i++) {
+        for (int i = 0; i < 300000; i++) {
             stepGame(gui);
             gui.updateUI(world);
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {}
+//            try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e) {}
         }
         endGame();
     }
