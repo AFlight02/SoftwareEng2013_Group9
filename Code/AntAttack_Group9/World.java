@@ -896,17 +896,29 @@ public class World {
         }
     }
 
-    public void placeAnts() {
+    public List<Ant> placeAnts(AntBrain blackBrain, AntBrain redBrain) {
+        List<Ant> list = new ArrayList<>();
+        int id = 0;
         for (int[] cell : anthillCells) {
             int[] pos = new int[2];
             pos[0] = cell[0];
             pos[1] = cell[1];
             if (getCell(pos).anthill.equalsIgnoreCase("black")) {
-                getCell(pos).ant = new Ant(true);
-            } else {
-                getCell(pos).ant = new Ant(false);
+                Ant black = new Ant(true);
+                black.setBrain(blackBrain);
+                black.setId(id++);
+                black.setPostition(pos);
+                getCell(pos).ant = black;
+                list.add(black);
+            } else if(getCell(pos).anthill.equalsIgnoreCase("red")){
+                Ant red = new Ant(false);
+                red.setBrain(redBrain);
+                red.setId(id++);
+                red.setPostition(pos);
+                getCell(pos).ant = red;
+                list.add(red);
             }
-            getCell(pos).ant.setPostition(pos);
         }
+        return list;
     }
 }

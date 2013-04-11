@@ -33,7 +33,6 @@ public final class Gameplay {
         this.redAntBrain = red;
         this.blackAntBrain = black;
         ants = new ArrayList<>();
-        loadAntBrains(redAntBrain, blackAntBrain);
     }
 
     /**
@@ -206,24 +205,25 @@ public final class Gameplay {
      *
      */
     public void setupGame() {
+        ants.clear();
         world.checkValidWorld();
-        world.placeAnts();
-        int id = 0;
-        for (int i = 1; i < world.height - 1; i++) {
-            for (int j = 1; j < world.width - 1; j++) {
-                if (world.cells[i][j].ant != null) {
-                    if (world.cells[i][j].ant.getColour()) {
-                        world.cells[i][j].ant.setBrain(blackAntBrain);
-                        world.cells[i][j].ant.setId(id++);
-                        ants.add(world.cells[i][j].ant);
-                    } else if (world.cells[i][j].anthill.equalsIgnoreCase("red")) {
-                        world.cells[i][j].ant.setBrain(redAntBrain);
-                        world.cells[i][j].ant.setId(id++);
-                        ants.add(world.cells[i][j].ant);
-                    }
-                }
-            }
-        }
+        ants = world.placeAnts(blackAntBrain, redAntBrain);
+//        int id = 0;
+//        for (int i = 1; i < world.height - 1; i++) {
+//            for (int j = 1; j < world.width - 1; j++) {
+//                if (world.cells[i][j].ant != null) {
+//                    if (world.cells[i][j].ant.getColour()) {
+//                        world.cells[i][j].ant.setBrain(blackAntBrain);
+//                        world.cells[i][j].ant.setId(id++);
+//                        ants.add(world.cells[i][j].ant);
+//                    } else if (world.cells[i][j].anthill.equalsIgnoreCase("red")) {
+//                        world.cells[i][j].ant.setBrain(redAntBrain);
+//                        world.cells[i][j].ant.setId(id++);
+//                        ants.add(world.cells[i][j].ant);
+//                    }
+//                }
+//            }
+//        }
     }
 
     /**

@@ -62,8 +62,9 @@ public class Tournament {
                 for (int j = 0; j < numCompetitors; j++) {
                     for (World w : worlds) {
                         if (i != j) {
-                            System.out.println("Playing game " + gameCounter++);
+                            System.out.println("Playing game " + (gameCounter + 1) + "a");
                             playMatch(i, j, w, gui);
+                            System.out.println("Playing game " + (gameCounter++ + 1) + "b");
                             playMatch(j, i, w, gui);
                         }
                     }
