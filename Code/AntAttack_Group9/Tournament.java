@@ -88,8 +88,8 @@ public class Tournament {
     private void playMatch(int redBrain, int blackBrain, World world, GUI gui) {
         //code to run a game. Update this later once World class has been written
         Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
-        //game.loadWorld(world);
-        game.generateWorld();
+        game.loadWorld(world);
+        //game.generateWorld();
         game.setupGame();
         game.playGame(gui);
         int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
@@ -108,8 +108,8 @@ public class Tournament {
     }
 
     /*
-     * Calculates the winner(s) of the tournament @return winningBrains the
-     * brain(s) with the highest score
+     * Calculates the winner(s) of the tournament 
+     * @return winningBrains the brain(s) with the highest score
      */
     private List<AntBrain> declareWinner() {
         List<AntBrain> winningBrains = new ArrayList<>(); // ALEX: Again wasn't compiling due to error, reinitialised as ArrayList seemed to fix
