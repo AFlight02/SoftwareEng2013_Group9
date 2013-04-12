@@ -28,8 +28,9 @@ public class AntAttack {
      */
     public static void main(String[] args) throws Exception {
         testWorld = new World();
-        testWorld.generateRandomContestWorld();
-        //testWorld.readInWorld("1.world");
+        //testWorld.generateRandomContestWorld();
+        testWorld.readInWorld("1.world");
+        testWorld.checkValidForTournament();
         //testWorld.printWorld();
         initialiseGUI();
         newTournament(); 

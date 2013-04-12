@@ -49,6 +49,7 @@ public final class Gameplay {
     public void playGame(GUI gui) {
         // TEST WITH 3000 - CHANGE BACK!!!!
         gui.initaliseWorldMap(world);
+        gui.updateUI(world);
         for (int i = 0; i < 300000; i++) {
             stepGame(gui);
             gui.updateUI(world);

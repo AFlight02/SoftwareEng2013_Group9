@@ -73,6 +73,9 @@ public class World {
                 rowCells = curLine.split("\\s");
 
                 for (int i = 0; i < width; i++) {
+                    int[] coord = new int[2];
+                    coord[0] = rowCnt;
+                    coord[1] = i;
                     Matcher m = cellPat.matcher(rowCells[i]);
                     if (m.matches()) {
                         Cell newCell = new Cell(rowCnt, i);
@@ -84,9 +87,11 @@ public class World {
                                 break;
                             case "+":
                                 newCell.setAnthill("red");
+                                anthillCells.add(coord);
                                 break;
                             case "-":
                                 newCell.setAnthill("black");
+                                anthillCells.add(coord);
                                 break;
                             default: //know it's 1-9
                                 newCell.setFood(Integer.parseInt(rowCells[i]));
@@ -227,7 +232,6 @@ public class World {
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
                             }
-                            anthillCells.add(curHillCoord);
                             consecRedHill++;
                             break;
                         case "black":
@@ -245,8 +249,7 @@ public class World {
                             if (consecBlackHill == 0) { //start of black row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
-                            }
-                            anthillCells.add(curHillCoord);
+                            }                      
                             consecBlackHill++;
                             break;
                         default:

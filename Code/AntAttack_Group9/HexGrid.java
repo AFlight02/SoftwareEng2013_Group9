@@ -212,6 +212,8 @@ public class HexGrid {
         Polygon poly = hex(x, y);
         g2.setColor(COLOURGRID);
         g2.drawPolygon(poly);
+        g2.setColor(COLOURCELL);
+        g2.fillPolygon(poly);
     }
 
     /**
