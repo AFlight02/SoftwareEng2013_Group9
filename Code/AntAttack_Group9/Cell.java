@@ -48,13 +48,13 @@ public class Cell {
         int[] adjCell = new int[2];
         switch (dir) {
             case 0:
-                adjCell[0] = pos[0] + 1;
-                adjCell[1] = pos[1];
+                adjCell[0] = pos[0];
+                adjCell[1] = pos[1] + 1;
                 break;
             case 1:
                 if (pos[0] % 2 == 0) {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1] + 1;
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1];
                 } else {
                     adjCell[0] = pos[0] + 1;
                     adjCell[1] = pos[1] + 1;
@@ -62,11 +62,11 @@ public class Cell {
                 break;
             case 2:
                 if (pos[0] % 2 == 0) {
-                    adjCell[0] = pos[0] - 1;
-                    adjCell[1] = pos[1] + 1;
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1] - 1;
                 } else {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1] + 1;
+                    adjCell[0] = pos[0] + 1;
+                    adjCell[1] = pos[1];
                 }
                 break;
             case 3:
@@ -78,17 +78,17 @@ public class Cell {
                     adjCell[0] = pos[0] - 1;
                     adjCell[1] = pos[1] - 1;
                 } else {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1] - 1;
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1];
                 }
                 break;
             case 5:
                 if (pos[0] % 2 == 0) {
-                    adjCell[0] = pos[0];
-                    adjCell[1] = pos[1] - 1;
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1];
                 } else {
-                    adjCell[0] = pos[0] + 1;
-                    adjCell[1] = pos[1] - 1;
+                    adjCell[0] = pos[0] - 1;
+                    adjCell[1] = pos[1] + 1;
                 }
                 break;
         }
@@ -244,7 +244,7 @@ public class Cell {
      * @param a
      */
     public void setAnthill(String a) {
-        anthill = a; //error checking or not bother?
+        anthill = a; 
     }
 
     /**

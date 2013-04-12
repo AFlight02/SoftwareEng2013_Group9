@@ -25,6 +25,7 @@ public class World {
     protected Cell[][] resetCells;
     protected int width, height;
     private List<int[]> anthillCells = new ArrayList<>();
+    private List<int[]> foodSpawnCells = new ArrayList<>();
 
     /**
      *
@@ -44,7 +45,7 @@ public class World {
             BufferedReader br = new BufferedReader(new FileReader(worldFile));
             width = Integer.parseInt(br.readLine());
             height = Integer.parseInt(br.readLine());
-            cells = new Cell[width][height];
+            cells = new Cell[height][width];
             resetCells = cells;
 
             String cellStr = "[#\\.\\+\\-[1-9]]";
@@ -76,11 +77,11 @@ public class World {
 
                 for (int i = 0; i < width; i++) {
                     int[] coord = new int[2];
-                    coord[0] = i;
-                    coord[1] = rowCnt;
+                    coord[0] = rowCnt;
+                    coord[1] = i;
                     Matcher m = cellPat.matcher(rowCells[i]);
                     if (m.matches()) {
-                        Cell newCell = new Cell(i, rowCnt);
+                        Cell newCell = new Cell(rowCnt, i);
                         switch (rowCells[i]) {
                             case "#":
                                 newCell.setRock(true);
@@ -97,9 +98,10 @@ public class World {
                                 break;
                             default: //know it's 1-9
                                 newCell.setFood(Integer.parseInt(rowCells[i]));
+                                foodSpawnCells.add(coord);
                                 break;
                         }
-                        cells[i][rowCnt] = newCell;
+                        cells[rowCnt][i] = newCell;
                     } else {
                         throw new Exception("Malformed world!"); //just in case..
                     }
@@ -203,6 +205,7 @@ public class World {
                                 info[1] = curFoodCoord[1];
                                 info[2] = consecFood;
                                 foodInfo.add(info);
+                                foodSpawnCells.add(curFoodCoord);
                                 consecFood = 0; //reset count
                             }
                             break;
@@ -210,6 +213,7 @@ public class World {
                             if (consecFood == 0) { //start of a row
                                 curFoodCoord[0] = i;
                                 curFoodCoord[1] = j;
+                                foodSpawnCells.add(curFoodCoord);
                             }
                             consecFood++;
                             break;
@@ -226,13 +230,14 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-
+                                anthillCells.add(curHillCoord);
                                 consecBlackHill = 0; //reset
                             }
 
                             if (consecRedHill == 0) { //start of red row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
+                                anthillCells.add(curHillCoord);
                             }
                             consecRedHill++;
                             break;
@@ -244,13 +249,14 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-
+                                anthillCells.add(curHillCoord);
                                 consecRedHill = 0; //reset
                             }
 
                             if (consecBlackHill == 0) { //start of black row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
+                                anthillCells.add(curHillCoord);
                             }                      
                             consecBlackHill++;
                             break;
@@ -262,7 +268,7 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-
+                                anthillCells.add(curHillCoord);
                                 consecRedHill = 0; //reset
                             } else if (consecBlackHill > 0) {
                                 int[] info = new int[3];
@@ -270,7 +276,7 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-
+                                anthillCells.add(curHillCoord);
                                 consecBlackHill = 0; //reset
                             }
                             break;
@@ -446,7 +452,7 @@ public class World {
 
         //just place first anthill, no need to check if there's stuff in the way
         placeAnthill("red", x, y);
-
+        
         boolean isRoom = false;
         while (!isRoom) {
             //regen x and y for the second anthill
@@ -467,7 +473,7 @@ public class World {
 
                 isRoom = true;
                 for (int i = 0; i < len; i++) {
-                    if (!cells[x + SP + i][y + h].isEmpty()) {
+                    if (!cells[y + h][x + SP + i].isEmpty()) {
                         isRoom = false;
                     }
                 }
@@ -503,7 +509,7 @@ public class World {
 
                         isRoom = true;
                         for (int i = 0; i < len; i++) {
-                            if (!cells[x + SP + i][y + h].isEmpty()) {
+                            if (!cells[y + h][x + SP + i].isEmpty()) {
                                 isRoom = false;
                             }
                         }
@@ -540,7 +546,7 @@ public class World {
 
                         isRoom = true;
                         for (int i = 0; i < 7; i++) { //length 7 because of borders
-                            if (!cells[x + SP + i][y + h].isEmpty()) {
+                            if (!cells[y + h][x + SP + i].isEmpty()) {
                                 isRoom = false;
                             }
                         }
@@ -577,7 +583,7 @@ public class World {
      */
     public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
         // Check in boundaries
-        if (cell[0] < width && cell[1] < height && cell[0] >= 0 && cell[1] >= 0) {
+        if (cell[0] < height && cell[1] < width && cell[0] >= 0 && cell[1] >= 0) {
             Cell c = getCell(cell);
             //Friend case - Check ant exists in cell, if it is of the same colour return true
             if (cond == Sense.condition.FRIEND) {
@@ -816,7 +822,7 @@ public class World {
      * @return
      */
     public Cell getCell(int[] cell) {
-        if ((cell[0] < width && cell[1] < height) && (cell[0] >= 0 && cell[1] >= 0)) {
+        if ((cell[0] < height && cell[1] < width) && (cell[0] >= 0 && cell[1] >= 0)) {
             return cells[cell[0]][cell[1]];
         } else {
             return null;
@@ -827,8 +833,8 @@ public class World {
      * Prints the world to the console as it would appear in a world file
      */
     public void printWorld() {
-        System.out.println(width);
         System.out.println(height);
+        System.out.println(width);
 
         for (int i = 0; i < height; i++) {
             if (i % 2 == 1) { //odd row
@@ -862,10 +868,10 @@ public class World {
             len = 13 - Math.abs(6 - h);
 
             for (int i = 0; i < len; i++) {
-                cells[x + SP + i][y + h].anthill = colour;
+                cells[y + h][x + SP + i].anthill = colour;
                 int[] xy = new int[2];
-                xy[1] = y + h;
-                xy[0] = x + SP + i;
+                xy[0] = y + h;
+                xy[1] = x + SP + i;
                 anthillCells.add(xy);
             }
         }
@@ -886,7 +892,11 @@ public class World {
                 len = 5 - Math.abs(4 - h);
 
                 for (int i = 0; i < len; i++) {
-                    cells[x + SP + i][y + h].setFood(5);
+                    cells[y + h][x + SP + i].setFood(5);
+                    int[] xy = new int[2];
+                    xy[0] = y + h;
+                    xy[1] = x + SP + i;
+                    foodSpawnCells.add(xy);
                 }
             }
         } else { //parallelograms
@@ -904,7 +914,11 @@ public class World {
                 }
 
                 for (int i = 0; i < 5; i++) {
-                    cells[x + SP + i][y + h].setFood(5);
+                    cells[y + h][x + SP + i].setFood(5);
+                    int[] xy = new int[2];
+                    xy[0] = y + h;
+                    xy[1] = x + SP + i;
+                    foodSpawnCells.add(xy);
                 }
             }
         }

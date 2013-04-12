@@ -79,10 +79,10 @@ public class HexGrid {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
             super.paintComponent(g2);
             
-            for (int i = 0; i < world.width; i++) {
-                for (int j = 0; j < world.height; j++) {
+            for (int i = 0; i < world.height; i++) {
+                for (int j = 0; j < world.width; j++) {
                     drawHex(i, j, g2);
-                    Cell c = world.cells[j][i];
+                    Cell c = world.cells[i][j];
                     if (c.ant != null && c.ant.isAlive()) {
                         if(c.ant.getColour()) {
                             fillHex(i, j, 1, g2);

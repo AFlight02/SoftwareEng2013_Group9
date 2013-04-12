@@ -41,6 +41,7 @@ public final class Gameplay {
     public void generateWorld() {
         world = new World();
         world.generateRandomContestWorld();
+        world.checkValidForTournament();
     }
 
     /**
@@ -53,9 +54,9 @@ public final class Gameplay {
         for (int i = 0; i < 300000; i++) {
             stepGame(gui);
             gui.updateUI(world);
-//            try {
-//                Thread.sleep(1);
-//            } catch (InterruptedException e) {}
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {}
         }
         endGame();
     }
