@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package AntAttack_Group9;
 
 import java.awt.*;
@@ -15,25 +11,18 @@ public class HexGrid {
     final static Color COLOURGREY = Color.DARK_GRAY;
     final static Color COLOURCELL = Color.ORANGE;
     final static Color COLOURGRID = Color.BLACK;
-    final static Color COLOURONE = new Color(255, 255, 255, 200);
     final static Color COLOURBLUE = Color.BLUE;
-    final static Color COLOURTWO = new Color(0, 0, 0, 200);
-    final static Color COLOURTWOTXT = new Color(255, 100, 255);
     final static int EMPTY = 0;
     final static int BSIZE = 150; //board size.
     final static int HEXSIZE = 6;	//hex size in pixels
     final static int BORDERS = 15;
     final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3 + 200; //screen size (vertical dimension).
-    public final static boolean orFLAT = true;
-    public final static boolean orPOINT = false;
-    public static boolean ORIENT = orFLAT; //this is not used. We're never going to do pointy orientation
     public static boolean XYVertex = true;	//true: x,y are the co-ords of the first vertex.
 //false: x,y are the co-ords of the top left rect. co-ord.
     private static int s = 0;	// length of one side
     private static int t = 0;	// short side of 30o triangle outside of each hex
     private static int r = 0;	// radius of inscribed circle (centre to middle of each side). r= h/2
     private static int h = 0;	// height. Distance between centres of two adjacent hexes. Distance between two opposite sides in a hex.
-    int[][] board = new int[BSIZE][BSIZE];
     
     private DrawingPanel panel;
     private JFrame frame;
@@ -90,14 +79,14 @@ public class HexGrid {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
             super.paintComponent(g2);
             
-            for (int i = 0; i < world.height; i++) {
-                for (int j = 0; j < world.width; j++) {
+            for (int i = 0; i < world.width; i++) {
+                for (int j = 0; j < world.height; j++) {
                     drawHex(i, j, g2);
-                    Cell c = world.cells[i][j];
-                    if (c.ant != null) {
-                        if(c.ant.getColour() && c.ant.isAlive()) {
+                    Cell c = world.cells[j][i];
+                    if (c.ant != null && c.ant.isAlive()) {
+                        if(c.ant.getColour()) {
                             fillHex(i, j, 1, g2);
-                        } else if(c.ant.isAlive()){
+                        } else {
                             fillHex(i, j, 2, g2);
                         }
                     }
@@ -114,7 +103,7 @@ public class HexGrid {
                     else if (c.rock) {
                         fillHex(i, j, 6, g2);
                     } 
-                    else if(c.isEmpty()) {
+                    else {
                         fillHex(i, j, 0, g2);
                     } 
                 }
@@ -177,17 +166,8 @@ public class HexGrid {
         //cy = new int[]{y, y, y + r, y + r + r, y + r + r, y + r};
         cy = new int[]{y, y + t, y + t + s, y + 2*t + s, y + t + s, y + t};
         
-        Polygon rotated = new Polygon(cx, cy, 6);
-        
-        
+        Polygon rotated = new Polygon(cx, cy, 6);    
         return rotated;
-
-        /*
-         * x=200; poly = new Polygon(); poly.addPoint(x,y);
-         * poly.addPoint(x+s,y); poly.addPoint(x+s+t,y+r);
-         * poly.addPoint(x+s,y+r+r); poly.addPoint(x,y+r+r);
-         * poly.addPoint(x-t,y+r);
-         */
     }
 
     /**
@@ -212,8 +192,6 @@ public class HexGrid {
         Polygon poly = hex(x, y);
         g2.setColor(COLOURGRID);
         g2.drawPolygon(poly);
-        g2.setColor(COLOURCELL);
-        g2.fillPolygon(poly);
     }
 
     /**

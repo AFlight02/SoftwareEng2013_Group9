@@ -19,7 +19,7 @@ public class Ant {
     private int state;
     private int direction;
     private int id;
-    private int[] position = new int[2];
+    private int[] position = new int[2]; // (col, row)
     private boolean alive;
 
     public Ant(boolean colour) {

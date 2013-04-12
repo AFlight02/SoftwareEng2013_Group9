@@ -85,102 +85,102 @@ public final class Gameplay {
                         world.getCell(a.getPosition()).removeAnt();
                     }
                 }
-                if (a.getResting() <= 0) {
-                    Instruction nextInstruction = a.getInstruction();
 
-                    if (nextInstruction instanceof Flip) {
-                        Flip f = (Flip) nextInstruction;
-                        Random rand = new Random();//CHANGE LATER FOR FLIP
-                        int n = rand.nextInt(f.getRandom());
-                        if (n == 0) {
-                            a.setState(f.getS1());
-                        } else {
-                            a.setState(f.getS2());
-                        }
+                Instruction nextInstruction = a.getInstruction();
+
+                if (nextInstruction instanceof Flip) {
+                    Flip f = (Flip) nextInstruction;
+                    Random rand = new Random();//CHANGE LATER FOR FLIP
+                    int n = rand.nextInt(f.getRandom());
+                    if (n == 0) {
+                        a.setState(f.getS1());
+                    } else {
+                        a.setState(f.getS2());
                     }
+                }
 
-                    else if (nextInstruction instanceof Mark) {
-                        Mark m = (Mark) nextInstruction;
-                        if (a.getColour()) { //BLACK
-                            world.getCell(a.getPosition()).addBlackMarker(m.getMarker());
-                        } else {
-                            world.getCell(a.getPosition()).addRedMarker(m.getMarker());
-                        }
-                        a.setState(m.getS1());
+                else if (nextInstruction instanceof Mark) {
+                    Mark m = (Mark) nextInstruction;
+                    if (a.getColour()) { //BLACK
+                        world.getCell(a.getPosition()).addBlackMarker(m.getMarker());
+                    } else {
+                        world.getCell(a.getPosition()).addRedMarker(m.getMarker());
                     }
+                    a.setState(m.getS1());
+                }
 
-                    else if (nextInstruction instanceof Sense) {
-                        Sense s = (Sense) nextInstruction;
-                        if (world.checkCellStatus(world.getCell(a.getPosition()).adjacentCell(a.getDirection()), s.getCondVal(), a)) {
-                            a.setState(s.getS1());
-                        } else {
-                            a.setState(s.getS2());
-                        }
+                else if (nextInstruction instanceof Sense) {
+                    Sense s = (Sense) nextInstruction;
+                    if (world.checkCellStatus(world.getCell(a.getPosition()).adjacentCell(a.getDirection()), s.getCondVal(), a)) {
+                        a.setState(s.getS1());
+                    } else {
+                        a.setState(s.getS2());
                     }
+                }
 
-                    else if (nextInstruction instanceof Unmark) {
-                        Unmark u = (Unmark) nextInstruction;
-                        if (a.getColour()) { //BLACK
-                            world.getCell(a.getPosition()).removeBlackMarker(u.getMarker());
-                        } else {
-                            world.getCell(a.getPosition()).removeRedMarker(u.getMarker());
-                        }
-                        a.setState(u.getS1());
+                else if (nextInstruction instanceof Unmark) {
+                    Unmark u = (Unmark) nextInstruction;
+                    if (a.getColour()) { //BLACK
+                        world.getCell(a.getPosition()).removeBlackMarker(u.getMarker());
+                    } else {
+                        world.getCell(a.getPosition()).removeRedMarker(u.getMarker());
                     }
+                    a.setState(u.getS1());
+                }
 
-                    else if (nextInstruction instanceof PickUp) {
-                        PickUp p = (PickUp) nextInstruction;
-                        if (world.getCell(a.getPosition()).getFood() > 0) {
-                            a.setFood(true);
-                            world.getCell(a.getPosition()).removeFood();
-                            a.setState(p.getS1());
-                        } else {
-                            a.setState(p.getS2());
-                        }
+                else if (nextInstruction instanceof PickUp) {
+                    PickUp p = (PickUp) nextInstruction;
+                    if (world.getCell(a.getPosition()).getFood() > 0) {
+                        a.setFood(true);
+                        world.getCell(a.getPosition()).removeFood();
+                        a.setState(p.getS1());
+                    } else {
+                        a.setState(p.getS2());
                     }
+                }
 
-                    else if (nextInstruction instanceof Turn) {
-                        Turn t = (Turn) nextInstruction;
-                        a.setDirection(a.turn(t.getTurnDir()));
-                        a.setState(t.getS1());
+                else if (nextInstruction instanceof Turn) {
+                    Turn t = (Turn) nextInstruction;
+                    a.setDirection(a.turn(t.getTurnDir()));
+                    a.setState(t.getS1());
+                }
+
+                else if (nextInstruction instanceof Drop) {
+                    Drop d = (Drop) nextInstruction;
+                    if (a.getFood()) {
+                        world.getCell(a.getPosition()).setFood(world.getCell(a.getPosition()).getFood() + 1);
                     }
+                    a.setState(d.getS1());
+                }
 
-                    else if (nextInstruction instanceof Drop) {
-                        Drop d = (Drop) nextInstruction;
-                        if (a.getFood()) {
-                            world.getCell(a.getPosition()).setFood(world.getCell(a.getPosition()).getFood() + 1);
-                        }
-                        a.setState(d.getS1());
-                    }
-
-                    else if (nextInstruction instanceof Move) {
-                        Move m = (Move) nextInstruction;
-                        int[] newCell = world.getCell(a.getPosition()).adjacentCell(a.getDirection());
-                        if (a.getResting() <= 0) {
-                            if (world.getCell(newCell) != null) {
-                                if (!world.getCell(newCell).getRock() && world.getCell(newCell).getAnt() == null) {
-                                    world.getCell(a.getPosition()).removeAnt();
-                                    world.getCell(newCell).setAnt(a);
-                                    a.setResting(15);
-                                    a.setPostition(newCell);
-                                    a.setState(m.getS1());
-                                } else {
-                                    a.setState(m.getS2());
-                                }
+                else if (nextInstruction instanceof Move) {
+                    Move m = (Move) nextInstruction;
+                    int[] newCell = world.getCell(a.getPosition()).adjacentCell(a.getDirection());
+                    if (a.getResting() <= 0) {
+                        if (world.getCell(newCell) != null) {
+                            if (!world.getCell(newCell).getRock() && world.getCell(newCell).getAnt() == null) {
+                                world.getCell(a.getPosition()).removeAnt();
+                                world.getCell(newCell).setAnt(a);
+                                a.setResting(15);
+                                a.setPostition(newCell);
+                                a.setState(m.getS1());
                             } else {
                                 a.setState(m.getS2());
                             }
-
                         } else {
                             a.setState(m.getS2());
                         }
+
+                    } else {
+                        a.setState(m.getS2());
                     }
-                    else {
-                        System.err.println("Unrecognised Instruction" + nextInstruction);
-                    }
+                }
+                else {
+                    System.err.println("Unrecognised Instruction" + nextInstruction);
                 }
                 a.decrementResting();
             } else {
+                world.getCell(a.getPosition()).removeAnt();
                 ants.remove(a);
             }
         }
@@ -222,6 +222,10 @@ public final class Gameplay {
     public void loadAntBrains(AntBrain red, AntBrain black) {
         redAntBrain = red;
         blackAntBrain = black;
+    }
+    
+    public void resetGameWorld() {
+        world.resetWorld();
     }
 
     /**

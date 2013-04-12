@@ -45,6 +45,10 @@ public class Tournament {
         antBrains.add(brain);
     }
 
+    public void addWorld(World w) {
+        w.checkValidForTournament();
+        worlds.add(w);
+    }
     /**
      * Sets up and runs the tournament - run this after all desired ant brains
      * have been added.
@@ -62,11 +66,11 @@ public class Tournament {
                 for (int j = 0; j < numCompetitors; j++) {
                     for (World w : worlds) {
                         if (i != j) {
-                            World copy = w;
-                            System.out.println("Playing game " + (gameCounter + 1) + "a");
-                            playMatch(i, j, copy, gui);
-                            System.out.println("Playing game " + (gameCounter++ + 1) + "b");
-                            playMatch(j, i, copy, gui);
+                            w.resetWorld();
+                            System.out.println("Playing game " + (++gameCounter) + " of " + (numCompetitors*(numCompetitors - 1)*worlds.size()));
+                            playMatch(i, j, w, gui);
+                            //System.out.println("Playing game " + (gameCounter++ + 1) + "b");
+                            //playMatch(j, i, copy, gui);
                         }
                     }
                 }
@@ -90,8 +94,9 @@ public class Tournament {
     private void playMatch(int redBrain, int blackBrain, World world, GUI gui) {
         //code to run a game. Update this later once World class has been written
         Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
-        World tempWorld = world;
-        game.loadWorld(tempWorld);
+        world.resetWorld();
+        game.loadWorld(world);
+        game.resetGameWorld();
         //game.generateWorld();
         game.setupGame();
         game.playGame(gui);

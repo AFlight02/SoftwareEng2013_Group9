@@ -30,7 +30,6 @@ public class AntAttack {
         testWorld = new World();
         //testWorld.generateRandomContestWorld();
         testWorld.readInWorld("1.world");
-        testWorld.checkValidForTournament();
         //testWorld.printWorld();
         initialiseGUI();
         newTournament(); 
@@ -72,18 +71,11 @@ public class AntAttack {
 //        tournament.addCompetitors(g);
 //        tournament.addCompetitors(h);
 //        tournament.addCompetitors(i);
-        tournament.worlds.add(testWorld);
+        tournament.addWorld(testWorld);
         
         List<AntBrain> winners = tournament.runTournament(gui);
         for(AntBrain br : winners) {
             System.out.println("Winner: " + br.getName());
         }
-    }
-
-    /**
-     * 
-     */
-    public static void newWorld() {
-        tournament.worlds.add(null);
     }
 }
