@@ -2,7 +2,7 @@
  * World.java Represents a World within which a Game is played between two Ant
  * Brains.
  *
- * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * @author Software Engineering 201213 Group 9  Simon Bell, Kirstie Hale,
  * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
  * @version 1
  */
@@ -46,12 +46,11 @@ public class World {
             width = Integer.parseInt(br.readLine());
             height = Integer.parseInt(br.readLine());
             cells = new Cell[height][width];
-            resetCells = cells;
 
-            String cellStr = "[#\\.\\+\\-[1-9]]";
+            String cellStr = "[#\\.\\+\\[19]]";
             Pattern cellPat = Pattern.compile(cellStr);
 
-            String rowStr = "(" + cellStr + "\\s){" + (width - 1) + "}" + cellStr + "\\s?";
+            String rowStr = "(" + cellStr + "\\s){" + (width  1) + "}" + cellStr + "\\s?";
             Pattern oddRowPat = Pattern.compile("\\s?" + rowStr); //because row count starts at 0
             Pattern evenRowPat = Pattern.compile(rowStr);
 
@@ -90,15 +89,12 @@ public class World {
                                 break;
                             case "+":
                                 newCell.setAnthill("red");
-                                anthillCells.add(coord);
                                 break;
-                            case "-":
+                            case "":
                                 newCell.setAnthill("black");
-                                anthillCells.add(coord);
                                 break;
-                            default: //know it's 1-9
+                            default: //know it's 19
                                 newCell.setFood(Integer.parseInt(rowCells[i]));
-                                foodSpawnCells.add(coord);
                                 break;
                         }
                         cells[rowCnt][i] = newCell;
@@ -112,10 +108,14 @@ public class World {
             //catches things like array boundaries if the file has specified the wrong size map
             throw new Exception("Malformed world!");
         }
+        resetCells = cells.clone();
+        for (int i=0; i<cells.length; i++) {
+            resetCells[i] = cells[i].clone();
+        }
     }
 
     /**
-     * Call this after reading in a world - checks conditions for a regular game
+     * Call this after reading in a world  checks conditions for a regular game
      * map
      *
      * @return
@@ -124,13 +124,13 @@ public class World {
         try {
             //surrounded by rocks
             for (int i = 0; i < width; i++) { //check top and bottom
-                if (!cells[0][i].getRock() || !cells[height - 1][i].getRock()) {
+                if (!cells[0][i].getRock() || !cells[height  1][i].getRock()) {
                     return false;
                 }
             }
 
-            for (int i = 1; i < height - 1; i++) { //check sides
-                if (!cells[i][0].getRock() || !cells[i][width - 1].getRock()) {
+            for (int i = 1; i < height  1; i++) { //check sides
+                if (!cells[i][0].getRock() || !cells[i][width  1].getRock()) {
                     return false;
                 }
             }
@@ -153,16 +153,14 @@ public class World {
             if (!foundRed || !foundBlack) {
                 return false;
             }
-            resetCells = cells;
             return true;
-
         } catch (Exception e) {
             return false; //no world read in, so just return false (or throw exception?)
         }
     }
 
     /**
-     * Call this after reading in a world - checks conditions for a tournament
+     * Call this after reading in a world  checks conditions for a tournament
      * map
      *
      * @return
@@ -191,12 +189,20 @@ public class World {
             int consecBlackHill = 0;
             int[] curHillCoord = new int[2];
 
-            for (int i = 1; i < width - 1; i++) { //don't check boundaries
-                for (int j = 1; j < height - 1; j++) {
+            for (int i = 1; i < height  1; i++) { //don't check boundaries
+                for (int j = 1; j < width  1; j++) {
+                    int[] currCell = new int[2];
+                    currCell[0] = i;
+                    currCell[1] = j;
                     if (cells[i][j].getRock()) {
                         rockCount++;
                     }
-
+                    if(cells[i][j].getFood() > 0) {
+                        foodSpawnCells.add(currCell);
+                    }
+                    if(!cells[i][j].anthill.equalsIgnoreCase("none")) {
+                        anthillCells.add(currCell);
+                    }
                     switch (cells[i][j].getFood()) { //contains food
                         case 0:
                             if (consecFood > 0) { //end of a food row
@@ -205,25 +211,22 @@ public class World {
                                 info[1] = curFoodCoord[1];
                                 info[2] = consecFood;
                                 foodInfo.add(info);
-                                foodSpawnCells.add(curFoodCoord);
                                 consecFood = 0; //reset count
                             }
                             break;
                         case 5:
                             if (consecFood == 0) { //start of a row
                                 curFoodCoord[0] = i;
-                                curFoodCoord[1] = j;
+                                curFoodCoord[1] = j;   
                             }
                             consecFood++;
                             break;
                         default:
                             return false; //anything other than 0 or 5 food is auto invalid!
                     }
-
                     switch (cells[i][j].getAnthill()) {
                         case "red":
                             //end black if exists:
-                            anthillCells.add(curHillCoord);
                             if (consecBlackHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
@@ -241,7 +244,6 @@ public class World {
                             break;
                         case "black":
                             //end red if exists
-                            anthillCells.add(curHillCoord);
                             if (consecRedHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
@@ -250,11 +252,10 @@ public class World {
                                 redHillInfo.add(info);
                                 consecRedHill = 0; //reset
                             }
-
                             if (consecBlackHill == 0) { //start of black row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
-                            }                      
+                            }
                             consecBlackHill++;
                             break;
                         default:
@@ -293,9 +294,9 @@ public class World {
                     curInfoList = blackHillInfo;
                 }
 
-                int h = 0; //height (row count) --also used to determine the y coord the current row SHOULD be on
+                int h = 0; //height (row count) also used to determine the y coord the current row SHOULD be on
                 int parityAdjuster;
-                int SP; //start pos - the x offset the line SHOULD start on
+                int SP; //start pos  the x offset the line SHOULD start on
                 int len; //the length the line SHOULD be
                 int[] firstCoord = new int[2]; //the ACTUAL start coord of the whole shape
                 firstCoord[0] = curInfoList.get(0)[0];
@@ -308,8 +309,8 @@ public class World {
                     } else {
                         parityAdjuster = 0;
                     }
-                    SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
-                    len = 13 - Math.abs(6 - h);
+                    SP = (Math.abs(6  h)) / 2  3 + parityAdjuster;
+                    len = 13  Math.abs(6  h);
                     //I'll try to explain these a little better outside of the code
 
                     if (h > 12) { //hexagon too high!
@@ -344,11 +345,11 @@ public class World {
                                 parityAdjuster = 0;
                             }
 
-                            SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
-                            len = 5 - Math.abs(4 - h);
+                            SP = (Math.abs(4  h)) / 2  2 + parityAdjuster;
+                            len = 5  Math.abs(4  h);
 
                             indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, len);
-                            if (indexOfNextRow != -1) {
+                            if (indexOfNextRow != 1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -361,15 +362,15 @@ public class World {
                         parityAdjuster = consec[0] % 2; //dont need to check height because it is the constant 1 for this part
 
                         //don't need to calculate SP based on height at this stage because it's constant
-                        indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] - 1 + parityAdjuster, 5);
-                        if (indexOfNextRow != -1) {
-                            //right-slanting! remove from list
+                        indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1]  1 + parityAdjuster, 5);
+                        if (indexOfNextRow != 1) {
+                            //rightslanting! remove from list
                             leftSlant = false;
                             foodInfo.remove(indexOfNextRow);
                         } else {
-                            //not right-slanting, so try left-slanting
+                            //not rightslanting, so try leftslanting
                             indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] + parityAdjuster, 5);
-                            if (indexOfNextRow != -1) {
+                            if (indexOfNextRow != 1) {
                                 leftSlant = true;
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -387,10 +388,10 @@ public class World {
                             if (leftSlant) {
                                 SP = h / 2 + parityAdjuster;
                             } else {
-                                SP = parityAdjuster - (h + 1) / 2;
+                                SP = parityAdjuster  (h + 1) / 2;
                             }
                             indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, 5);
-                            if (indexOfNextRow != -1) {
+                            if (indexOfNextRow != 1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -407,7 +408,6 @@ public class World {
             if (blobCount != 11) {
                 return false;
             }
-            resetCells = cells;
             return true; //everything is okay!
 
         } else {
@@ -442,7 +442,7 @@ public class World {
         Random r = new Random();
         int x, y;
 
-        x = r.nextInt(134) + 5; //far left of hexagon is -3 from x and far right is +9 from x
+        x = r.nextInt(134) + 5; //far left of hexagon is 3 from x and far right is +9 from x
         y = r.nextInt(134) + 2; //y can be between 2 and 135
 
         //just place first anthill, no need to check if there's stuff in the way
@@ -456,15 +456,15 @@ public class World {
             //check there is space first
             int SP, len, parityAdjuster;
 
-            for (int h = -1; h < 14; h++) { //-1 to 14 to allow for border
+            for (int h = 1; h < 14; h++) { //1 to 14 to allow for border
                 if (((y % 2) == 1) && ((h % 2) == 1)) {
                     parityAdjuster = 1;
                 } else {
                     parityAdjuster = 0;
                 }
                 //adjusted slightly to allow for a border of 1 around the hexagon
-                SP = (Math.abs(6 - h)) / 2 - 4 + parityAdjuster;
-                len = 15 - Math.abs(6 - h);
+                SP = (Math.abs(6  h)) / 2  4 + parityAdjuster;
+                len = 15  Math.abs(6  h);
 
                 isRoom = true;
                 for (int i = 0; i < len; i++) {
@@ -479,19 +479,19 @@ public class World {
         }
 
         //place food blobs
-        //pick a random shape 1-3 then decide boundaries from there
+        //pick a random shape 13 then decide boundaries from there
         for (int foodNo = 0; foodNo < 11; foodNo++) {
             int shape = r.nextInt(3) + 1;
 
             if (shape == 1) { //diamond
                 isRoom = false;
                 while (!isRoom) {
-                    x = r.nextInt(142) + 4; //x of diamond ranges from x-2 to x+2
+                    x = r.nextInt(142) + 4; //x of diamond ranges from x2 to x+2
                     y = r.nextInt(138) + 2; //height of diamond is 9
 
                     int SP, len, parityAdjuster;
 
-                    for (int h = -1; h < 10; h++) { //remember border of 1
+                    for (int h = 1; h < 10; h++) { //remember border of 1
                         if (((y % 2) == 1) && ((h % 2) == 1)) {
                             parityAdjuster = 1;
                         } else {
@@ -499,8 +499,8 @@ public class World {
                         }
 
                         //these also adjusted, like with anthills
-                        SP = (Math.abs(4 - h)) / 2 - 3 + parityAdjuster;
-                        len = 7 - Math.abs(4 - h);
+                        SP = (Math.abs(4  h)) / 2  3 + parityAdjuster;
+                        len = 7  Math.abs(4  h);
 
                         isRoom = true;
                         for (int i = 0; i < len; i++) {
@@ -520,13 +520,13 @@ public class World {
                     if (shape == 2) { //left slanting
                         x = r.nextInt(140) + 2; //x varies from x to x+6
                     } else {
-                        x = r.nextInt(140) + 4; //x varies from x-2 to x+4
+                        x = r.nextInt(140) + 4; //x varies from x2 to x+4
                     }
                     y = r.nextInt(142) + 2; //height of 5
 
                     int SP, parityAdjuster;
 
-                    for (int h = -1; h < 6; h++) {
+                    for (int h = 1; h < 6; h++) {
                         if (((y % 2) == 1) && ((h % 2) == 1)) {
                             parityAdjuster = 1;
                         } else {
@@ -534,9 +534,9 @@ public class World {
                         }
 
                         if (shape == 2) { //left slanting
-                            SP = h / 2 + parityAdjuster - 1;
+                            SP = h / 2 + parityAdjuster  1;
                         } else {
-                            SP = parityAdjuster - (h + 1) / 2 - 1;
+                            SP = parityAdjuster  (h + 1) / 2  1;
                         }
 
                         isRoom = true;
@@ -566,7 +566,10 @@ public class World {
                 }
             }
         }
-        resetCells = cells;
+        resetCells = cells.clone();
+        for (int i=0; i<cells.length; i++) {
+            resetCells[i] = cells[i].clone();
+        }
     }
 
     /**
@@ -580,7 +583,7 @@ public class World {
         // Check in boundaries
         if (cell[0] < height && cell[1] < width && cell[0] >= 0 && cell[1] >= 0) {
             Cell c = getCell(cell);
-            //Friend case - Check ant exists in cell, if it is of the same colour return true
+            //Friend case  Check ant exists in cell, if it is of the same colour return true
             if (cond == Sense.condition.FRIEND) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {
@@ -600,7 +603,7 @@ public class World {
                     return false;
                 }
             }
-            //Foe case - Check if ant exists in cell, if it is of opposite colour return true
+            //Foe case  Check if ant exists in cell, if it is of opposite colour return true
             else if (cond == Sense.condition.FOE) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {
@@ -620,7 +623,7 @@ public class World {
                     return false;
                 }
             }
-            //FriendWithFood case - check if Ant is friend, then return true if they have food
+            //FriendWithFood case  check if Ant is friend, then return true if they have food
             else if (cond == Sense.condition.FRIENDWITHFOOD) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) { //BLACK
@@ -640,7 +643,7 @@ public class World {
                     return false;
                 }
             }
-            //FoeWithFood case - like FriendWithFood, but reversed
+            //FoeWithFood case  like FriendWithFood, but reversed
             else if (cond == Sense.condition.FOEWITHFOOD) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {
@@ -660,7 +663,7 @@ public class World {
                     return false;
                 }
             }
-            //Food case - true if the cell contains food, false otherwise
+            //Food case  true if the cell contains food, false otherwise
             else if (cond == Sense.condition.FOOD) {
                 if (c.getFood() != 0) {
                     return true;
@@ -668,13 +671,13 @@ public class World {
                     return false;
                 }
             }
-            //Rock case - true if rock, false otherwise
+            //Rock case  true if rock, false otherwise
             else if (cond == Sense.condition.ROCK) {
                 return c.getRock();
             }
-            //Marker0 case - return true if 0 marker is present
+            //Marker0 case  return true if 0 marker is present
             else if (cond == Sense.condition.MARKER0) {
-                //BLACK - First check the ant is able to detect a friendly marker
+                //BLACK  First check the ant is able to detect a friendly marker
                 if (a.getColour()) {
                     boolean[] temp = c.getMarkers(true); //Get Black markers
                     return temp[0];
@@ -808,7 +811,7 @@ public class World {
                 return i;
             }
         }
-        return -1;
+        return 1;
     }
 
     /**
@@ -859,15 +862,14 @@ public class World {
                 parityAdjuster = 0;
             }
 
-            SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
-            len = 13 - Math.abs(6 - h);
+            SP = (Math.abs(6  h)) / 2  3 + parityAdjuster;
+            len = 13  Math.abs(6  h);
 
             for (int i = 0; i < len; i++) {
                 cells[y + h][x + SP + i].anthill = colour;
                 int[] xy = new int[2];
                 xy[0] = y + h;
                 xy[1] = x + SP + i;
-                anthillCells.add(xy);
             }
         }
     }
@@ -883,15 +885,14 @@ public class World {
                     parityAdjuster = 0;
                 }
 
-                SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
-                len = 5 - Math.abs(4 - h);
+                SP = (Math.abs(4  h)) / 2  2 + parityAdjuster;
+                len = 5  Math.abs(4  h);
 
                 for (int i = 0; i < len; i++) {
                     cells[y + h][x + SP + i].setFood(5);
                     int[] xy = new int[2];
                     xy[0] = y + h;
                     xy[1] = x + SP + i;
-                    foodSpawnCells.add(xy);
                 }
             }
         } else { //parallelograms
@@ -905,7 +906,7 @@ public class World {
                 if (type == 2) { //left slanting
                     SP = h / 2 + parityAdjuster;
                 } else {
-                    SP = parityAdjuster - (h + 1) / 2;
+                    SP = parityAdjuster  (h + 1) / 2;
                 }
 
                 for (int i = 0; i < 5; i++) {
@@ -913,7 +914,6 @@ public class World {
                     int[] xy = new int[2];
                     xy[0] = y + h;
                     xy[1] = x + SP + i;
-                    foodSpawnCells.add(xy);
                 }
             }
         }
@@ -942,20 +942,39 @@ public class World {
         return list;
     }
     
+    public void replaceFood() {
+        for(int[] i : foodSpawnCells) {
+            getCell(i).setFood(5);
+        }
+    }
+    
+    public List<int[]> getAnthillCells() {
+        return this.anthillCells;
+    }
+    
+    public List<int[]> getFoodCells() {
+        return this.foodSpawnCells;
+    }
+    
     public void resetWorld() {
-        cells = resetCells;
+        cells = resetCells.clone();
+        for (int i=0; i<resetCells.length; i++) {
+            cells[i] = resetCells[i].clone();
+        }
         for(Cell[] c : cells) {
             for(Cell cell : c) {
-                if(cell.food < 5) {
-                    cell.setFood(0);
-                }
-                if(!cell.anthill.equalsIgnoreCase("none") && cell.ant != null) {
+                cell.setFood(0);
+                cell.adjacentAntsBlack = 0;
+                cell.adjacentAntsRed = 0;
+                    
+                if(cell.ant != null) {
                     cell.removeAnt();
                 }
                 for(int i=0; i<6; i++) {
                     cell.removeBlackMarker(i);
                     cell.removeRedMarker(i);
                 }
+                
             }
         }
     }
