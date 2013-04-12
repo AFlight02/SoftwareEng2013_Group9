@@ -213,7 +213,6 @@ public class World {
                             if (consecFood == 0) { //start of a row
                                 curFoodCoord[0] = i;
                                 curFoodCoord[1] = j;
-                                foodSpawnCells.add(curFoodCoord);
                             }
                             consecFood++;
                             break;
@@ -224,39 +223,37 @@ public class World {
                     switch (cells[i][j].getAnthill()) {
                         case "red":
                             //end black if exists:
+                            anthillCells.add(curHillCoord);
                             if (consecBlackHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
-                                blackHillInfo.add(info);
-                                anthillCells.add(curHillCoord);
+                                blackHillInfo.add(info);                               
                                 consecBlackHill = 0; //reset
                             }
 
                             if (consecRedHill == 0) { //start of red row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
-                                anthillCells.add(curHillCoord);
                             }
                             consecRedHill++;
                             break;
                         case "black":
                             //end red if exists
+                            anthillCells.add(curHillCoord);
                             if (consecRedHill > 0) {
                                 int[] info = new int[3];
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-                                anthillCells.add(curHillCoord);
                                 consecRedHill = 0; //reset
                             }
 
                             if (consecBlackHill == 0) { //start of black row
                                 curHillCoord[0] = i;
                                 curHillCoord[1] = j;
-                                anthillCells.add(curHillCoord);
                             }                      
                             consecBlackHill++;
                             break;
@@ -268,7 +265,6 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecRedHill;
                                 redHillInfo.add(info);
-                                anthillCells.add(curHillCoord);
                                 consecRedHill = 0; //reset
                             } else if (consecBlackHill > 0) {
                                 int[] info = new int[3];
@@ -276,7 +272,6 @@ public class World {
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
                                 blackHillInfo.add(info);
-                                anthillCells.add(curHillCoord);
                                 consecBlackHill = 0; //reset
                             }
                             break;
