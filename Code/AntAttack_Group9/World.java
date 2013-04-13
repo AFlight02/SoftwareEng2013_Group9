@@ -50,7 +50,7 @@ public class World {
             String cellStr = "[#\\.\\+\\[19]]";
             Pattern cellPat = Pattern.compile(cellStr);
 
-            String rowStr = "(" + cellStr + "\\s){" + (width  1) + "}" + cellStr + "\\s?";
+            String rowStr = "(" + cellStr + "\\s){" + (width - 1) + "}" + cellStr + "\\s?";
             Pattern oddRowPat = Pattern.compile("\\s?" + rowStr); //because row count starts at 0
             Pattern evenRowPat = Pattern.compile(rowStr);
 
@@ -124,13 +124,13 @@ public class World {
         try {
             //surrounded by rocks
             for (int i = 0; i < width; i++) { //check top and bottom
-                if (!cells[0][i].getRock() || !cells[height  1][i].getRock()) {
+                if (!cells[0][i].getRock() || !cells[height - 1][i].getRock()) {
                     return false;
                 }
             }
 
-            for (int i = 1; i < height  1; i++) { //check sides
-                if (!cells[i][0].getRock() || !cells[i][width  1].getRock()) {
+            for (int i = 1; i < height - 1; i++) { //check sides
+                if (!cells[i][0].getRock() || !cells[i][width - 1].getRock()) {
                     return false;
                 }
             }
@@ -189,8 +189,8 @@ public class World {
             int consecBlackHill = 0;
             int[] curHillCoord = new int[2];
 
-            for (int i = 1; i < height  1; i++) { //don't check boundaries
-                for (int j = 1; j < width  1; j++) {
+            for (int i = 1; i < height - 1; i++) { //don't check boundaries
+                for (int j = 1; j < width - 1; j++) {
                     int[] currCell = new int[2];
                     currCell[0] = i;
                     currCell[1] = j;
@@ -309,8 +309,8 @@ public class World {
                     } else {
                         parityAdjuster = 0;
                     }
-                    SP = (Math.abs(6  h)) / 2  3 + parityAdjuster;
-                    len = 13  Math.abs(6  h);
+                    SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
+                    len = 13 - Math.abs(6 - h);
                     //I'll try to explain these a little better outside of the code
 
                     if (h > 12) { //hexagon too high!
@@ -345,8 +345,8 @@ public class World {
                                 parityAdjuster = 0;
                             }
 
-                            SP = (Math.abs(4  h)) / 2  2 + parityAdjuster;
-                            len = 5  Math.abs(4  h);
+                            SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
+                            len = 5 - Math.abs(4 - h);
 
                             indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, len);
                             if (indexOfNextRow != 1) {
@@ -362,7 +362,7 @@ public class World {
                         parityAdjuster = consec[0] % 2; //dont need to check height because it is the constant 1 for this part
 
                         //don't need to calculate SP based on height at this stage because it's constant
-                        indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1]  1 + parityAdjuster, 5);
+                        indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] - 1 + parityAdjuster, 5);
                         if (indexOfNextRow != 1) {
                             //rightslanting! remove from list
                             leftSlant = false;
@@ -388,7 +388,7 @@ public class World {
                             if (leftSlant) {
                                 SP = h / 2 + parityAdjuster;
                             } else {
-                                SP = parityAdjuster  (h + 1) / 2;
+                                SP = parityAdjuster - (h + 1) / 2;
                             }
                             indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, 5);
                             if (indexOfNextRow != 1) {
@@ -463,8 +463,8 @@ public class World {
                     parityAdjuster = 0;
                 }
                 //adjusted slightly to allow for a border of 1 around the hexagon
-                SP = (Math.abs(6  h)) / 2  4 + parityAdjuster;
-                len = 15  Math.abs(6  h);
+                SP = (Math.abs(6 - h)) / 2 - 4 + parityAdjuster;
+                len = 15 - Math.abs(6 - h);
 
                 isRoom = true;
                 for (int i = 0; i < len; i++) {
@@ -499,8 +499,8 @@ public class World {
                         }
 
                         //these also adjusted, like with anthills
-                        SP = (Math.abs(4  h)) / 2  3 + parityAdjuster;
-                        len = 7  Math.abs(4  h);
+                        SP = (Math.abs(4 - h)) / 2 - 3 + parityAdjuster;
+                        len = 7 - Math.abs(4 - h);
 
                         isRoom = true;
                         for (int i = 0; i < len; i++) {
@@ -534,9 +534,9 @@ public class World {
                         }
 
                         if (shape == 2) { //left slanting
-                            SP = h / 2 + parityAdjuster  1;
+                            SP = h / 2 + parityAdjuster - 1;
                         } else {
-                            SP = parityAdjuster  (h + 1) / 2  1;
+                            SP = parityAdjuster - (h + 1) / 2 - 1;
                         }
 
                         isRoom = true;
@@ -862,8 +862,8 @@ public class World {
                 parityAdjuster = 0;
             }
 
-            SP = (Math.abs(6  h)) / 2  3 + parityAdjuster;
-            len = 13  Math.abs(6  h);
+            SP = (Math.abs(6 - h)) / 2 - 3 + parityAdjuster;
+            len = 13 - Math.abs(6 - h);
 
             for (int i = 0; i < len; i++) {
                 cells[y + h][x + SP + i].anthill = colour;
@@ -885,8 +885,8 @@ public class World {
                     parityAdjuster = 0;
                 }
 
-                SP = (Math.abs(4  h)) / 2  2 + parityAdjuster;
-                len = 5  Math.abs(4  h);
+                SP = (Math.abs(4 - h)) / 2 - 2 + parityAdjuster;
+                len = 5 - Math.abs(4 - h);
 
                 for (int i = 0; i < len; i++) {
                     cells[y + h][x + SP + i].setFood(5);
@@ -906,7 +906,7 @@ public class World {
                 if (type == 2) { //left slanting
                     SP = h / 2 + parityAdjuster;
                 } else {
-                    SP = parityAdjuster  (h + 1) / 2;
+                    SP = parityAdjuster - (h + 1) / 2;
                 }
 
                 for (int i = 0; i < 5; i++) {
