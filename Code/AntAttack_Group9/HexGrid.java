@@ -17,7 +17,7 @@ public class HexGrid {
    final static int HEXSIZE = 6;    //hex size in pixels
    final static int BORDERS = 15;
    final static int SCRSIZE = HEXSIZE * (BSIZE + 1) + BORDERS * 3 + 200; //screen size (vertical dimension).
-   public static boolean XYVertex = true;	//true: x,y are the co-ords of the first vertex.
+   public static boolean XYVertex = true;   //true: x,y are the co-ords of the first vertex.
 //false: x,y are the co-ords of the top left rect. co-ord.
    private static int s = 0;	// length of one side
    private static int t = 0;	// short side of 30o triangle outside of each hex
@@ -158,7 +158,7 @@ public class HexGrid {
 
        //I think that this XYvertex stuff is taken care of in the int x line above. Why is it here twice?
        if (XYVertex) {
-           cx = new int[]{x, x + s, x + s + t, x + s, x, x t}; //this is for the top left vertex being at x,y. Which means that some of the hex is cutoff.
+           cx = new int[]{x, x + s, x + s + t, x + s, x, x - t}; //this is for the top left vertex being at x,y. Which means that some of the hex is cutoff.
        } else {
            //cx = new int[]{x + t, x + s + t, x + s + t + t, x + s + t, x + t, x};	//this is for the whole hexagon to be below and to the right of this point
            cx = new int[]{x + r, x + h, x + h, x + r, x, x};	//this is for the whole hexagon to be below and to the right of this point
@@ -188,7 +188,7 @@ public class HexGrid {
        } else {
            x = j * h;
        }
-       int y = i * (h (t / 2));
+       int y = i * (h - (t / 2));
        Polygon poly = hex(x, y);
        g2.setColor(COLOURGRID);
        g2.drawPolygon(poly);
@@ -213,7 +213,7 @@ public class HexGrid {
        } else {
            x = j * h;
        }
-       int y = i * (h (t / 2));
+       int y = i * (h - (t / 2));
        
        switch(n) {
            // BLANK
@@ -239,12 +239,12 @@ public class HexGrid {
            // BLACK ANTHILL
            case 4: 
                g2.setColor(COLOURBLACK);
-               g2.drawString("H", x + r + BORDERS 3, y + r + BORDERS + 4);
+               g2.drawString("H", x + r + BORDERS - 3, y + r + BORDERS + 4);
                break;
            // RED ANTHILL
            case 5: 
                g2.setColor(COLOURRED);
-               g2.drawString("H", x + r + BORDERS 3, y + r + BORDERS + 4);
+               g2.drawString("H", x + r + BORDERS - 3, y + r + BORDERS + 4);
                break;
            // ROCK
            case 6:
