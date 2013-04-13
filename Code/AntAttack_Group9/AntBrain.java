@@ -9,9 +9,10 @@
 */
 package AntAttack_Group9;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,8 @@ public final class AntBrain {
     * 
     * @param antBrainFile
     */
-   public AntBrain(String antBrainFile) {
+   public AntBrain(String antBrainFile) throws IOException {
+       PrintWriter out = new PrintWriter(new FileWriter(antBrainFile + "output.txt"), true);
        name = antBrainFile;
        try {
            if (checkAntBrainSyntax(antBrainFile)) {
@@ -42,31 +44,44 @@ public final class AntBrain {
                        case "sense":
                            String markerNum = "";
                            if(input.length >= 6) {
-                               markerNum = input[5];
+                               String regexMarker = "[0-5]";
+                               Pattern p1 = Pattern.compile(regexMarker);
+                               Matcher m = p1.matcher(input[5]);
+                               if(m.matches()) {
+                                    markerNum = input[5];
+                               }
                            }
                            String cond = input[4] + markerNum;
                            i = new Sense(Sense.dirFromString(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Sense.condFromString(cond));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + " " + input[3] + " " + cond + "\n");
                            break;
                        case "mark":
                            i = new Mark(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + "\n");
                            break;
                        case "unmark":
                            i = new Unmark(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + "\n");
                            break;
                        case "pickup":
                            i = new PickUp(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + "\n");
                            break;
                        case "drop":
                            i = new Drop(Integer.parseInt(input[1]));
+                           out.write(input[0] + " " + input[1] + "\n");
                            break;
                        case "turn":
                            i = new Turn(Turn.dirFromString(input[1]), Integer.parseInt(input[2]));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + "\n");
                            break;
                        case "move":
                            i = new Move(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + "\n");
                            break;
                        case "flip":
                            i = new Flip(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]));
+                           out.write(input[0] + " " + input[1] + " " + input[2] + " " + input[3] + "\n");
                            break;
                    }
                    fsm.add(i);
@@ -78,8 +93,9 @@ public final class AntBrain {
        } catch (Exception e) {
            System.err.println("Error: " + e.getMessage());
        }
+       out.close();
    }
-
+   
    /**
     * Check if ant brain file is syntactically correct iterates through passed
     * file line by line

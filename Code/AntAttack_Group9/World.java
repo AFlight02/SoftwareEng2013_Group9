@@ -956,6 +956,10 @@ public class World {
         return this.foodSpawnCells;
     }
     
+    public int getFoodNum() {
+        return this.foodSpawnCells.size() * 5;
+    }
+    
     public void resetWorld() {
         cells = resetCells.clone();
         for (int i=0; i<resetCells.length; i++) {

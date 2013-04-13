@@ -196,8 +196,8 @@ public class Cell {
     * 
     */
    public void removeFood() {
-       if (food >= 0) {
-           food--;
+       if (this.food > 0) {
+           this.food--;
        }
    }
 

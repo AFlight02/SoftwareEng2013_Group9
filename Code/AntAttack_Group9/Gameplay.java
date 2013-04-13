@@ -54,6 +54,7 @@ public final class Gameplay {
    public void playGame(GUI gui) {
        // TEST WITH 3000 CHANGE BACK!!!!
        gui.initaliseWorldMap(world);
+       System.out.println("Total Food:" + world.getFoodNum());
        try {
            Thread.sleep(1000);
        } catch (InterruptedException e) {}
@@ -61,9 +62,9 @@ public final class Gameplay {
        for (int i = 0; i < 300000; i++) {
            stepGame(gui);
            gui.updateUI(world);
-//            try {
-//                Thread.sleep(1);
-//            } catch (InterruptedException e) {}
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {}
        }
        endGame();
        gui.updateUI(world);
@@ -83,19 +84,24 @@ public final class Gameplay {
    public void stepGame(GUI gui) {
        for (Ant a : ants) {
            if (a.isAlive()) {
-               if (a.getColour()) {
-                   if (world.getCell(a.getPosition()).getAdjacentAntsRed() >= 5) {
-                       a.kill();
-                       world.getCell(a.getPosition()).removeAnt();
-                   }
-               } else {
-                   if (world.getCell(a.getPosition()).getAdjacentAntsBlack() >= 5) {
-                       a.kill();
-                       world.getCell(a.getPosition()).removeAnt();
-                   }
-               }
+               
                Instruction nextInstruction = a.getInstruction();
                Cell currCell = world.getCell(a.getPosition());
+               
+               if (a.getColour()) {
+                   if (currCell.getAdjacentAntsRed() >= 5) {
+                       a.kill();
+                       currCell.removeAnt();
+                   }
+               } else {
+                   if (currCell.getAdjacentAntsBlack() >= 5) {
+                       a.kill();
+                       currCell.removeAnt();
+                   }
+               }
+               
+               a.decrementResting();
+               
                if (nextInstruction instanceof Flip) {
                    Flip f = (Flip) nextInstruction;
                    int n = rand.nextInt(f.getRandom());
@@ -138,7 +144,7 @@ public final class Gameplay {
 
                else if (nextInstruction instanceof PickUp) {
                    PickUp p = (PickUp) nextInstruction;
-                   if (currCell.getFood() > 0) {
+                   if (currCell.getFood() > 0 && !a.getFood()) {
                        a.setFood(true);
                        currCell.removeFood();
                        a.setState(p.getS1());
@@ -186,7 +192,6 @@ public final class Gameplay {
                else {
                    System.err.println("Unrecognised Instruction" + nextInstruction);
                }
-               a.decrementResting();
            } else {
                world.getCell(a.getPosition()).removeAnt();
                ants.remove(a);
@@ -198,6 +203,8 @@ public final class Gameplay {
     *
     */
    public void endGame() {
+       blackFood = 0;
+       redFood = 0;
        for(int[] i : world.getAnthillCells()) {
            if (world.getCell(i).anthill.equalsIgnoreCase("black")) {
                blackFood += world.getCell(i).getFood();

@@ -8,8 +8,11 @@
 */
 package AntAttack_Group9;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AntAttack {
 
@@ -48,30 +51,35 @@ public class AntAttack {
     * 
     */
    public static void newTournament() {
-       List<World> w = new ArrayList();
-       tournament = new Tournament(w);
-       AntBrain a = new AntBrain("cleverbrain1.brain");
-       AntBrain c = new AntBrain("cleverbrain2.brain");
-       AntBrain d = new AntBrain("cleverbrain3.brain");
-       AntBrain e = new AntBrain("cleverbrain4.brain");
-       AntBrain f = new AntBrain("horseshoe.brain");
-       AntBrain g = new AntBrain("sampleant.brain");
-       AntBrain h = new AntBrain("snakebrain.brain");
-       AntBrain i = new AntBrain("solution-1.brain");
-       AntBrain j = new AntBrain("sample.brain");
-       tournament.addCompetitors(a);
-       //tournament.addCompetitors(c);
-       tournament.addCompetitors(d);
-       //tournament.addCompetitors(e);
-       //tournament.addCompetitors(f);
-       //tournament.addCompetitors(g);
-       //tournament.addCompetitors(h);
-       tournament.addCompetitors(i);
-       tournament.addWorld(testWorld);
-       
-       List<AntBrain> winners = tournament.runTournament(gui);
-       for(AntBrain br : winners) {
-           System.out.println("Winner: " + br.getName());
-       }
+        try {
+            List<World> w = new ArrayList();
+            tournament = new Tournament(w);
+            AntBrain a = new AntBrain("cleverbrain1.brain");
+            AntBrain b = new AntBrain("cleverbrain2.brain");
+            AntBrain c = new AntBrain("cleverbrain3.brain");
+            AntBrain d = new AntBrain("cleverbrain4.brain");
+            AntBrain e = new AntBrain("horseshoe.brain");
+            AntBrain f = new AntBrain("sampleant.brain");
+            AntBrain g = new AntBrain("snakebrain.brain");
+            AntBrain h = new AntBrain("solution-1.brain");
+            AntBrain i = new AntBrain("sample.brain");
+            AntBrain tester = new AntBrain("simple.brain");
+            tournament.addCompetitors(d);
+            //tournament.addCompetitors(c);
+            tournament.addCompetitors(f);
+            //tournament.addCompetitors(e);
+            //tournament.addCompetitors(f);
+            //tournament.addCompetitors(g);
+            //tournament.addCompetitors(h);
+            //tournament.addCompetitors(i);
+            tournament.addWorld(testWorld);
+            
+            List<AntBrain> winners = tournament.runTournament(gui);
+            for(AntBrain br : winners) {
+                System.out.println("Winner: " + br.getName());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(AntAttack.class.getName()).log(Level.SEVERE, null, ex);
+        }
    }
 }
