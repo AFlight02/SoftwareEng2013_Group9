@@ -1,6 +1,8 @@
 package AntAttack_Group9;
 
 import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -27,6 +29,11 @@ public class HexGrid {
    private DrawingPanel panel;
    private JFrame frame;
    private Container content;
+   private final JPanel grid = new JPanel(new FlowLayout());
+   private JButton firewallButton;
+   private JButton networkButton;
+   private JButton printerButton;
+   private JPanel buttonPanel;
 
    private World world;
    
@@ -46,10 +53,11 @@ public class HexGrid {
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        content = frame.getContentPane();
        content.add(panel);
-       frame.setSize((int)(SCRSIZE / 1.05), (int)(SCRSIZE / 1.2));
+       frame.setSize((int)(SCRSIZE / 1.22), (int)(SCRSIZE / 1.2));
        frame.setResizable(false);
        frame.setLocationRelativeTo(null);
        frame.setVisible(true);
+
    }
    
    public void updateGrid(World w) {
@@ -60,8 +68,6 @@ public class HexGrid {
    }
 
    class DrawingPanel extends JPanel {
-       //mouse variables here
-       //Point mPt = new Point(0,0);
 
        public DrawingPanel() {
            setBackground(Color.WHITE);
@@ -73,7 +79,6 @@ public class HexGrid {
 
        @Override
        public void paintComponent(Graphics g) {
-           //super.paintComponent(g);
            Graphics2D g2 = (Graphics2D) g;
            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
            g.setFont(new Font("TimesRoman", Font.PLAIN, 10));

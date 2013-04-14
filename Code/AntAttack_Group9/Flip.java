@@ -20,10 +20,10 @@ public class Flip extends Instruction {
      * @param initState
      * @param nextState
      */
-    public Flip(int random, int initState, int nextState) {
+    public Flip(int random, int s1, int s2) {
         this.random = random;
-        this.state1 = initState;
-        this.state2 = nextState;
+        this.state1 = s1;
+        this.state2 = s2;
     }
 
     /**

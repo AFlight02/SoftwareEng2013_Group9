@@ -62,8 +62,8 @@ public final class Gameplay {
        for (int i = 0; i < 300000; i++) {
            stepGame(gui);
            gui.updateUI(world);
-            try {
-                Thread.sleep(1);
+           try {
+                Thread.sleep(5);
             } catch (InterruptedException e) {}
        }
        endGame();
@@ -83,23 +83,22 @@ public final class Gameplay {
     */
    public void stepGame(GUI gui) {
        for (Ant a : ants) {
-           if (a.isAlive()) {
-               
-               Instruction nextInstruction = a.getInstruction();
-               Cell currCell = world.getCell(a.getPosition());
-               
-               if (a.getColour()) {
+           Instruction nextInstruction = a.getInstruction();
+           Cell currCell = world.getCell(a.getPosition());
+           if (a.getColour()) {
                    if (currCell.getAdjacentAntsRed() >= 5) {
                        a.kill();
+                       currCell.incrementFood();
                        currCell.removeAnt();
                    }
                } else {
                    if (currCell.getAdjacentAntsBlack() >= 5) {
                        a.kill();
+                       currCell.incrementFood();
                        currCell.removeAnt();
                    }
                }
-               
+           if (a.isAlive()) {
                a.decrementResting();
                
                if (nextInstruction instanceof Flip) {
@@ -146,7 +145,7 @@ public final class Gameplay {
                    PickUp p = (PickUp) nextInstruction;
                    if (currCell.getFood() > 0 && !a.getFood()) {
                        a.setFood(true);
-                       currCell.removeFood();
+                       currCell.decrementFood();
                        a.setState(p.getS1());
                    } else {
                        a.setState(p.getS2());
@@ -162,7 +161,7 @@ public final class Gameplay {
                else if (nextInstruction instanceof Drop) {
                    Drop d = (Drop) nextInstruction;
                    if (a.getFood()) {
-                       currCell.setFood(currCell.getFood() + 1);
+                       currCell.incrementFood();
                    }
                    a.setState(d.getS1());
                }

@@ -18,9 +18,9 @@ public class Move extends Instruction {
      * @param initState
      * @param nextState
      */
-    public Move(int initState, int nextState) {
-        this.state1 = initState;
-        this.state2 = nextState;
+    public Move(int s1, int s2) {
+        this.state1 = s1;
+        this.state2 = s2;
     }
 
     /**

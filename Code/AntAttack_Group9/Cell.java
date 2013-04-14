@@ -194,15 +194,6 @@ public class Cell {
 
    /**
     * 
-    */
-   public void removeFood() {
-       if (this.food > 0) {
-           this.food--;
-       }
-   }
-
-   /**
-    * 
     * @return
     */
    public Ant getAnt() {
@@ -223,10 +214,6 @@ public class Cell {
     */
    public void removeAnt() {
        // Set ant to null
-
-       if(!this.ant.isAlive() && this.ant.getFood()) {
-           this.setFood(food + 1);
-       }
        this.ant = null;
    }
 
@@ -300,6 +287,16 @@ public class Cell {
            return true;
        } else {
            return false;
+       }
+   }
+   
+   public void incrementFood() {
+       this.food++;
+   }
+   
+   public void decrementFood() {
+       if(this.food > 0) {
+            this.food--;
        }
    }
    

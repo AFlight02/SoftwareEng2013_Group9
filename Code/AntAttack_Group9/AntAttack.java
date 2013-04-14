@@ -36,7 +36,6 @@ public class AntAttack {
        //testWorld.printWorld();
        initialiseGUI();
        newTournament(); 
-
    }
 
    /**
@@ -64,9 +63,9 @@ public class AntAttack {
             AntBrain h = new AntBrain("solution-1.brain");
             AntBrain i = new AntBrain("sample.brain");
             AntBrain tester = new AntBrain("simple.brain");
-            tournament.addCompetitors(d);
+            tournament.addCompetitors(tester);
             //tournament.addCompetitors(c);
-            tournament.addCompetitors(f);
+            tournament.addCompetitors(tester);
             //tournament.addCompetitors(e);
             //tournament.addCompetitors(f);
             //tournament.addCompetitors(g);

@@ -57,7 +57,7 @@ public class Ant {
     * 
     */
    public void kill() {
-       alive = false;
+       this.alive = false;
    }
 
    /**
