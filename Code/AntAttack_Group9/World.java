@@ -665,7 +665,7 @@ public class World {
             }
             //Food case - true if the cell contains food, false otherwise
             else if (cond == Sense.condition.FOOD) {
-                if (c.getFood() != 0) {
+                if (c.getFood() > 0) {
                     return true;
                 } else {
                     return false;
