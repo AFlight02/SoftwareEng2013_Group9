@@ -112,10 +112,10 @@ public class Cell {
                sensedCellPos = adjacentCell(dir);
                break;
            case LEFTAHEAD:
-               sensedCellPos = adjacentCell(ant.turn(Turn.direction.LEFT));
+               sensedCellPos = adjacentCell((dir + 5) % 6);
                break;
            case RIGHTAHEAD:
-               sensedCellPos = adjacentCell(ant.turn(Turn.direction.RIGHT));
+               sensedCellPos = adjacentCell((dir + 1) % 6);
                break;
        }
        return sensedCellPos;

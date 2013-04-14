@@ -31,8 +31,8 @@ public class AntAttack {
     */
    public static void main(String[] args) throws Exception {
        testWorld = new World();
-       testWorld.generateRandomContestWorld();
-       //testWorld.readInWorld("1.world");
+       //testWorld.generateRandomContestWorld();
+       testWorld.readInWorld("1.world");
        //testWorld.printWorld();
        initialiseGUI();
        newTournament(); 
@@ -63,9 +63,10 @@ public class AntAttack {
             AntBrain h = new AntBrain("solution-1.brain");
             AntBrain i = new AntBrain("sample.brain");
             AntBrain tester = new AntBrain("simple.brain");
-            tournament.addCompetitors(tester);
-            //tournament.addCompetitors(c);
-            tournament.addCompetitors(tester);
+            tournament.addCompetitors(a);
+            tournament.addCompetitors(b);
+            tournament.addCompetitors(c);
+            //tournament.addCompetitors(d);
             //tournament.addCompetitors(e);
             //tournament.addCompetitors(f);
             //tournament.addCompetitors(g);

@@ -62,9 +62,9 @@ public final class Gameplay {
        for (int i = 0; i < 300000; i++) {
            stepGame(gui);
            gui.updateUI(world);
-           try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {}
+//           try {
+//                Thread.sleep(5);
+//            } catch (InterruptedException e) {}
        }
        endGame();
        gui.updateUI(world);
@@ -124,7 +124,7 @@ public final class Gameplay {
 
                else if (nextInstruction instanceof Sense) {
                    Sense s = (Sense) nextInstruction;
-                   if (world.checkCellStatus(currCell.adjacentCell(a.getDirection()), s.getCondVal(), a)) {
+                   if (world.checkCellStatus(currCell.sensedCell(a.getPosition(), a.getDirection(), s.getSenseDirVal()), s.getCondVal(), a)) {
                        a.setState(s.getS1());
                    } else {
                        a.setState(s.getS2());
