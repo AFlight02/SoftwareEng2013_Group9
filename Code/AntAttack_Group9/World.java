@@ -26,12 +26,12 @@ public class World {
     protected int width, height;
     private List<int[]> anthillCells = new ArrayList<>();
     private List<int[]> foodSpawnCells = new ArrayList<>();
+    public String worldName = "notSet";
 
     /**
      *
      */
     public World() {
-        // Constructor
     }
 
     /**
@@ -42,6 +42,7 @@ public class World {
      */
     public void readInWorld(String worldFile) throws Exception {
         try {
+            worldName = worldFile;
             BufferedReader br = new BufferedReader(new FileReader(worldFile));
             width = Integer.parseInt(br.readLine());
             height = Integer.parseInt(br.readLine());

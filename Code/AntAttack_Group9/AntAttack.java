@@ -35,7 +35,7 @@ public class AntAttack {
        testWorld.readInWorld("1.world");
        //testWorld.printWorld();
        initialiseGUI();
-       newTournament(); 
+       //newTournament(); 
    }
 
    /**
@@ -43,7 +43,7 @@ public class AntAttack {
     */
    public static void initialiseGUI() {
        gui = new GUI(testWorld);
-       gui.initaliseWorldMap(testWorld);
+       gui.initaliseWorldMap(testWorld, 0, 0);
    }
 
    /**

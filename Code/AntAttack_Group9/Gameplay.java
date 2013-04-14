@@ -16,14 +16,14 @@ public final class Gameplay {
 
    private World world;
    private List<Ant> ants;
-   private AntBrain redAntBrain;
-   private AntBrain blackAntBrain;
+   protected AntBrain redAntBrain;
+   protected AntBrain blackAntBrain;
    private RandomInt random;
    private Random rand;
-   private int redFood;
-   private int blackFood;
-   private int numRedAnts;
-   private int numBlackAnts;
+   protected int redFood;
+   protected int blackFood;
+   protected int numRedAnts;
+   protected int numBlackAnts;
 
    /**
     *
@@ -53,23 +53,23 @@ public final class Gameplay {
    /**
     *
     */
-   public void playGame(GUI gui) {
+   public void playGame(GUI gui, int matchNum, int totalMatches) {
        // TEST WITH 3000 CHANGE BACK!!!!
-       gui.initaliseWorldMap(world);
+       gui.initaliseWorldMap(world, matchNum, totalMatches);
        System.out.println("Total Food:" + world.getFoodNum());
        try {
            Thread.sleep(1000);
        } catch (InterruptedException e) {}
-       gui.updateUI(world);
+       gui.updateUI(world, this);
        for (int i = 0; i < 300000; i++) {
            stepGame(gui);
-           gui.updateUI(world);
+           gui.updateUI(world, this);
 //           try {
 //                Thread.sleep(5);
 //            } catch (InterruptedException e) {}
        }
        endGame();
-       gui.updateUI(world);
+       gui.updateUI(world, this);
    }
 
    /**

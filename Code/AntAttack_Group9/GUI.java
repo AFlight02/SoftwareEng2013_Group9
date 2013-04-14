@@ -9,27 +9,24 @@ package AntAttack_Group9;
 
 public final class GUI {
 
-    private World world;
     private HexGrid hexgrid;
 
     /**
      *
      */
     public GUI(World w) {
-        hexgrid = new HexGrid();
+        hexgrid = new HexGrid(this);
         hexgrid.createAndShowGUI();
     }
 
-    public void initaliseWorldMap(World w) {
-        world = w;
-        hexgrid.initGame(w);
-        hexgrid.updateGrid(w);
+    public void initaliseWorldMap(World w, int matchNum, int totalMatches) {
+        hexgrid.initGame(w, matchNum, totalMatches);
     }
 
     /**
      *
      */
-    public void updateUI(World w) {
-        hexgrid.updateGrid(w);
+    public void updateUI(World w, Gameplay g) {
+        hexgrid.updateGrid(w, g);
     }
 }

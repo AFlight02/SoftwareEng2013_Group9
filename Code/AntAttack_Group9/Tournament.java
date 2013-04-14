@@ -10,21 +10,39 @@ package AntAttack_Group9;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class Tournament {
 
-   List<AntBrain> antBrains;
-   List<World> worlds;
-   int[] scores; // Increments points per AntBrain in list, 1 = draw, 2 = win, 0 = loss
+   private ExecutorService gameExecutor = Executors.newSingleThreadExecutor();
+   private List<AntBrain> antBrains;
+   private List<World> worlds;
+   private int[] scores; // Increments points per AntBrain in list, 1 = draw, 2 = win, 0 = loss
+   private Future<?> gameTask;
+   public ArrayList<AntBrain> winners;
    
    /**
     * 
     * @param worlds
     */
    public Tournament(List<World> worlds) {
-       antBrains = new ArrayList<>(); //inits as an empty list
+       winners = new ArrayList();
+       antBrains = new ArrayList(); //inits as an empty list
        this.worlds = worlds;
    }
+   
+   public boolean startNewTourn(final GUI g) {
+        if (gameTask != null) gameTask.cancel(true);
+        gameTask = gameExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                winners = runTournament(g);
+            }
+        });
+        return true;
+    }
 
    /**
     * 
@@ -34,6 +52,7 @@ public class Tournament {
    public Tournament(List<AntBrain> antBrains, List<World> worlds) {
        this.antBrains = antBrains;
        this.worlds = worlds;
+       this.winners = new ArrayList();
    }
 
    /**
@@ -52,25 +71,25 @@ public class Tournament {
     * Sets up and runs the tournament run this after all desired ant brains
     * have been added.
     */
-   public List<AntBrain> runTournament(GUI gui) {
+   public ArrayList<AntBrain> runTournament(GUI gui) {
        int numCompetitors = antBrains.size();
        scores = new int[numCompetitors]; //can init scores[] now that we know how many brains there are
-
+       
        for(World wo : worlds) {
            wo.checkValidForTournament();
        }
        
        int gameCounter = 0;
+       int totalMatches = (numCompetitors*(numCompetitors - 1)*worlds.size());
        
        if (numCompetitors > 1) {
-           List<AntBrain> winners = new ArrayList<>();
-
+           ArrayList<AntBrain> winners = new ArrayList<>();
            for (int i = 0; i < numCompetitors; i++) {
                for (int j = 0; j < numCompetitors; j++) {
                    for (World w : worlds) {
                        if (i != j) {
-                           System.out.println("Playing game " + (++gameCounter) + " of " + (numCompetitors*(numCompetitors - 1)*worlds.size()));
-                           playMatch(i, j, w, gui);
+                           System.out.println("Playing game " + (++gameCounter) + " of " + totalMatches);
+                           playMatch(i, j, w, gui, gameCounter, totalMatches);
                            //System.out.println("Playing game " + (gameCounter++ + 1) + "b");
                            //playMatch(j, i, copy, gui);
                        }
@@ -93,12 +112,12 @@ public class Tournament {
     * @param blackBrain the list/score index of opponent 2
     * @param world the world the match is played on
     */
-   private void playMatch(int redBrain, int blackBrain, World world, GUI gui) {
+   private void playMatch(int redBrain, int blackBrain, World world, GUI gui, int matchNum, int totalMatches) {
        Gameplay game = new Gameplay(antBrains.get(redBrain), antBrains.get(blackBrain));
        game.loadWorld(world);
        //game.generateWorld();
        game.setupGame();
-       game.playGame(gui);
+       game.playGame(gui, matchNum, totalMatches);
        int winner = game.declareWinner(); //0 for Draw, 1 for Black win, 2 for Red win
 
        switch (winner) {
@@ -118,8 +137,8 @@ public class Tournament {
     * Calculates the winner(s) of the tournament 
     * @return winningBrains the brain(s) with the highest score
     */
-   private List<AntBrain> declareWinner() {
-       List<AntBrain> winningBrains = new ArrayList<>(); // ALEX: Again wasn't compiling due to error, reinitialised as ArrayList seemed to fix
+   private ArrayList<AntBrain> declareWinner() {
+       ArrayList<AntBrain> winningBrains = new ArrayList(); // ALEX: Again wasn't compiling due to error, reinitialised as ArrayList seemed to fix
        int highestScore = 0;
 
        //need to do this separately to just finding the index with highest score, to allow for a tourney draw (though unlikely)
