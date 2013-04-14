@@ -665,7 +665,7 @@ public class World {
             }
             //Food case - true if the cell contains food, false otherwise
             else if (cond == Sense.condition.FOOD) {
-                if (c.getFood() > 0) {
+                if (c.getFood() != 0) {
                     return true;
                 } else {
                     return false;
@@ -954,6 +954,10 @@ public class World {
     
     public List<int[]> getFoodCells() {
         return this.foodSpawnCells;
+    }
+    
+    public int getFoodNum() {
+        return this.foodSpawnCells.size() * 5;
     }
     
     public void resetWorld() {
