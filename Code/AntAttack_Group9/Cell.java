@@ -137,7 +137,7 @@ public class Cell {
                Ant adjAnt = cell.getAnt();
                if (adjAnt.getColour()) { //BLACK
                    adjacentAntsBlack++;
-               } else {
+               } else if (!adjAnt.getColour()){
                    adjacentAntsRed++;
                }
            }
