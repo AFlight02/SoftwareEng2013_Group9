@@ -586,14 +586,14 @@ public class World {
             //Friend case - Check ant exists in cell, if it is of the same colour return true
             if (cond == Sense.condition.FRIEND) {
                 if (c.getAnt() != null) {
-                    if (a.getColour()) {
-                        if (c.getAnt().getColour()) {
+                    if (a.getColour()) {    //BLACK
+                        if (c.getAnt().getColour()) { //BLACK
                             return true;
                         } else {
                             return false;
                         }
-                    } else if (!a.getColour()) {
-                        if (!c.getAnt().getColour()) {
+                    } else if (!a.getColour()) { //RED
+                        if (!c.getAnt().getColour()) { //RED
                             return true;
                         } else {
                             return false;
@@ -606,14 +606,14 @@ public class World {
             //Foe case - Check if ant exists in cell, if it is of opposite colour return true
             else if (cond == Sense.condition.FOE) {
                 if (c.getAnt() != null) {
-                    if (a.getColour()) {
-                        if (!c.getAnt().getColour()) {
+                    if (a.getColour()) { //BLACK
+                        if (!c.getAnt().getColour()) { //RED
                             return true;
                         } else {
                             return false;
                         }
-                    } else if (!a.getColour()) {
-                        if (c.getAnt().getColour()) {
+                    } else if (!a.getColour()) { //RED
+                        if (c.getAnt().getColour()) { //BLACK
                             return true;
                         } else {
                             return false;
@@ -646,14 +646,14 @@ public class World {
             //FoeWithFood case - like FriendWithFood, but reversed
             else if (cond == Sense.condition.FOEWITHFOOD) {
                 if (c.getAnt() != null) {
-                    if (a.getColour()) {
-                        if (!c.getAnt().getColour()) {
+                    if (a.getColour()) {        //BLACK
+                        if (!c.getAnt().getColour()) { //RED
                             return c.getAnt().getFood();
                         } else {
                             return false;
                         }
-                    } else if (!a.getColour()) {
-                        if (c.getAnt().getColour()) {
+                    } else if (!a.getColour()) {    //RED
+                        if (c.getAnt().getColour()) {   //BLACK
                             return c.getAnt().getFood();
                         } else {
                             return false;
@@ -678,22 +678,21 @@ public class World {
             //Marker0 case - return true if 0 marker is present
             else if (cond == Sense.condition.MARKER0) {
                 //BLACK - First check the ant is able to detect a friendly marker
-                if (a.getColour()) {
+                if (a.getColour()) {        //BLACK
                     boolean[] temp = c.getMarkers(true); //Get Black markers
                     return temp[0];
                 } //RED
-                else if (!a.getColour()) {
+                else if (!a.getColour()) {  //RED
                     boolean[] temp = c.getMarkers(false); //Get Red markers
                     return temp[0];
                 }
             }
             else if (cond == Sense.condition.MARKER1) {
-                //BLACK
-                if (a.getColour()) {
+                if (a.getColour()) {    //BLACK
                     boolean[] temp = c.getMarkers(true);
                     return temp[1];
-                } //RED
-                else if (!a.getColour()) {
+                } 
+                else if (!a.getColour()) { //RED
                     boolean[] temp = c.getMarkers(false);
                     return temp[1];
                 }
@@ -924,16 +923,12 @@ public class World {
         int id = 0;
         for (int[] cell : anthillCells) {
             if (getCell(cell).anthill.equalsIgnoreCase("black")) {
-                Ant black = new Ant(true);
-                black.setBrain(blackBrain);
-                black.setId(id++);
+                Ant black = new Ant(blackBrain, true, id++);
                 black.setPostition(cell);
                 getCell(cell).ant = black;
                 list.add(black);
             } else if(getCell(cell).anthill.equalsIgnoreCase("red")){
-                Ant red = new Ant(false);
-                red.setBrain(redBrain);
-                red.setId(id++);
+                Ant red = new Ant(redBrain, false, id++);
                 red.setPostition(cell);
                 getCell(cell).ant = red;
                 list.add(red);

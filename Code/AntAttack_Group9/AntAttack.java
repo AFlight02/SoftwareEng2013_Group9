@@ -66,12 +66,12 @@ public class AntAttack {
             tournament.addCompetitors(a);
             tournament.addCompetitors(b);
             tournament.addCompetitors(c);
-            //tournament.addCompetitors(d);
-            //tournament.addCompetitors(e);
-            //tournament.addCompetitors(f);
-            //tournament.addCompetitors(g);
-            //tournament.addCompetitors(h);
-            //tournament.addCompetitors(i);
+            tournament.addCompetitors(d);
+            tournament.addCompetitors(e);
+            tournament.addCompetitors(f);
+            tournament.addCompetitors(g);
+            tournament.addCompetitors(h);
+            tournament.addCompetitors(i);
             tournament.addWorld(testWorld);
             
             List<AntBrain> winners = tournament.runTournament(gui);

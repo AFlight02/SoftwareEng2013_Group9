@@ -22,18 +22,6 @@ public class Ant {
    private int[] position = new int[2]; // (col, row)
    private boolean alive;
 
-   public Ant(boolean colour) {
-       this.colour = colour;
-       this.brain = null;
-       this.hasFood = false;
-       this.resting = 0;
-       this.state = 0;
-       this.direction = 0;
-       this.id = -1;
-       this.alive = true;
-       this.position[0] = -1;
-       this.position[1] = -1;
-   }
    /**
     * 
     * @param brain
@@ -67,14 +55,6 @@ public class Ant {
    public boolean isAlive() {
        return alive;
    }
-
-   /**
-    * 
-    * @return
-    */
-   public int getState() {
-       return this.state;
-   }
    
    public int[] getPosition() {
        return this.position;
@@ -90,17 +70,9 @@ public class Ant {
 
    /**
     * 
-    * @return
-    */
-   public int getID() {
-       return id;
-   }
-
-   /**
-    * 
     */
    public void decrementResting() {
-       resting--;
+       this.resting--;
    }
 
    /**
@@ -126,25 +98,9 @@ public class Ant {
    public boolean getColour() {
        return this.colour;
    }
-
-    /**
-    * 
-    * @param newId
-    */
-   public void setId(int newId) {
-       this.id = newId;
-   }
    
    public void setPostition(int[] newPos) {
        this.position = newPos;
-   }
-   
-   /**
-    * 
-    * @param newBrain
-    */
-   public void setBrain(AntBrain newBrain) {
-       this.brain = newBrain;
    }
    
    /**
@@ -187,9 +143,9 @@ public class Ant {
    public int turn(Turn.direction dir) {
        switch (dir) {
            case LEFT:
-               return (direction + 5) % 6;
+               return (this.direction + 5) % 6;
            case RIGHT:
-               return (direction + 1) % 6;
+               return (this.direction + 1) % 6;
            default:
                return -1;
        }
@@ -200,6 +156,6 @@ public class Ant {
     * @return
     */
    public Instruction getInstruction() {
-       return this.brain.getInstruction(state);
+       return this.brain.getInstruction(this.state);
    }
 }

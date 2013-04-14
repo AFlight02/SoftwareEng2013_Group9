@@ -89,10 +89,10 @@ public class HexGrid {
                    drawHex(i, j, g2);
                    Cell c = world.cells[i][j];
                    if (c.ant != null && c.ant.isAlive()) {
-                       if(c.ant.getColour()) {
+                       if(c.ant.getColour()) {      //BLACK
                            fillHex(i, j, 1, g2);
-                       } else {
-                           fillHex(i, j, 2, g2);
+                       } else {                     //RED
+                           fillHex(i, j, 2, g2); 
                        }
                    }
                    else if (!c.anthill.equalsIgnoreCase("none")) {

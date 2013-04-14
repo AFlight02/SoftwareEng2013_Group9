@@ -9,15 +9,15 @@ package AntAttack_Group9;
 
 public class Cell {
 
-   Ant ant = null; // Ensure blank when no Ants exist
-   int[] pos = new int[2];
-   int food;
-   int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
-   int adjacentAntsBlack;
-   boolean rock;
-   String anthill; // "red"|"black"|"none" //null value causes errors when using switch statements
-   boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i, structure is false, false, true, false etc..
-   boolean[] markersBlack = new boolean[6];
+   protected Ant ant = null; // Ensure blank when no Ants exist
+   protected String anthill; // "red"|"black"|"none" //null value causes errors when using switch statements
+   protected int food;
+   protected boolean rock;
+   protected int adjacentAntsRed; // Counter updates each cycle, used to check if Ant dies in combat case
+   protected int adjacentAntsBlack;
+   private int[] pos = new int[2];
+   private boolean[] markersRed = new boolean[6]; // Length 6 array, where marker num = i, structure is false, false, true, false etc..
+   private boolean[] markersBlack = new boolean[6];
 
    /**
     * 
@@ -135,7 +135,7 @@ public class Cell {
            Cell cell = world.getCell(adjCell);
            if(cell != null && cell.getAnt() != null) {
                Ant adjAnt = cell.getAnt();
-               if (adjAnt.getColour()) {
+               if (adjAnt.getColour()) { //BLACK
                    adjacentAntsBlack++;
                } else {
                    adjacentAntsRed++;

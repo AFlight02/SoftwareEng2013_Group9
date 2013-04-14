@@ -22,6 +22,8 @@ public final class Gameplay {
    private Random rand;
    private int redFood;
    private int blackFood;
+   private int numRedAnts;
+   private int numBlackAnts;
 
    /**
     *
@@ -85,17 +87,24 @@ public final class Gameplay {
        for (Ant a : ants) {
            Instruction nextInstruction = a.getInstruction();
            Cell currCell = world.getCell(a.getPosition());
-           if (a.getColour()) {
+           currCell.calculateAdjacentAnts(world);
+           if (a.getColour()) { //BLACK
                    if (currCell.getAdjacentAntsRed() >= 5) {
                        a.kill();
+                       numBlackAnts--;
                        currCell.incrementFood();
                        currCell.removeAnt();
+                       ants.remove(a);
+                       break;
                    }
                } else {
                    if (currCell.getAdjacentAntsBlack() >= 5) {
                        a.kill();
+                       numRedAnts--;
                        currCell.incrementFood();
                        currCell.removeAnt();
+                       ants.remove(a);
+                       break;
                    }
                }
            if (a.isAlive()) {
@@ -161,6 +170,7 @@ public final class Gameplay {
                else if (nextInstruction instanceof Drop) {
                    Drop d = (Drop) nextInstruction;
                    if (a.getFood()) {
+                       a.setFood(false);
                        currCell.incrementFood();
                    }
                    a.setState(d.getS1());
@@ -220,9 +230,18 @@ public final class Gameplay {
     */
    public void setupGame() {
        ants.clear();
+       numBlackAnts = 0;
+       numRedAnts = 0;
        world.resetWorld();
        world.replaceFood();
        ants = world.placeAnts(blackAntBrain, redAntBrain);
+       for(Ant a : ants) {
+           if(a.getColour()) { //BLACK
+               numBlackAnts++;
+           } else {
+               numRedAnts++;
+           }
+       }
    }
 
    /**
