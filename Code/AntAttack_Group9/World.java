@@ -47,7 +47,7 @@ public class World {
             height = Integer.parseInt(br.readLine());
             cells = new Cell[height][width];
 
-            String cellStr = "[#\\.\\+\\[19]]";
+            String cellStr = "[#\\.\\+\\-[1-9]]";
             Pattern cellPat = Pattern.compile(cellStr);
 
             String rowStr = "(" + cellStr + "\\s){" + (width - 1) + "}" + cellStr + "\\s?";
@@ -90,10 +90,10 @@ public class World {
                             case "+":
                                 newCell.setAnthill("red");
                                 break;
-                            case "":
+                            case "-":
                                 newCell.setAnthill("black");
                                 break;
-                            default: //know it's 19
+                            default: //know it's 1-9
                                 newCell.setFood(Integer.parseInt(rowCells[i]));
                                 break;
                         }
@@ -115,7 +115,7 @@ public class World {
     }
 
     /**
-     * Call this after reading in a world  checks conditions for a regular game
+     * Call this after reading in a world - checks conditions for a regular game
      * map
      *
      * @return
@@ -160,7 +160,7 @@ public class World {
     }
 
     /**
-     * Call this after reading in a world  checks conditions for a tournament
+     * Call this after reading in a world - checks conditions for a tournament
      * map
      *
      * @return
@@ -294,9 +294,9 @@ public class World {
                     curInfoList = blackHillInfo;
                 }
 
-                int h = 0; //height (row count) also used to determine the y coord the current row SHOULD be on
+                int h = 0; //height (row count) --also used to determine the y coord the current row SHOULD be on
                 int parityAdjuster;
-                int SP; //start pos  the x offset the line SHOULD start on
+                int SP; //start pos - the x offset the line SHOULD start on
                 int len; //the length the line SHOULD be
                 int[] firstCoord = new int[2]; //the ACTUAL start coord of the whole shape
                 firstCoord[0] = curInfoList.get(0)[0];
@@ -349,7 +349,7 @@ public class World {
                             len = 5 - Math.abs(4 - h);
 
                             indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, len);
-                            if (indexOfNextRow != 1) {
+                            if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -363,14 +363,14 @@ public class World {
 
                         //don't need to calculate SP based on height at this stage because it's constant
                         indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] - 1 + parityAdjuster, 5);
-                        if (indexOfNextRow != 1) {
-                            //rightslanting! remove from list
+                        if (indexOfNextRow != -1) {
+                            //right-slanting! remove from list
                             leftSlant = false;
                             foodInfo.remove(indexOfNextRow);
                         } else {
-                            //not rightslanting, so try leftslanting
+                            //not right-slanting, so try left-slanting
                             indexOfNextRow = listContains(foodInfo, consec[0] + 1, consec[1] + parityAdjuster, 5);
-                            if (indexOfNextRow != 1) {
+                            if (indexOfNextRow != -1) {
                                 leftSlant = true;
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -391,7 +391,7 @@ public class World {
                                 SP = parityAdjuster - (h + 1) / 2;
                             }
                             indexOfNextRow = listContains(foodInfo, consec[0] + h, consec[1] + SP, 5);
-                            if (indexOfNextRow != 1) {
+                            if (indexOfNextRow != -1) {
                                 //remove from list
                                 foodInfo.remove(indexOfNextRow);
                             } else {
@@ -442,7 +442,7 @@ public class World {
         Random r = new Random();
         int x, y;
 
-        x = r.nextInt(134) + 5; //far left of hexagon is 3 from x and far right is +9 from x
+        x = r.nextInt(134) + 5; //far left of hexagon is -3 from x and far right is +9 from x
         y = r.nextInt(134) + 2; //y can be between 2 and 135
 
         //just place first anthill, no need to check if there's stuff in the way
@@ -456,7 +456,7 @@ public class World {
             //check there is space first
             int SP, len, parityAdjuster;
 
-            for (int h = 1; h < 14; h++) { //1 to 14 to allow for border
+            for (int h = -1; h < 14; h++) { //-1 to 14 to allow for border
                 if (((y % 2) == 1) && ((h % 2) == 1)) {
                     parityAdjuster = 1;
                 } else {
@@ -479,19 +479,19 @@ public class World {
         }
 
         //place food blobs
-        //pick a random shape 13 then decide boundaries from there
+        //pick a random shape 1-3 then decide boundaries from there
         for (int foodNo = 0; foodNo < 11; foodNo++) {
             int shape = r.nextInt(3) + 1;
 
             if (shape == 1) { //diamond
                 isRoom = false;
                 while (!isRoom) {
-                    x = r.nextInt(142) + 4; //x of diamond ranges from x2 to x+2
+                    x = r.nextInt(142) + 4; //x of diamond ranges from x-2 to x+2
                     y = r.nextInt(138) + 2; //height of diamond is 9
 
                     int SP, len, parityAdjuster;
 
-                    for (int h = 1; h < 10; h++) { //remember border of 1
+                    for (int h = -1; h < 10; h++) { //remember border of 1
                         if (((y % 2) == 1) && ((h % 2) == 1)) {
                             parityAdjuster = 1;
                         } else {
@@ -520,13 +520,13 @@ public class World {
                     if (shape == 2) { //left slanting
                         x = r.nextInt(140) + 2; //x varies from x to x+6
                     } else {
-                        x = r.nextInt(140) + 4; //x varies from x2 to x+4
+                        x = r.nextInt(140) + 4; //x varies from x-2 to x+4
                     }
                     y = r.nextInt(142) + 2; //height of 5
 
                     int SP, parityAdjuster;
 
-                    for (int h = 1; h < 6; h++) {
+                    for (int h = -1; h < 6; h++) {
                         if (((y % 2) == 1) && ((h % 2) == 1)) {
                             parityAdjuster = 1;
                         } else {
@@ -583,7 +583,7 @@ public class World {
         // Check in boundaries
         if (cell[0] < height && cell[1] < width && cell[0] >= 0 && cell[1] >= 0) {
             Cell c = getCell(cell);
-            //Friend case  Check ant exists in cell, if it is of the same colour return true
+            //Friend case - Check ant exists in cell, if it is of the same colour return true
             if (cond == Sense.condition.FRIEND) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {
@@ -603,7 +603,7 @@ public class World {
                     return false;
                 }
             }
-            //Foe case  Check if ant exists in cell, if it is of opposite colour return true
+            //Foe case - Check if ant exists in cell, if it is of opposite colour return true
             else if (cond == Sense.condition.FOE) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {
@@ -623,7 +623,7 @@ public class World {
                     return false;
                 }
             }
-            //FriendWithFood case  check if Ant is friend, then return true if they have food
+            //FriendWithFood case - check if Ant is friend, then return true if they have food
             else if (cond == Sense.condition.FRIENDWITHFOOD) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) { //BLACK
@@ -643,7 +643,7 @@ public class World {
                     return false;
                 }
             }
-            //FoeWithFood case  like FriendWithFood, but reversed
+            //FoeWithFood case - like FriendWithFood, but reversed
             else if (cond == Sense.condition.FOEWITHFOOD) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {
@@ -663,7 +663,7 @@ public class World {
                     return false;
                 }
             }
-            //Food case  true if the cell contains food, false otherwise
+            //Food case - true if the cell contains food, false otherwise
             else if (cond == Sense.condition.FOOD) {
                 if (c.getFood() != 0) {
                     return true;
@@ -671,13 +671,13 @@ public class World {
                     return false;
                 }
             }
-            //Rock case  true if rock, false otherwise
+            //Rock case - true if rock, false otherwise
             else if (cond == Sense.condition.ROCK) {
                 return c.getRock();
             }
-            //Marker0 case  return true if 0 marker is present
+            //Marker0 case - return true if 0 marker is present
             else if (cond == Sense.condition.MARKER0) {
-                //BLACK  First check the ant is able to detect a friendly marker
+                //BLACK - First check the ant is able to detect a friendly marker
                 if (a.getColour()) {
                     boolean[] temp = c.getMarkers(true); //Get Black markers
                     return temp[0];
@@ -811,7 +811,7 @@ public class World {
                 return i;
             }
         }
-        return 1;
+        return -1;
     }
 
     /**
@@ -954,10 +954,6 @@ public class World {
     
     public List<int[]> getFoodCells() {
         return this.foodSpawnCells;
-    }
-    
-    public int getFoodNum() {
-        return this.foodSpawnCells.size() * 5;
     }
     
     public void resetWorld() {
