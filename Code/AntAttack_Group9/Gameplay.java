@@ -26,9 +26,9 @@ public final class Gameplay {
     protected int numBlackAnts;
 
     /**
-     *
-     * @param red
-     * @param black
+     * Initialises a new Gameplay instance with black and red AntBrains to default values.
+     * @param red the Red AntBrain
+     * @param black the Black AntBrain
      */
     public Gameplay(AntBrain red, AntBrain black) {
         this.world = new World();
@@ -42,7 +42,7 @@ public final class Gameplay {
     }
 
     /**
-     *
+     * Calls to generate a new world randomly and then checks that it is valid for a Tournament.
      */
     public void generateWorld() {
         this.world = new World();
@@ -51,22 +51,26 @@ public final class Gameplay {
     }
 
     /**
-     *
+     * Initiates a game loop with the specified GUI, match number and total number of matches to play.
+     * @param gui the GUI to display this game
+     * @param matchNum the number of the current match this Gameplay is managing
+     * @param totalMatches the total number of matches to be played
      */
     public void playGame(GUI gui, int matchNum, int totalMatches) {
-        // TEST WITH 3000 CHANGE BACK!!!!
         gui.initaliseWorldMap(world, matchNum, totalMatches);
         System.out.println("Total Food:" + world.getFoodNum());
         try {
-            Thread.sleep(1000);
+            // Sleep thread for 3 seconds between each game for the player to observe the results
+            Thread.sleep(3000); // 3000ms
         } catch (InterruptedException e) {
         }
         gui.updateUI(world, this);
         for (int i = 0; i < 300000; i++) {
-            stepGame(gui);
+            stepGame();
             gui.updateUI(world, this);
+            //Use the following block to create a realtime simulation (lasts a 300,000 x number of ms specified in sleep(n))
 //           try {
-//                Thread.sleep(5);
+//                Thread.sleep(5); // 2ms sleep time between steps = 300,000x2ms = 10 minutes per game
 //            } catch (InterruptedException e) {}
         }
         endGame();
@@ -74,18 +78,21 @@ public final class Gameplay {
     }
 
     /**
-     *
-     * @param uploadWorld
+     * Load a World into this Gameplay instance.
+     * @param uploadWorld the World to add to this Game
      */
     public void loadWorld(World uploadWorld) {
         this.world = uploadWorld;
     }
 
     /**
-     *
+     * Initiate a single 'step' of the game that loops through all Ants in the World, performs checks to 
+     * see if they're alive, if they should die, then what they should do on this turn based on the Instruction 
+     * returned by their current state, before setting their state for the next turn and advancing to the next Ant in the list.
      */
-    public void stepGame(GUI gui) {
+    public void stepGame() {
         for (Ant a : ants) {
+            // Get the Ant's next Instrcution
             Instruction nextInstruction = a.getInstruction();
             Cell currCell = world.getCell(a.getPosition());
             currCell.calculateAdjacentAnts(world);
@@ -195,7 +202,7 @@ public final class Gameplay {
     }
 
     /**
-     *
+     * Call to count all the food at the end of a Game for determining the winner.
      */
     public void endGame() {
         blackFood = 0;
@@ -212,7 +219,9 @@ public final class Gameplay {
     }
 
     /**
-     *
+     * Setup the Game for play by first clearing all the Ants currently held in the list of Ants,
+     * resetting the counts of Ants to 0, resetting the World, replacing food in the World, then replacing Ants
+     * in the World.
      */
     public void setupGame() {
         ants.clear();
@@ -231,9 +240,9 @@ public final class Gameplay {
     }
 
     /**
-     *
-     * @param red
-     * @param black
+     * Load the specified red and black AntBrains into the Gameplay instance
+     * @param red the red AntBrain
+     * @param black the black AntBrain
      */
     public void loadAntBrains(AntBrain red, AntBrain black) {
         redAntBrain = red;
@@ -241,8 +250,9 @@ public final class Gameplay {
     }
 
     /**
-     *
-     * @return
+     * Checks to see whether the black or red brain holds the most food in the World and 
+     * returns the winner.
+     * @return an integer representing the index of the winner in the Tournament
      */
     public int declareWinner() {
         int winner;

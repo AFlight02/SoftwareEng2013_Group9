@@ -16,9 +16,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- */
 public class World {
 
     protected Cell[][] cells;
@@ -29,15 +26,15 @@ public class World {
     public String worldName = "notSet";
 
     /**
-     *
+     * Blank World Constructor.
      */
     public World() {
     }
 
     /**
-     * reads in a world file, makes sure basic syntax is right
+     * Reads in a world file, makes sure basic syntax is right
      *
-     * @param worldFile
+     * @param worldFile the file name of the World
      * @throws Exception
      */
     public void readInWorld(String worldFile) throws Exception {
@@ -117,9 +114,9 @@ public class World {
 
     /**
      * Call this after reading in a world - checks conditions for a regular game
-     * map
+     * map.
      *
-     * @return
+     * @return true if the world is valid, false if not
      */
     public boolean checkValidWorld() {
         try {
@@ -162,9 +159,9 @@ public class World {
 
     /**
      * Call this after reading in a world - checks conditions for a tournament
-     * map
+     * map.
      *
-     * @return
+     * @return true if this World is valid for a Tournament, false if not
      */
     public boolean checkValidForTournament() {
         if (checkValidWorld()) {
@@ -418,7 +415,7 @@ public class World {
     }
 
     /**
-     * Generates a random world, adhering to the contest world constraints
+     * Generates a random world, adhering to the contest world constraints.
      */
     public void generateRandomContestWorld() {
         width = 150;
@@ -574,11 +571,12 @@ public class World {
     }
 
     /**
-     *
-     * @param cell
-     * @param cond
-     * @param a
-     * @return
+     * Checks the status of a Cell in the World based on a Sense condition and an Ant doing 
+     * said sensing.
+     * @param cell the Cell to check
+     * @param cond the Condition to check for
+     * @param a the Ant doing the Sensing
+     * @return true if the Condition is found in the Cell, false otherwise
      */
     public boolean checkCellStatus(int[] cell, Sense.condition cond, Ant a) {
         // Check in boundaries
@@ -789,6 +787,14 @@ public class World {
         return false;
     }
 
+    /**
+     * Check if a list contains a specified element.
+     * @param info List of information bits
+     * @param x Cell x coordinate
+     * @param y Cell y coordinate
+     * @param len length of a row of Cells
+     * @return the desired info if it exists, -1 otherwise
+     */
     private int listContains(List<int[]> info, int x, int y, int len) {
         for (int i = 0; i < info.size(); i++) {
             int[] row = info.get(i);
@@ -800,9 +806,9 @@ public class World {
     }
 
     /**
-     *
-     * @param cell
-     * @return
+     * Get a Cell from the World based on its coordinates
+     * @param cell the [x,y] coordinate of a Cell in an int[2] array
+     * @return the Cell at the desired coordinates, else null if it falls outside bounds checks
      */
     public Cell getCell(int[] cell) {
         if ((cell[0] < height && cell[1] < width) && (cell[0] >= 0 && cell[1] >= 0)) {
@@ -813,7 +819,7 @@ public class World {
     }
 
     /**
-     * Prints the world to the console as it would appear in a world file
+     * Prints the world to the console as it would appear in a World file.
      */
     public void printWorld() {
         System.out.println(height);
@@ -831,11 +837,11 @@ public class World {
     }
 
     /**
-     * Used when generating random worlds
+     * Used when generating random worlds.
      *
-     * @param colour
-     * @param x
-     * @param y
+     * @param colour colour of the Anthill
+     * @param x x coordinate of the Cell
+     * @param y y coordinate of the Cell
      */
     private void placeAnthill(String colour, int x, int y) {
         int SP, len, parityAdjuster;
@@ -859,6 +865,12 @@ public class World {
         }
     }
 
+    /**
+     * Places a blob of food in a certain shape.
+     * @param type the type of shape to place this food blob in
+     * @param x x coordinate of the Cell starting the blob
+     * @param y y coordinate of the Cell starting the blob
+     */
     private void placeFoodBlob(int type, int x, int y) {
         int SP, len, parityAdjuster;
 
@@ -904,6 +916,13 @@ public class World {
         }
     }
 
+    /**
+     * Place Ants corresponding to each AntBrain on each of the Anthills in the World, then return
+     * these Ants.
+     * @param blackBrain the Black AntBrain
+     * @param redBrain the Red AntBrain
+     * @return list of all placed Ants
+     */
     public List<Ant> placeAnts(AntBrain blackBrain, AntBrain redBrain) {
         List<Ant> list = new ArrayList<>();
         int id = 0;
@@ -923,24 +942,43 @@ public class World {
         return list;
     }
 
+    /**
+     * Replace all food in the food spawn Cells in this world.
+     */
     public void replaceFood() {
         for (int[] i : foodSpawnCells) {
             getCell(i).setFood(5);
         }
     }
 
+    /**
+     * Return a list of all the Anthill cells in this World.
+     * @return list of Anthill coordinates
+     */
     public List<int[]> getAnthillCells() {
         return this.anthillCells;
     }
 
+    /**
+     * Return a list of all the food spawn Cells in this World.
+     * @return list of all food spawn Cells.
+     */
     public List<int[]> getFoodCells() {
         return this.foodSpawnCells;
     }
 
+    /**
+     * Return the number of food particles that are present in this World before being played upon.
+     * @return total food in World
+     */
     public int getFoodNum() {
         return this.foodSpawnCells.size() * 5;
     }
 
+    /**
+     * Resets this World to a clean state where all Cells are unmodified by a game instance, remove all Ants,
+     * remove all food, and all markers ready for re-seeding with food and new Ants.
+     */
     public void resetWorld() {
         cells = resetCells.clone();
         for (int i = 0; i < resetCells.length; i++) {
@@ -959,7 +997,6 @@ public class World {
                     cell.removeBlackMarker(i);
                     cell.removeRedMarker(i);
                 }
-
             }
         }
     }

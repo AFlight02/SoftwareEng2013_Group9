@@ -21,26 +21,25 @@ public class AntAttack {
     private static World testWorld;
 
     /**
-     *
+     * Constructor initialises new AntAttack class.
      */
     public AntAttack() {
     }
 
     /**
-     *
-     * @param args
+     * Main method initialises the game and starts up the GUI.
+     * @param args none
      */
     public static void main(String[] args) throws Exception {
         testWorld = new World();
-        //testWorld.generateRandomContestWorld();
-        testWorld.readInWorld("1.world");
+        testWorld.generateRandomContestWorld();
         //testWorld.printWorld();
         initialiseGUI();
         //newTournament(); 
     }
 
     /**
-     *
+     * Creates a new GUI and initialises a random World.
      */
     public static void initialiseGUI() {
         gui = new GUI(testWorld);
@@ -48,7 +47,7 @@ public class AntAttack {
     }
 
     /**
-     *
+     * Used for testing purposes, creates a new Tournament with a list of AntBrains.
      */
     public static void newTournament() {
         try {

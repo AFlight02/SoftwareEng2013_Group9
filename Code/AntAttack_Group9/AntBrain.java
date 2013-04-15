@@ -14,23 +14,23 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Alex
- */
 public final class AntBrain {
 
     private ArrayList<Instruction> fsm = new ArrayList();
     private String name;
 
     /**
-     *
-     * @param antBrainFile
+     * Constructor initialises an AntBrain from a given filename located within the root folder; it then
+     * proceeds to check the syntax of the file before reading it line by line and translating it into Instructions, these
+     * instructions are then added to an ArrayList of Instructions that represent the whole AntBrain.
+     * @param antBrainFile filename of the AntBrain to load
      */
     public AntBrain(String antBrainFile) throws IOException {
+        // Printing out diagnostic file copy of each Instrctuion
         try (PrintWriter out = new PrintWriter(new FileWriter(antBrainFile + "output.txt"), true)) {
             name = antBrainFile;
             try {
+                // First check the syntax of the brain file is correct, if not throw an error.
                 if (checkAntBrainSyntax(antBrainFile)) {
                     BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
                     String currLine;
@@ -38,6 +38,7 @@ public final class AntBrain {
                         currLine = currLine.toLowerCase();
                         String[] input = currLine.split("\\s");
                         Instruction i = null;
+                        // Switch-case based upon first string in the current line
                         switch (input[0]) {
                             case "sense":
                                 String markerNum = "";
@@ -85,7 +86,7 @@ public final class AntBrain {
                         fsm.add(i);
                     }
                 } else {
-                    // exception should be thrown by checkAntBrainSyntax by this point
+                    // Exception should be thrown by checkAntBrainSyntax by this point
                     System.out.println("Error in ant brain file");
                 }
             } catch (Exception e) {
@@ -154,14 +155,18 @@ public final class AntBrain {
     }
 
     /**
-     *
-     * @param currState
-     * @return
+     * Returns the Instruction within the ArrayList of Instructions at the specified index, where index == state number.
+     * @param currState the next state number
+     * @return Instruction at the specified state
      */
     public Instruction getInstruction(int currState) {
         return fsm.get(currState);
     }
 
+     /**
+     * Returns the name of this AntBrain (the original file name of the brain file).
+     * @return the name of this AntBrain 
+     */
     public String getName() {
         return name;
     }

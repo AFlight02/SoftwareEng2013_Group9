@@ -13,9 +13,9 @@ public class Unmark extends Instruction {
     private int marker;
 
     /**
-     *
-     * @param state
-     * @param marker
+     * Unmark Instruction takes a marker number and the next state.
+     * @param state the next state after the unmark
+     * @param marker the marker number to remove
      */
     public Unmark(int marker, int state) {
         this.state = state;
@@ -23,16 +23,16 @@ public class Unmark extends Instruction {
     }
 
     /**
-     *
-     * @return
+     * Get the next state after a marker is removed.
+     * @return next state
      */
     public int getS1() {
         return this.state;
     }
 
     /**
-     *
-     * @return
+     * Get the marker number to remove.
+     * @return marker number to remove
      */
     public int getMarker() {
         return this.marker;

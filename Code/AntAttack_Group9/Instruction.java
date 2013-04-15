@@ -9,15 +9,17 @@
 package AntAttack_Group9;
 
 public class Instruction {
-    // Allows for retrieval of ENUM vals of each Instruction subclass for use as parameters on creation of new instructions
-    // in the FSM
 
     /**
-     *
-     * @param <T>
-     * @param c
-     * @param string
-     * @return
+     * Default constructor for Instruction superclass
+     */
+    public Instruction() {}
+
+    /**
+     * Common method for getting an Enum value from Instruction sub-classes by passing a String.
+     * @param c the Enum type taken from an Instruction subclass (eg. Sense.direction)
+     * @param string the String to match against an Enum
+     * @return the Enum matching the specified String
      */
     public static <T extends Enum<T>> T getEnumFromString(Class<T> c, String string) {
         if (c != null && string != null) {

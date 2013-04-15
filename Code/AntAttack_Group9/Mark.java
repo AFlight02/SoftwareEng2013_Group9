@@ -13,9 +13,9 @@ public class Mark extends Instruction {
     private int marker;
 
     /**
-     *
-     * @param state
-     * @param marker
+     * Creates a new Mark Instruction with the specified marker number and next state.
+     * @param state next state
+     * @param marker marker number
      */
     public Mark(int marker, int state) {
         this.state = state;
@@ -23,16 +23,16 @@ public class Mark extends Instruction {
     }
 
     /**
-     *
-     * @return
+     * Returns the next state
+     * @return next state
      */
     public int getS1() {
         return this.state;
     }
 
     /**
-     *
-     * @return
+     * Returns the marker number
+     * @return marker number
      */
     public int getMarker() {
         return this.marker;

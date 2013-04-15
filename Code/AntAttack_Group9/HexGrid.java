@@ -69,12 +69,22 @@ public class HexGrid {
     private ArrayList<World> worlds;
     private ArrayList<AntBrain> brains;
 
+    /**
+     * Initialises a new HexGrid
+     * @param g the GUI managing this HexGrid
+     */
     public HexGrid(GUI g) {
         gui = g;
         worlds = new ArrayList();
         brains = new ArrayList();
     }
 
+    /**
+     * Initialise an individual game in the HexGrid.
+     * @param w the World being played on
+     * @param matchNum the match number
+     * @param total the total number of matches to be played
+     */
     public void initGame(World w, int matchNum, int total) {
         world = w;
         match = matchNum;
@@ -83,6 +93,9 @@ public class HexGrid {
         setHeight(HEXSIZE); //Either setHeight or setSize must be run to initialize the hex
     }
 
+    /**
+     * Sets up the HexGrid GUI and initialises all its components.
+     */
     public void createAndShowGUI() {
         panel = new DrawingPanel();
         controlPanel = new JPanel();
@@ -107,6 +120,11 @@ public class HexGrid {
         frame.setVisible(true);
     }
 
+    /**
+     * Updates the HexGrid with an up-to-date representation of the World and Gameplay information.
+     * @param w the World to render
+     * @param g the Gameplay currently in progress
+     */
     public void updateGrid(World w, Gameplay g) {
         world = w;
         panel.updatePanel();
@@ -123,16 +141,30 @@ public class HexGrid {
         numBrainsLabel.setText("Number of Brains(2 Minimum): " + brains.size());
     }
 
+    /**
+     * Controls the drawing of the hexagonal grid representing the World that extends
+     * the JPanel class.
+     */
     class DrawingPanel extends JPanel {
 
+        /**
+         * Creates new DrawingPanel instance
+         */
         public DrawingPanel() {
             setBackground(Color.WHITE);
         }
 
+        /**
+         * Calls the repaint() function on this JPanel to update the HexGrid
+         */
         public void updatePanel() {
             repaint();
         }
 
+        /**
+         * Paints the Cells of the World as polygons on a 2D graphics object.
+         * @param g graphics object
+         */
         @Override
         public void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
@@ -168,6 +200,10 @@ public class HexGrid {
         }
     } // end of DrawingPanel class
 
+    /**
+     * Flags the start of the polygons to be drawn from the top left if true, offsets if false
+     * @param b whether or not to draw hexagons from the top left
+     */
     public static void setXYasVertex(boolean b) {
         XYVertex = b;
     }
@@ -176,6 +212,7 @@ public class HexGrid {
      * This functions takes the Side length in pixels and uses that as the basic
      * dimension of the hex. It calculates all other needed constants from this
      * dimension.
+     * @param side the side length in pixels
      */
     public static void setSide(int side) {
         s = side;
@@ -184,6 +221,10 @@ public class HexGrid {
         h = 2 * r;
     }
 
+    /**
+     * Takes the Height of a hexagon and uses that to calculate other hexagon dimensions.
+     * @param height the Height of a hexagon
+     */
     public static void setHeight(int height) {
         h = height;	// h = basic dimension: height (distance between two adj centresr aka size)
         r = h / 2;	// r = radius of inscribed circle
@@ -401,7 +442,6 @@ public class HexGrid {
         redFoodLabel.setText("Red Food: ");
         blackFoodLabel.setText("Black Food: ");
         numBrainsLabel.setText("Number of Brains(2 Minimum): ");
-        winner.setText("Winner: ???");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(controlFrame.getContentPane());
         controlFrame.getContentPane().setLayout(layout);
@@ -412,45 +452,63 @@ public class HexGrid {
         controlFrame.pack();
     }// </editor-fold>
 
+    /**
+     * Add Player button toggles an Open File Dialogue that asks for an AntBrain file.
+     * @param evt event triggering this action, pressing 'Add Player'
+     */
     private void addPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {
         chooseBrain.showOpenDialog(controlFrame);
     }
 
+    /**
+     * New Tournament button toggles a new Tournament to be set up by reinitialising Brain and
+     * World lists.
+     * @param evt button press to trigger this action
+     */
     private void newTournButtonActionPerformed(java.awt.event.ActionEvent evt) {
         worlds = new ArrayList<>();
         brains = new ArrayList<>();
     }
 
+    /**
+     * Add World button toggles an Open File Dialogue to ask for a World file.
+     * @param evt pressing the 'Add World' button triggers this
+     */
     private void addWorldButtonActionPerformed(java.awt.event.ActionEvent evt) {
         chooseWorld.showOpenDialog(controlFrame);
     }
 
+    /**
+     * When a World is chosen by the File Dialogue read in that World file and add it to the list
+     * of Worlds in the Tournament.
+     * @param evt choosing a World file from the file chooser
+     * @throws Exception 
+     */
     private void chooseWorldActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
         World w = new World();
         w.readInWorld(chooseWorld.getSelectedFile().getName());
         worlds.add(w);
     }
 
+    /**
+     * When an AntBrain is chosen by the File Dialogue, read in that file and add it to the list of
+     * AntBrains in the Tournament.
+     * @param evt choosing a World from the file chooser
+     * @throws Exception 
+     */
     private void chooseBrainActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
         AntBrain b = new AntBrain(chooseBrain.getSelectedFile().getName());
         brains.add(b);
         numBrainsLabel.setText("Number of Brains(2 Minimum): " + brains.size());
     }
 
+    /**
+     * Pressing the 'Begin Tournament' button causes a new Tournament to be initiated with the 
+     * chosen AntBrains and Worlds and the begins the Tournament in a new Thread.
+     * @param evt button press of 'Begin Tournament'
+     */
     private void beginTournamentButtonActionPerformed(java.awt.event.ActionEvent evt) {
         tourn = new Tournament(brains, worlds);
         tourn.startNewTourn(gui);
-//        while(tourn.startNewTourn(gui)){
-//            if(!tourn.winners.isEmpty()) {
-//                if(tourn.winners.size() > 1) {
-//                    int i=0;
-//                    for(AntBrain a : tourn.winners) {
-//                        winner.setText("Winner: " + tourn.winners.get(i++).getName() + "\n");
-//                    }
-//                } else {
-//                    winner.setText("Winner: " + tourn.winners.get(0).getName());
-//                } 
-//            }
-//        }
     }
 }

@@ -14,10 +14,10 @@ public class Flip extends Instruction {
     private int state2;
 
     /**
-     *
-     * @param random
-     * @param initState
-     * @param nextState
+     * Creates a new Flip Instruction
+     * @param random the upper limit for use in a random calculation
+     * @param s1 the state to advance to if a random function on random returns 0
+     * @param s2 the state to advance to if a random function on random does not return 0
      */
     public Flip(int random, int s1, int s2) {
         this.random = random;
@@ -26,24 +26,24 @@ public class Flip extends Instruction {
     }
 
     /**
-     *
-     * @return
+     * Return the random element of this Flip
+     * @return random number bound
      */
     public int getRandom() {
         return this.random;
     }
 
     /**
-     *
-     * @return
+     * Return the if random = 0 state
+     * @return the first state
      */
     public int getS1() {
         return this.state1;
     }
 
     /**
-     *
-     * @return
+     * Return the if random != 0 state
+     * @return the second state
      */
     public int getS2() {
         return this.state2;

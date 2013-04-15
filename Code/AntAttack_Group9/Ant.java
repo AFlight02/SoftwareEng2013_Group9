@@ -23,7 +23,8 @@ public class Ant {
     private boolean alive;
 
     /**
-     *
+     * Constructor initialises an Ant with a given AntBrain, colour (true=black, false=red) and 
+     * an ID number, additionally initialises all attributes to their defaults.
      * @param brain
      * @param colour
      * @param id
@@ -42,103 +43,111 @@ public class Ant {
     }
 
     /**
-     *
+     * Sets the Ant to alive = false.
      */
     public void kill() {
         this.alive = false;
     }
 
     /**
-     *
-     * @return
+     * Returns the alive state of this Ant.
+     * @return true if dlive, false if dead.
      */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * Returns the coordinate position of the Ant in the World.
+     * @return An int array of coordinates [x,y]
+     */
     public int[] getPosition() {
         return this.position;
     }
 
     /**
-     *
-     * @return
+     * Returns the resting state of this Ant.
+     * @return int indicating how many turns this Ant has left to rest before moving
      */
     public int getResting() {
         return this.resting;
     }
 
     /**
-     *
+     * Decreases the resting attribute of this Ant by 1.
      */
     public void decrementResting() {
         this.resting--;
     }
 
     /**
-     *
-     * @return
+     * Returns the current direction the Ant is facing.
+     * @return int from 0-5 representing the direction the Ant is facing
      */
     public int getDirection() {
         return this.direction;
     }
 
     /**
-     *
-     * @return
+     * Returns whether this Ant has food.
+     * @return true if the Ant has food, false otherwise
      */
     public boolean getFood() {
         return this.hasFood;
     }
 
     /**
-     *
-     * @return
+     * Returns the colour of this Ant.
+     * @return true if the Ant is Black, false if the Ant is Red
      */
     public boolean getColour() {
         return this.colour;
     }
 
+    /**
+     * Updates the position of this Ant to the new coordinates given.
+     * @param newPos int[2] array of Cell coordiante in the World [x,y]
+     */
     public void setPostition(int[] newPos) {
         this.position = newPos;
     }
 
     /**
-     *
-     * @param newState
+     * Sets this Ant's state to the one specified by an Instruction.
+     * @param newState int of the next state the Ant should be in
      */
     public void setState(int newState) {
         this.state = newState;
     }
 
     /**
-     *
-     * @param resting
+     * Sets the Ant's resting value to a new value.
+     * @param resting int indicating how many turns this Ant should rest before moving
      */
     public void setResting(int resting) {
         this.resting = resting;
     }
 
     /**
-     *
-     * @param dir
+     * Sets the Ant's new direction.
+     * @param dir int indicating the new direction the Ant should face
      */
     public void setDirection(int dir) {
         this.direction = dir;
     }
 
     /**
-     *
-     * @param b
+     * Sets the food boolean this Ant to true or false.
+     * @param b true to indicate the Ant has food, false to indicate that it does not
      */
     public void setFood(boolean b) {
         this.hasFood = b;
     }
 
     /**
-     *
-     * @param dir
-     * @return
+     * Cause this Ant to return the direction it would be facing if it turned Left or Right
+     * @param dir the direction to turn, LEFT or RIGHT, taken from Turn.direction Enums
+     * @return the new direction the Ant would be facing after turning that direction
      */
     public int turn(Turn.direction dir) {
         switch (dir) {
@@ -152,8 +161,8 @@ public class Ant {
     }
 
     /**
-     *
-     * @return
+     * Returns the Instruction that is located in the AntBrain at this Ant's current state.
+     * @return the Ant's next Instruction
      */
     public Instruction getInstruction() {
         return this.brain.getInstruction(this.state);
