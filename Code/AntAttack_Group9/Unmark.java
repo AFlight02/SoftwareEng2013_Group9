@@ -2,8 +2,8 @@
  * Unmark.java Represents an Unmark Instruction.
  *
  * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
- * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
- * @version 1
+ * Paige Gray, Alex Flight
+ * @version FINAL
  */
 package AntAttack_Group9;
 
@@ -13,7 +13,7 @@ public class Unmark extends Instruction {
     private int marker;
 
     /**
-     * 
+     *
      * @param state
      * @param marker
      */
@@ -23,7 +23,7 @@ public class Unmark extends Instruction {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int getS1() {
@@ -31,7 +31,7 @@ public class Unmark extends Instruction {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int getMarker() {

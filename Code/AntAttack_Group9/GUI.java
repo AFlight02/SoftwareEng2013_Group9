@@ -1,9 +1,9 @@
 /**
  * GUI.java Creates a visual representation of a Game in progress.
- * 
-* @author Software Engineering 2012-13 Group 9 Simon Bell, Kirstie Hale, Paige
- * Gray, Matt Chapman, Alex Flight, ??James Bellamy??
- * @version 0.1
+ *
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Alex Flight
+ * @version FINAL
  */
 package AntAttack_Group9;
 

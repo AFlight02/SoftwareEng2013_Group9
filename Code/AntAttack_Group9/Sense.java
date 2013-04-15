@@ -2,17 +2,18 @@
  * Sense.java Represents a Sense Instruction.
  *
  * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
- * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
- * @version 1
+ * Paige Gray, Alex Flight
+ * @version FINAL
  */
 package AntAttack_Group9;
 
 public class Sense extends Instruction {
 
     /**
-     * 
+     *
      */
     public enum senseDir {
+
         HERE,
         AHEAD,
         LEFTAHEAD,
@@ -20,9 +21,10 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      */
     public enum condition {
+
         FRIEND,
         FOE,
         FRIENDWITHFOOD,
@@ -45,7 +47,7 @@ public class Sense extends Instruction {
     private int s2;
 
     /**
-     * 
+     *
      * @param sDir
      * @param s1
      * @param s2
@@ -59,7 +61,7 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public condition getCondVal() {
@@ -67,7 +69,7 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int getS1() {
@@ -75,7 +77,7 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public int getS2() {
@@ -83,7 +85,7 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public senseDir getSenseDirVal() {
@@ -91,7 +93,7 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      * @param name
      * @return
      */
@@ -100,7 +102,7 @@ public class Sense extends Instruction {
     }
 
     /**
-     * 
+     *
      * @param name
      * @return
      */

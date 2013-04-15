@@ -1,11 +1,11 @@
 /**
-* AntAttack.java Main file for interacting with and utilising the Ant Tournament
-* system.
-*
-* @author Software Engineering 2012-13 Group 9 Simon Bell, Kirstie Hale,
-* Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
-* @version 1
-*/
+ * AntAttack.java Main file for interacting with and utilising the Ant
+ * Tournament system.
+ * 
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Alex Flight
+ * @version FINAL
+ */
 package AntAttack_Group9;
 
 import java.io.IOException;
@@ -16,40 +16,41 @@ import java.util.logging.Logger;
 
 public class AntAttack {
 
-   private static GUI gui;
-   private static Tournament tournament;
-   private static World testWorld;
-   /**
-    * 
-    */
-   public AntAttack() {
-   }
+    private static GUI gui;
+    private static Tournament tournament;
+    private static World testWorld;
 
-   /**
-    * 
-    * @param args
-    */
-   public static void main(String[] args) throws Exception {
-       testWorld = new World();
-       //testWorld.generateRandomContestWorld();
-       testWorld.readInWorld("1.world");
-       //testWorld.printWorld();
-       initialiseGUI();
-       //newTournament(); 
-   }
+    /**
+     *
+     */
+    public AntAttack() {
+    }
 
-   /**
-    * 
-    */
-   public static void initialiseGUI() {
-       gui = new GUI(testWorld);
-       gui.initaliseWorldMap(testWorld, 0, 0);
-   }
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args) throws Exception {
+        testWorld = new World();
+        //testWorld.generateRandomContestWorld();
+        testWorld.readInWorld("1.world");
+        //testWorld.printWorld();
+        initialiseGUI();
+        //newTournament(); 
+    }
 
-   /**
-    * 
-    */
-   public static void newTournament() {
+    /**
+     *
+     */
+    public static void initialiseGUI() {
+        gui = new GUI(testWorld);
+        gui.initaliseWorldMap(testWorld, 0, 0);
+    }
+
+    /**
+     *
+     */
+    public static void newTournament() {
         try {
             List<World> w = new ArrayList();
             tournament = new Tournament(w);
@@ -73,13 +74,13 @@ public class AntAttack {
             tournament.addCompetitors(h);
             tournament.addCompetitors(i);
             tournament.addWorld(testWorld);
-            
+
             List<AntBrain> winners = tournament.runTournament(gui);
-            for(AntBrain br : winners) {
+            for (AntBrain br : winners) {
                 System.out.println("Winner: " + br.getName());
             }
         } catch (IOException ex) {
             Logger.getLogger(AntAttack.class.getName()).log(Level.SEVERE, null, ex);
         }
-   }
+    }
 }

@@ -2,9 +2,9 @@
  * World.java Represents a World within which a Game is played between two Ant
  * Brains.
  *
- * @author Software Engineering 201213 Group 9  Simon Bell, Kirstie Hale,
- * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
- * @version 1
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Alex Flight
+ * @version FINAL
  */
 package AntAttack_Group9;
 
@@ -110,7 +110,7 @@ public class World {
             throw new Exception("Malformed world!");
         }
         resetCells = cells.clone();
-        for (int i=0; i<cells.length; i++) {
+        for (int i = 0; i < cells.length; i++) {
             resetCells[i] = cells[i].clone();
         }
     }
@@ -198,10 +198,10 @@ public class World {
                     if (cells[i][j].getRock()) {
                         rockCount++;
                     }
-                    if(cells[i][j].getFood() > 0) {
+                    if (cells[i][j].getFood() > 0) {
                         foodSpawnCells.add(currCell);
                     }
-                    if(!cells[i][j].anthill.equalsIgnoreCase("none")) {
+                    if (!cells[i][j].anthill.equalsIgnoreCase("none")) {
                         anthillCells.add(currCell);
                     }
                     switch (cells[i][j].getFood()) { //contains food
@@ -218,7 +218,7 @@ public class World {
                         case 5:
                             if (consecFood == 0) { //start of a row
                                 curFoodCoord[0] = i;
-                                curFoodCoord[1] = j;   
+                                curFoodCoord[1] = j;
                             }
                             consecFood++;
                             break;
@@ -233,7 +233,7 @@ public class World {
                                 info[0] = curHillCoord[0];
                                 info[1] = curHillCoord[1];
                                 info[2] = consecBlackHill;
-                                blackHillInfo.add(info);                               
+                                blackHillInfo.add(info);
                                 consecBlackHill = 0; //reset
                             }
 
@@ -448,7 +448,7 @@ public class World {
 
         //just place first anthill, no need to check if there's stuff in the way
         placeAnthill("red", x, y);
-        
+
         boolean isRoom = false;
         while (!isRoom) {
             //regen x and y for the second anthill
@@ -568,7 +568,7 @@ public class World {
             }
         }
         resetCells = cells.clone();
-        for (int i=0; i<cells.length; i++) {
+        for (int i = 0; i < cells.length; i++) {
             resetCells[i] = cells[i].clone();
         }
     }
@@ -603,8 +603,7 @@ public class World {
                 } else {
                     return false;
                 }
-            }
-            //Foe case - Check if ant exists in cell, if it is of opposite colour return true
+            } //Foe case - Check if ant exists in cell, if it is of opposite colour return true
             else if (cond == Sense.condition.FOE) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) { //BLACK
@@ -623,8 +622,7 @@ public class World {
                 } else {
                     return false;
                 }
-            }
-            //FriendWithFood case - check if Ant is friend, then return true if they have food
+            } //FriendWithFood case - check if Ant is friend, then return true if they have food
             else if (cond == Sense.condition.FRIENDWITHFOOD) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) { //BLACK
@@ -643,8 +641,7 @@ public class World {
                 } else {
                     return false;
                 }
-            }
-            //FoeWithFood case - like FriendWithFood, but reversed
+            } //FoeWithFood case - like FriendWithFood, but reversed
             else if (cond == Sense.condition.FOEWITHFOOD) {
                 if (c.getAnt() != null) {
                     if (a.getColour()) {        //BLACK
@@ -663,20 +660,17 @@ public class World {
                 } else {
                     return false;
                 }
-            }
-            //Food case - true if the cell contains food, false otherwise
+            } //Food case - true if the cell contains food, false otherwise
             else if (cond == Sense.condition.FOOD) {
                 if (c.getFood() > 0) {
                     return true;
                 } else {
                     return false;
                 }
-            }
-            //Rock case - true if rock, false otherwise
+            } //Rock case - true if rock, false otherwise
             else if (cond == Sense.condition.ROCK) {
                 return c.getRock();
-            }
-            //Marker0 case - return true if 0 marker is present
+            } //Marker0 case - return true if 0 marker is present
             else if (cond == Sense.condition.MARKER0) {
                 //BLACK - First check the ant is able to detect a friendly marker
                 if (a.getColour()) {        //BLACK
@@ -687,18 +681,15 @@ public class World {
                     boolean[] temp = c.getMarkers(false); //Get Red markers
                     return temp[0];
                 }
-            }
-            else if (cond == Sense.condition.MARKER1) {
+            } else if (cond == Sense.condition.MARKER1) {
                 if (a.getColour()) {    //BLACK
                     boolean[] temp = c.getMarkers(true);
                     return temp[1];
-                } 
-                else if (!a.getColour()) { //RED
+                } else if (!a.getColour()) { //RED
                     boolean[] temp = c.getMarkers(false);
                     return temp[1];
                 }
-            }
-            else if (cond == Sense.condition.MARKER2) {
+            } else if (cond == Sense.condition.MARKER2) {
                 //BLACK
                 if (a.getColour()) {
                     boolean[] temp = c.getMarkers(true);
@@ -708,8 +699,7 @@ public class World {
                     boolean[] temp = c.getMarkers(false);
                     return temp[2];
                 }
-            }
-            else if (cond == Sense.condition.MARKER3) {
+            } else if (cond == Sense.condition.MARKER3) {
                 //BLACK
                 if (a.getColour()) {
                     boolean[] temp = c.getMarkers(true);
@@ -719,8 +709,7 @@ public class World {
                     boolean[] temp = c.getMarkers(false);
                     return temp[3];
                 }
-            }
-            else if (cond == Sense.condition.MARKER4) {
+            } else if (cond == Sense.condition.MARKER4) {
                 //BLACK
                 if (a.getColour()) {
                     boolean[] temp = c.getMarkers(true);
@@ -730,8 +719,7 @@ public class World {
                     boolean[] temp = c.getMarkers(false);
                     return temp[4];
                 }
-            }
-            else if (cond == Sense.condition.MARKER5) {
+            } else if (cond == Sense.condition.MARKER5) {
                 //BLACK
                 if (a.getColour()) {
                     boolean[] temp = c.getMarkers(true);
@@ -741,8 +729,7 @@ public class World {
                     boolean[] temp = c.getMarkers(false);
                     return temp[5];
                 }
-            }
-            else if (cond == Sense.condition.FOEMARKER) {
+            } else if (cond == Sense.condition.FOEMARKER) {
                 boolean[] temp;
                 int hasMarkers = 0;
                 //BLACK
@@ -767,8 +754,7 @@ public class World {
                 } else {
                     return false;
                 }
-            }
-            else if (cond == Sense.condition.HOME) {
+            } else if (cond == Sense.condition.HOME) {
                 if (a.getColour()) { //BLACK
                     if (c.getAnthill().equalsIgnoreCase("black")) {
                         return true;
@@ -782,8 +768,7 @@ public class World {
                         return false;
                     }
                 }
-            }
-            else if (cond == Sense.condition.FOEHOME) {
+            } else if (cond == Sense.condition.FOEHOME) {
                 if (a.getColour()) { //BLACK
                     if (c.getAnthill().equalsIgnoreCase("red")) {
                         return true;
@@ -928,7 +913,7 @@ public class World {
                 black.setPostition(cell);
                 getCell(cell).ant = black;
                 list.add(black);
-            } else if(getCell(cell).anthill.equalsIgnoreCase("red")){
+            } else if (getCell(cell).anthill.equalsIgnoreCase("red")) {
                 Ant red = new Ant(redBrain, false, id++);
                 red.setPostition(cell);
                 getCell(cell).ant = red;
@@ -937,44 +922,44 @@ public class World {
         }
         return list;
     }
-    
+
     public void replaceFood() {
-        for(int[] i : foodSpawnCells) {
+        for (int[] i : foodSpawnCells) {
             getCell(i).setFood(5);
         }
     }
-    
+
     public List<int[]> getAnthillCells() {
         return this.anthillCells;
     }
-    
+
     public List<int[]> getFoodCells() {
         return this.foodSpawnCells;
     }
-    
+
     public int getFoodNum() {
         return this.foodSpawnCells.size() * 5;
     }
-    
+
     public void resetWorld() {
         cells = resetCells.clone();
-        for (int i=0; i<resetCells.length; i++) {
+        for (int i = 0; i < resetCells.length; i++) {
             cells[i] = resetCells[i].clone();
         }
-        for(Cell[] c : cells) {
-            for(Cell cell : c) {
+        for (Cell[] c : cells) {
+            for (Cell cell : c) {
                 cell.setFood(0);
                 cell.adjacentAntsBlack = 0;
                 cell.adjacentAntsRed = 0;
-                    
-                if(cell.ant != null) {
+
+                if (cell.ant != null) {
                     cell.removeAnt();
                 }
-                for(int i=0; i<6; i++) {
+                for (int i = 0; i < 6; i++) {
                     cell.removeBlackMarker(i);
                     cell.removeRedMarker(i);
                 }
-                
+
             }
         }
     }

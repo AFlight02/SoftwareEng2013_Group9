@@ -3,8 +3,8 @@
  * AntBrain FSM.
  *
  * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
- * Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
- * @version 1
+ * Paige Gray, Alex Flight
+ * @version FINAL
  */
 package AntAttack_Group9;
 
@@ -13,7 +13,7 @@ public class Instruction {
     // in the FSM
 
     /**
-     * 
+     *
      * @param <T>
      * @param c
      * @param string

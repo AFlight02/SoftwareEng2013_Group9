@@ -1,35 +1,33 @@
 /**
-* AntBrain.java Represents the FSM of an individual AntBrain competitor, reads in 
-* a raw text representation of an Ant Brain and converts it into a list of
-* discrete instructions.
-*
-* @author Software Engineering 2012-13 Group 9 Simon Bell, Kirstie Hale,
-* Paige Gray, Matt Chapman, Alex Flight, ??James Bellamy??
-* @version 1
-*/
+ * AntBrain.java Represents the FSM of an individual AntBrain competitor, reads
+ * in a raw text representation of an Ant Brain and converts it into a list of
+ * discrete instructions.
+ * 
+ * @author Software Engineering 2012-13 Group 9 - Simon Bell, Kirstie Hale,
+ * Paige Gray, Alex Flight
+ * @version FINAL
+ */
 package AntAttack_Group9;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
-* 
-* @author Alex
-*/
+ *
+ * @author Alex
+ */
 public final class AntBrain {
-   
-   private ArrayList<Instruction> fsm = new ArrayList();
-   private String name;
 
-   /**
-    * 
-    * @param antBrainFile
-    */
-   public AntBrain(String antBrainFile) throws IOException {
+    private ArrayList<Instruction> fsm = new ArrayList();
+    private String name;
+
+    /**
+     *
+     * @param antBrainFile
+     */
+    public AntBrain(String antBrainFile) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(antBrainFile + "output.txt"), true)) {
             name = antBrainFile;
             try {
@@ -43,12 +41,12 @@ public final class AntBrain {
                         switch (input[0]) {
                             case "sense":
                                 String markerNum = "";
-                                if(input.length >= 6) {
+                                if (input.length >= 6) {
                                     String regexMarker = "[0-5]";
                                     Pattern p1 = Pattern.compile(regexMarker);
                                     Matcher m = p1.matcher(input[5]);
-                                    if(m.matches()) {
-                                         markerNum = input[5];
+                                    if (m.matches()) {
+                                        markerNum = input[5];
                                     }
                                 }
                                 String cond = input[4] + markerNum;
@@ -94,77 +92,77 @@ public final class AntBrain {
                 System.err.println("Error: " + e.getMessage());
             }
         }
-   }
-   
-   /**
-    * Check if ant brain file is syntactically correct iterates through passed
-    * file line by line
-    *
-    * @param antBrainFile the ant brain file (.brain) to check
-    * @return boolean true if ant brain is syntactically correct false if not
-    * @throws Exception  
-    */
-   public boolean checkAntBrainSyntax(String antBrainFile) throws Exception {
+    }
 
-       BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
-       String currLine;
-       int lineNumber = 0;
+    /**
+     * Check if ant brain file is syntactically correct iterates through passed
+     * file line by line
+     *
+     * @param antBrainFile the ant brain file (.brain) to check
+     * @return boolean true if ant brain is syntactically correct false if not
+     * @throws Exception
+     */
+    public boolean checkAntBrainSyntax(String antBrainFile) throws Exception {
 
-       // process each line in ant brain file
-       while ((currLine = br.readLine()) != null) {
+        BufferedReader br = new BufferedReader(new FileReader(antBrainFile));
+        String currLine;
+        int lineNumber = 0;
 
-           lineNumber++;
-           // convert current line to lowercase
-           currLine = currLine.toLowerCase();
+        // process each line in ant brain file
+        while ((currLine = br.readLine()) != null) {
 
-           // store variables used for regular expression
-           String st = "[0-9][0-9]{0,3}";
-           String i = "[0-5]";
-           String comment = "(\\s*?;.*$)?"; // ignore everything after ;
+            lineNumber++;
+            // convert current line to lowercase
+            currLine = currLine.toLowerCase();
 
-           // check Sense
-           String regex = "((sense)*\\s(here|ahead|leftahead|rightahead)\\s(" + st + ")\\s(" + st + ")\\s(friend|foe|friendwithfood|foewithfood|food|rock|(marker\\s" + i + ")|foemarker|home|foehome))" + comment;
+            // store variables used for regular expression
+            String st = "[0-9][0-9]{0,3}";
+            String i = "[0-5]";
+            String comment = "(\\s*?;.*$)?"; // ignore everything after ;
 
-           // check Mark and Unmark
-           regex += "|((mark|unmark)*\\s(" + i + ")\\s(" + st + "))" + comment;
+            // check Sense
+            String regex = "((sense)*\\s(here|ahead|leftahead|rightahead)\\s(" + st + ")\\s(" + st + ")\\s(friend|foe|friendwithfood|foewithfood|food|rock|(marker\\s" + i + ")|foemarker|home|foehome))" + comment;
 
-           // check PickUp and Move
-           regex += "|((pickup|move)*\\s(" + st + ")\\s(" + st + "))" + comment;
+            // check Mark and Unmark
+            regex += "|((mark|unmark)*\\s(" + i + ")\\s(" + st + "))" + comment;
 
-           // check Drop
-           regex += "|((drop)*\\s(" + st + "))" + comment;
+            // check PickUp and Move
+            regex += "|((pickup|move)*\\s(" + st + ")\\s(" + st + "))" + comment;
 
-           // check Turn
-           regex += "|((turn)*\\s(left|right)\\s(" + st + "))" + comment;
+            // check Drop
+            regex += "|((drop)*\\s(" + st + "))" + comment;
 
-           // check Flip
-           regex += "|((flip)*\\s([0-9]*)\\s(" + st + ")\\s(" + st + "))" + comment;
+            // check Turn
+            regex += "|((turn)*\\s(left|right)\\s(" + st + "))" + comment;
 
-           // perform regular expression
-           Pattern p1 = Pattern.compile(regex);
-           Matcher m = p1.matcher(currLine);
+            // check Flip
+            regex += "|((flip)*\\s([0-9]*)\\s(" + st + ")\\s(" + st + "))" + comment;
 
-           // if current line doesn't match regular expression, print error
-           // to terminal and return false (could possibly throw exception here?)
-           if (!m.matches()) {
-               //System.out.println("Error in java brain file "+file+" at line "+lineNumber+ ": "+currLine);
-               throw new Exception("Error in java brain file " + antBrainFile + " at line " + lineNumber + ": " + currLine);
-               //return false;
-           }
-       }
-       return true;
-   }
+            // perform regular expression
+            Pattern p1 = Pattern.compile(regex);
+            Matcher m = p1.matcher(currLine);
 
-   /**
-    * 
-    * @param currState
-    * @return
-    */
-   public Instruction getInstruction(int currState) {
-       return fsm.get(currState);
-   }
-   
-   public String getName() {
-       return name;
-   }
+            // if current line doesn't match regular expression, print error
+            // to terminal and return false (could possibly throw exception here?)
+            if (!m.matches()) {
+                //System.out.println("Error in java brain file "+file+" at line "+lineNumber+ ": "+currLine);
+                throw new Exception("Error in java brain file " + antBrainFile + " at line " + lineNumber + ": " + currLine);
+                //return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     *
+     * @param currState
+     * @return
+     */
+    public Instruction getInstruction(int currState) {
+        return fsm.get(currState);
+    }
+
+    public String getName() {
+        return name;
+    }
 }
