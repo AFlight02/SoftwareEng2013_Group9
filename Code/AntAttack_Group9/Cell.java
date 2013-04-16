@@ -189,7 +189,9 @@ public class Cell {
      * @param food the total food to put in this Cell
      */
     public void setFood(int food) {
-        this.food = food;
+        if (food >= 0) {
+            this.food = food;
+        }
     }
 
     /**
