@@ -121,13 +121,13 @@ public class World {
     public boolean checkValidWorld() {
         try {
             //surrounded by rocks
-            for (int i = 0; i < height - 1; i++) { //check sides
+            for (int i = 0; i < height; i++) { //check sides
                 if (!cells[0][i].getRock() || !cells[width - 1][i].getRock()) {
                     return false;
                 }
             }
 
-            for (int i = 1; i < width; i++) { //check top and bottom
+            for (int i = 1; i < width - 1; i++) { //check top and bottom
                 if (!cells[i][0].getRock() || !cells[i][height - 1].getRock()) {
                     return false;
                 }
