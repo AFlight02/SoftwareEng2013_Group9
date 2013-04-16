@@ -857,7 +857,7 @@ public class World {
             len = 13 - Math.abs(6 - h);
 
             for (int i = 0; i < len; i++) {
-                cells[y + h][x + SP + i].anthill = colour;
+                cells[y + h][x + SP + i].setAnthill(colour);
                 int[] xy = new int[2];
                 xy[0] = y + h;
                 xy[1] = x + SP + i;
