@@ -198,7 +198,7 @@ public class World {
                     if (cells[i][j].getFood() > 0) {
                         foodSpawnCells.add(currCell);
                     }
-                    if (!cells[i][j].anthill.equalsIgnoreCase("none")) {
+                    if (!cells[i][j].getAnthill().equalsIgnoreCase("none")) {
                         anthillCells.add(currCell);
                     }
                     switch (cells[i][j].getFood()) { //contains food
