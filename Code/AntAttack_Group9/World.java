@@ -1000,4 +1000,14 @@ public class World {
             }
         }
     }
+    
+
+    /**
+     * Used for JUnit testing. Sets a specific cells(s) which can then
+     * be called via calculateAdjacentAnts() in Cell.java
+     * 
+     */
+    public void setCell(int x, int y, Cell cell) {
+        this.cells[x][y] = cell;
+    }
 }
