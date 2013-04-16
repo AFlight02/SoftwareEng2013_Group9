@@ -99,8 +99,8 @@ public class HexGrid {
     public void createAndShowGUI() {
         panel = new DrawingPanel();
         controlPanel = new JPanel();
-        frame = new JFrame("World Map");
-        controlFrame = new JFrame("Controls");
+        frame = new JFrame("Ant Attack - World");
+        controlFrame = new JFrame("Ant Attack - Controls");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         controlFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
