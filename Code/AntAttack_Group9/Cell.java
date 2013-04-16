@@ -230,7 +230,11 @@ public class Cell {
      * @param a set Anthill of the Cell to "red", "black" or "none"
      */
     public void setAnthill(String a) {
-        anthill = a;
+        if(a.equals("red") || a.equals("black") || a.equals("none")){
+            anthill = a; 
+        }else{
+            anthill = "none";
+        }
     }
 
     /**
