@@ -171,7 +171,7 @@ public class Tournament {
         for (int i = 0; i < scores.length; i++) {
             if (scores[i] == highestScore) {
                 winningBrains.add(antBrains.get(i));
-                winnerString += antBrains.get(i).getName() + "\n";
+                winnerString += antBrains.get(i).getName() + " - " + highestScore + " points\n";
             }
         }
         winnerFrame = new JFrame();
