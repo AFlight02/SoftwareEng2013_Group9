@@ -64,7 +64,7 @@ public class World {
                     }
                 } else { //odd line
                     if (!oddRowPat.matcher(curLine).matches()) {
-                        throw new Exception("Malformed world!"); //throw ALL the exceptions! \o/
+                        throw new Exception("Malformed world!");
                     }
                 }
 
@@ -121,14 +121,14 @@ public class World {
     public boolean checkValidWorld() {
         try {
             //surrounded by rocks
-            for (int i = 0; i < width; i++) { //check top and bottom
-                if (!cells[0][i].getRock() || !cells[height - 1][i].getRock()) {
+            for (int i = 0; i < height - 1; i++) { //check sides
+                if (!cells[0][i].getRock() || !cells[width - 1][i].getRock()) {
                     return false;
                 }
             }
 
-            for (int i = 1; i < height - 1; i++) { //check sides
-                if (!cells[i][0].getRock() || !cells[i][width - 1].getRock()) {
+            for (int i = 1; i < width; i++) { //check top and bottom
+                if (!cells[i][0].getRock() || !cells[i][height - 1].getRock()) {
                     return false;
                 }
             }
