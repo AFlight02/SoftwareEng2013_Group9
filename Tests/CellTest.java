@@ -1,6 +1,7 @@
 package AntAttack_Group9;
 
 import AntAttack_Group9.Sense.senseDir;
+import java.io.IOException;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -40,54 +41,54 @@ public class CellTest {
         Cell instance = new Cell(2,2);
         
         int[] result = instance.adjacentCell(0);
-        assertEquals(3, result[0]);
-        assertEquals(2, result[1]);
-        
-        result = instance.adjacentCell(1);
         assertEquals(2, result[0]);
         assertEquals(3, result[1]);
         
+        result = instance.adjacentCell(1);
+        assertEquals(3, result[0]);
+        assertEquals(2, result[1]);
+        
         result = instance.adjacentCell(2);
-        assertEquals(1, result[0]);
-        assertEquals(3, result[1]);
+        assertEquals(3, result[0]);
+        assertEquals(1, result[1]);
         
         result = instance.adjacentCell(3);
-        assertEquals(1, result[0]);
-        assertEquals(2, result[1]);
+        assertEquals(2, result[0]);
+        assertEquals(1, result[1]);
         
         result = instance.adjacentCell(4);
         assertEquals(1, result[0]);
         assertEquals(1, result[1]);
         
         result = instance.adjacentCell(5);
-        assertEquals(2, result[0]);
-        assertEquals(1, result[1]);
+        assertEquals(1, result[0]);
+        assertEquals(2, result[1]);
         
         instance = new Cell(1,1);
         
         result = instance.adjacentCell(0);
-        assertEquals(2, result[0]);
-        assertEquals(1, result[1]);
+        assertEquals(1, result[0]);
+        assertEquals(2, result[1]);
         
         result = instance.adjacentCell(1);
         assertEquals(2, result[0]);
         assertEquals(2, result[1]);
         
         result = instance.adjacentCell(2);
-        assertEquals(1, result[0]);
-        assertEquals(2, result[1]);
+        assertEquals(2, result[0]);
+        assertEquals(1, result[1]);
         
         result = instance.adjacentCell(3);
+        assertEquals(1, result[0]);
+        assertEquals(0, result[1]);
+        
+        result = instance.adjacentCell(4);
         assertEquals(0, result[0]);
         assertEquals(1, result[1]);
         
-        result = instance.adjacentCell(4);
-        assertEquals(1, result[0]);
-        assertEquals(0, result[1]);
-        
         result = instance.adjacentCell(5);
-        assertEquals(2, result[0]);
-        assertEquals(0, result[1]);
+        assertEquals(0, result[0]);
+        assertEquals(2, result[1]);
         
     }
     
@@ -96,7 +97,7 @@ public class CellTest {
      * Test of sensedCell method, of class Cell.
      */
     @Test
-    public void testSensedCell() {
+    public void testSensedCell() throws IOException {
         System.out.println("sensedCell");
         Cell instance = new Cell(2,2);
         int[] pos = new int[2];
@@ -110,8 +111,8 @@ public class CellTest {
         
         sD = Sense.dirFromString("ahead");
         result = instance.sensedCell(pos, dir, sD);
-        assertEquals(3, result[0]);
-        assertEquals(2, result[1]);
+        assertEquals(2, result[0]);
+        assertEquals(3, result[1]);
         
         AntBrain ab = new AntBrain("cleverbrain1.brain");
         Ant ant = new Ant(ab, true, 0);
@@ -119,13 +120,13 @@ public class CellTest {
         
         sD = Sense.dirFromString("leftahead");
         result = instance.sensedCell(pos, dir, sD);
-        assertEquals(2, result[0]);
-        assertEquals(1, result[1]);
+        assertEquals(1, result[0]);
+        assertEquals(2, result[1]);
         
         sD = Sense.dirFromString("RIGHTAHEAD");
         result = instance.sensedCell(pos, dir, sD);
-        assertEquals(2, result[0]);
-        assertEquals(3, result[1]);
+        assertEquals(3, result[0]);
+        assertEquals(2, result[1]);
         
         
     }
@@ -140,92 +141,41 @@ public class CellTest {
         world.generateRandomContestWorld();
         Cell instance = new Cell(2,2);
         
-        Cell cell0 = new Cell(3,2);
-        Ant a0 = new Ant(true);
+        Cell cell0 = new Cell(2,3);
+        AntBrain ab = new AntBrain("cleverbrain1.brain");
+        Ant a0 = new Ant(ab,true,0);
         cell0.setAnt(a0);
-        world.setCell(3,2,cell0);
+        world.setCell(2,3,cell0);
         
-        Cell cell1 = new Cell(2,3);
-        Ant a1 = new Ant(true);
+        Cell cell1 = new Cell(3,2);
+        Ant a1 = new Ant(ab,true,0);
         cell1.setAnt(a1);
-        world.setCell(2,3,cell1);
+        world.setCell(3,2,cell1);
         
-        Cell cell2 = new Cell(1,3);
-        Ant a2 = new Ant(true);
+        Cell cell2 = new Cell(3,1);
+        Ant a2 = new Ant(ab,true,0);
         cell2.setAnt(a2);
-        world.setCell(1,3,cell2);
+        world.setCell(3,1,cell2);
         
-        Cell cell3 = new Cell(1,2);
-        Ant a3 = new Ant(true);
+        Cell cell3 = new Cell(2,1);
+        Ant a3 = new Ant(ab,true,0);
         cell3.setAnt(a3);
-        world.setCell(1,2,cell3);
+        world.setCell(2,1,cell3);
         
         Cell cell4 = new Cell(1,1);
-        Ant a4 = new Ant(true);
+        Ant a4 = new Ant(ab,true,0);
         cell4.setAnt(a4);
         world.setCell(1,1,cell4);
         
-        Cell cell5 = new Cell(2,1);
-        Ant a5 = new Ant(true);
+        Cell cell5 = new Cell(1,2);
+        Ant a5 = new Ant(ab,true,0);
         cell5.setAnt(a5);
-        world.setCell(2,1,cell5);
+        world.setCell(1,2,cell5);
         
         instance.calculateAdjacentAnts(world);
         int expRes = 6;
         int result = instance.getAdjacentAntsBlack();
         assertEquals(expRes, result);
-                
-                
-        /*List<Ant> ants = new ArrayList<Ant>();
-        
-        Ant a = new Ant(true);
-        int[] posA = new int[2];
-        posA[0] = 3;
-        posA[1] = 2;
-        a.setPostition(posA);
-        ants.add(a);
-        
-        Ant b = new Ant(true);
-        int[] posB = new int[2];
-        posB[0] = 2;
-        posB[1] = 3;
-        b.setPostition(posB);
-        ants.add(b);
-        
-        Ant c = new Ant(true);
-        int[] posC = new int[2];
-        posC[0] = 1;
-        posC[1] = 3;
-        c.setPostition(posC);
-        ants.add(c);
-        
-        Ant d = new Ant(true);
-        int[] posD = new int[2];
-        posD[0] = 1;
-        posD[1] = 2;
-        d.setPostition(posD);
-        ants.add(d);
-        
-        Ant e = new Ant(true);
-        int[] posE = new int[2];
-        posE[0] = 1;
-        posE[1] = 1;
-        e.setPostition(posE);
-        ants.add(e);
-        
-        Ant f = new Ant(true);
-        int[] posF = new int[2];
-        posF[0] = 2;
-        posF[1] = 1;
-        f.setPostition(posF);
-        ants.add(f);
-        
-        Cell cell = new Cell(2,2);
-        //cell.calculateAdjacentAnts(ants);
-        
-        int expRes = 6;
-        int result = cell.getAdjacentAntsBlack();
-        assertEquals(expRes, result);*/
         
     }
 
@@ -239,8 +189,6 @@ public class CellTest {
         int expResult = 0;
         int result = instance.getAdjacentAntsBlack();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -253,8 +201,6 @@ public class CellTest {
         int expResult = 0;
         int result = instance.getAdjacentAntsRed();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -366,7 +312,7 @@ public class CellTest {
      * Test of getAnt method, of class Cell.
      */
     @Test
-    public void testGetAnt() {
+    public void testGetAnt() throws IOException {
         System.out.println("getAnt");
         Cell instance = new Cell(0,0);
         Ant expResult = null;
@@ -387,7 +333,7 @@ public class CellTest {
      * Test of setAnt method, of class Cell.
      */
     @Test
-    public void testSetAnt() {
+    public void testSetAnt() throws IOException {
         System.out.println("setAnt");
         Cell instance = new Cell(0,0);
 
@@ -409,7 +355,7 @@ public class CellTest {
      * Test of removeAnt method, of class Cell.
      */
     @Test
-    public void testRemoveAnt() {
+    public void testRemoveAnt() throws IOException {
         System.out.println("removeAnt");
         Cell instance = new Cell(0,0);
 
@@ -643,7 +589,7 @@ public class CellTest {
      * Test of getCellSymbol method, of class Cell.
      */
     @Test
-    public void testGetCellSymbol() {
+    public void testGetCellSymbol() throws IOException {
         System.out.println("getCellSymbol");
         Cell instance = new Cell(0,0);
         
