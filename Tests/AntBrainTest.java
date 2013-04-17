@@ -1,5 +1,6 @@
 package AntAttack_Group9;
 
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class AntBrainTest {
      * Test of getInstruction method, of class AntBrain.
      */
     @Test
-    public void testGetInstruction() {
+    public void testGetInstruction() throws IOException {
         System.out.println("getInstruction");
         String antBrainFile = "cleverbrain1.brain";
         AntBrain instance = new AntBrain(antBrainFile);
@@ -67,7 +68,7 @@ public class AntBrainTest {
      * Test of getName method, of class AntBrain.
      */
     @Test
-    public void testGetName() {
+    public void testGetName() throws IOException {
         System.out.println("getName");
         String antBrainFile = "cleverbrain1.brain";
         AntBrain instance = new AntBrain(antBrainFile);

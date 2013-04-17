@@ -1,5 +1,6 @@
 package AntAttack_Group9;
 
+import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -37,10 +38,11 @@ public class AntTest {
      * Test of kill method, of class Ant.
      */
     @Test
-    public void testKill() {
+    public void testKill() throws IOException {
         System.out.println("kill");
         
-        Ant instance = new Ant(true);
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,1);
 
         boolean expResult = true;
         boolean result = instance.isAlive();
@@ -57,10 +59,11 @@ public class AntTest {
      * Test of isAlive method, of class Ant.
      */
     @Test
-    public void testIsAlive() {
+    public void testIsAlive() throws IOException {
         System.out.println("isAlive");
         
-        Ant instance = new Ant(true);
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
 
         boolean expResult = true;
         boolean result = instance.isAlive();
@@ -68,26 +71,14 @@ public class AntTest {
     }
 
     /**
-     * Test of getState method, of class Ant.
-     */
-    @Test
-    public void testGetState() {
-        System.out.println("getState");
-        
-        Ant instance = new Ant(true);
-
-        int expResult = 0;
-        int result = instance.getState();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of getPosition method, of class Ant.
      */
     @Test
-    public void testGetPosition() {
+    public void testGetPosition() throws IOException {
         System.out.println("getPosition");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         int[] result = instance.getPosition();
         assertEquals(-1, result[0]);
         assertEquals(-1, result[1]);
@@ -105,23 +96,13 @@ public class AntTest {
      * Test of getResting method, of class Ant.
      */
     @Test
-    public void testGetResting() {
+    public void testGetResting() throws IOException {
         System.out.println("getResting");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         int expResult = 0;
         int result = instance.getResting();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getID method, of class Ant.
-     */
-    @Test
-    public void testGetID() {
-        System.out.println("getID");
-        Ant instance = new Ant(true);
-        int expResult = -1;
-        int result = instance.getID();
         assertEquals(expResult, result);
     }
 
@@ -129,9 +110,11 @@ public class AntTest {
      * Test of decrementResting method, of class Ant.
      */
     @Test
-    public void testDecrementResting() {
+    public void testDecrementResting() throws IOException {
         System.out.println("decrementResting");
-        Ant instance = new Ant(true);
+        
+        AntBrain ab = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(ab,true,0);
         instance.setResting(5);
         instance.decrementResting();
         
@@ -145,9 +128,11 @@ public class AntTest {
      * Test of getDirection method, of class Ant.
      */
     @Test
-    public void testGetDirection() {
+    public void testGetDirection() throws IOException {
         System.out.println("getDirection");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         int expResult = 0;
         int result = instance.getDirection();
         assertEquals(expResult, result);
@@ -157,9 +142,11 @@ public class AntTest {
      * Test of getFood method, of class Ant.
      */
     @Test
-    public void testGetFood() {
+    public void testGetFood() throws IOException {
         System.out.println("getFood");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         boolean expResult = false;
         boolean result = instance.getFood();
         assertEquals(expResult, result);
@@ -174,36 +161,18 @@ public class AntTest {
      * Test of getColour method, of class Ant.
      */
     @Test
-    public void testGetColour() {
+    public void testGetColour() throws IOException {
         System.out.println("getColour");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         boolean expResult = true;
         boolean result = instance.getColour();
         assertEquals(expResult, result);
         
-        instance = new Ant(false);
+        instance = new Ant(b,false,0);
         expResult = false;
         result = instance.getColour();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setId method, of class Ant.
-     */
-    @Test
-    public void testSetId() {
-        System.out.println("setId");
-        int newId = 0;
-        Ant instance = new Ant(true);
-        
-        instance.setId(newId);
-        int expResult = 0;
-        int result = instance.getID();
-        assertEquals(expResult, result);
-        
-        instance.setId(9);
-        expResult = 9;
-        result = instance.getID();
         assertEquals(expResult, result);
     }
 
@@ -211,12 +180,14 @@ public class AntTest {
      * Test of setPostition method, of class Ant.
      */
     @Test
-    public void testSetPostition() {
+    public void testSetPostition() throws IOException {
         System.out.println("setPostition");
         int[] newPos = new int[2];
         newPos[0] = 1;
         newPos[1] = 1;
-        Ant instance = new Ant(true);
+        
+        AntBrain ab = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(ab,true,0);
         instance.setPostition(newPos);
         
         // check getter to ensure setter works
@@ -225,37 +196,28 @@ public class AntTest {
     }
 
     /**
-     * Test of setBrain method, of class Ant.
-     */
-    @Test
-    public void testSetBrain() {
-        System.out.println("setBrain");
-        AntBrain newBrain = new AntBrain("cleverbrain1.brain");
-        Ant instance = new Ant(true);
-        instance.setBrain(newBrain);
-    }
-
-    /**
      * Test of setState method, of class Ant.
      */
     @Test
-    public void testSetState() {
+    public void testSetState() throws IOException {
         System.out.println("setState");
         int newState = 9;
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         instance.setState(newState);
-        int result = instance.getState();
-        assertEquals(newState, result);
     }
 
     /**
      * Test of setResting method, of class Ant.
      */
     @Test
-    public void testSetResting() {
+    public void testSetResting() throws IOException {
         System.out.println("setResting");
         int resting = 5;
-        Ant instance = new Ant(true);
+        
+        AntBrain ab = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(ab,true,0);
         instance.setResting(resting);
         int result = instance.getResting();
         assertEquals(resting, result);
@@ -265,10 +227,12 @@ public class AntTest {
      * Test of setDirection method, of class Ant.
      */
     @Test
-    public void testSetDirection() {
+    public void testSetDirection() throws IOException {
         System.out.println("setDirection");
         int dir = 5;
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         instance.setDirection(dir);
         int result = instance.getDirection();
         assertEquals(dir, result);
@@ -278,9 +242,11 @@ public class AntTest {
      * Test of setFood method, of class Ant.
      */
     @Test
-    public void testSetFood() {
+    public void testSetFood() throws IOException {
         System.out.println("setFood");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         boolean expResult = false;
         boolean result = instance.getFood();
         assertEquals(expResult, result);
@@ -295,9 +261,11 @@ public class AntTest {
      * Test of turn method, of class Ant.
      */
     @Test
-    public void testTurn() {
+    public void testTurn() throws IOException {
         System.out.println("turn");
-        Ant instance = new Ant(true);
+        
+        AntBrain b = new AntBrain("cleverbrain1.brain");
+        Ant instance = new Ant(b,true,0);
         
         Turn.direction dir = Turn.dirFromString("left");
         int expResult = 5;
@@ -314,11 +282,10 @@ public class AntTest {
      * Test of getInstruction method, of class Ant.
      */
     @Test
-    public void testGetInstruction() {
+    public void testGetInstruction() throws IOException {
         System.out.println("getInstruction");
-        Ant instance = new Ant(true);
         AntBrain ab = new AntBrain("cleverbrain1.brain");
-        instance.setBrain(ab);
+        Ant instance = new Ant(ab,true,0);
         Sense expResult = new Sense(Sense.dirFromString("here"),32, 1,Sense.condFromString("home"));
         Sense result = (Sense)instance.getInstruction();
         assertEquals(expResult.getCondVal(), result.getCondVal());
