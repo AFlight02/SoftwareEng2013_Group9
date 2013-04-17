@@ -72,9 +72,14 @@ public class WorldTest {
         System.out.println("checkValidForTournament");
         World instance = new World();
         instance.readInWorld("2.world");
-        //instance.generateRandomContestWorld();
         boolean expResult = true;
         boolean result = instance.checkValidForTournament();
+        assertEquals(expResult, result);
+        
+        instance = new World();
+        instance.generateRandomContestWorld();
+        expResult = true;
+        result = instance.checkValidForTournament();
         assertEquals(expResult, result);
     }
 
