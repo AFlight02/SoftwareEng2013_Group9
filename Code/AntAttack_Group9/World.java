@@ -454,6 +454,7 @@ public class World {
             //check there is space first
             int SP, len, parityAdjuster;
 
+            isRoom = true;
             for (int h = -1; h < 14; h++) { //-1 to 14 to allow for border
                 if (((y % 2) == 1) && ((h % 2) == 1)) {
                     parityAdjuster = 1;
@@ -464,7 +465,7 @@ public class World {
                 SP = (Math.abs(6 - h)) / 2 - 4 + parityAdjuster;
                 len = 15 - Math.abs(6 - h);
 
-                isRoom = true;
+                //check for room
                 for (int i = 0; i < len; i++) {
                     if (!cells[y + h][x + SP + i].isEmpty()) {
                         isRoom = false;
@@ -489,6 +490,7 @@ public class World {
 
                     int SP, len, parityAdjuster;
 
+                    isRoom = true;
                     for (int h = -1; h < 10; h++) { //remember border of 1
                         if (((y % 2) == 1) && ((h % 2) == 1)) {
                             parityAdjuster = 1;
@@ -500,7 +502,7 @@ public class World {
                         SP = (Math.abs(4 - h)) / 2 - 3 + parityAdjuster;
                         len = 7 - Math.abs(4 - h);
 
-                        isRoom = true;
+                        //check for room
                         for (int i = 0; i < len; i++) {
                             if (!cells[y + h][x + SP + i].isEmpty()) {
                                 isRoom = false;
@@ -524,6 +526,7 @@ public class World {
 
                     int SP, parityAdjuster;
 
+                    isRoom = true;
                     for (int h = -1; h < 6; h++) {
                         if (((y % 2) == 1) && ((h % 2) == 1)) {
                             parityAdjuster = 1;
@@ -537,7 +540,7 @@ public class World {
                             SP = parityAdjuster - (h + 1) / 2 - 1;
                         }
 
-                        isRoom = true;
+                        //check for room
                         for (int i = 0; i < 7; i++) { //length 7 because of borders
                             if (!cells[y + h][x + SP + i].isEmpty()) {
                                 isRoom = false;
